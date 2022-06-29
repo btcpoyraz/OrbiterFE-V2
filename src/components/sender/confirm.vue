@@ -111,9 +111,8 @@ import { utils } from 'zksync'
 import { submitSignedTransactionsBatch } from 'zksync/build/wallet'
 import Web3 from 'web3'
 import {
-  getL2AddressByL1,
-  getNetworkIdByChainId,
-  sendTransaction,
+  sendTransfer,
+  getStarkMakerAddress,
 } from '../../util/constants/starknet/helper'
 import loopring from '../../core/actions/loopring'
 import { IMXHelper } from '../../util/immutablex/imx_helper'
@@ -507,7 +506,7 @@ export default {
             }
             this.transferLoading = false
           } catch (error) {
-            console.log('inError =', error.message)
+            console.warn('inError =', error.message)
             this.transferLoading = false
             this.$notify.error({
               title: error.message,
@@ -516,7 +515,7 @@ export default {
           }
         }
       } catch (error) {
-        console.log('outError =', error.message)
+        console.warn('outError =', error.message)
         this.transferLoading = false
         this.$notify.error({
           title: error.message,
@@ -607,7 +606,7 @@ export default {
           }
         }
       } catch (error) {
-        console.log('outError =', error.message)
+        console.warn('outError =', error.message)
         this.transferLoading = false
         this.$notify.error({
           title: error.message,
@@ -631,6 +630,18 @@ export default {
           params: [switchParams],
         })
         .then(() => {
+          let fromChainID = this.$store.state.transferData.fromChainID
+          let toAddress = util.shortAddress(
+            that.$store.getters.realSelectMakerInfo.makerAddress
+          )
+          if (fromChainID == 4 || fromChainID == 44) {
+            toAddress = util.shortAddress(
+              getStarkMakerAddress(
+                that.$store.getters.realSelectMakerInfo.makerAddress,
+                fromChainID
+              )
+            )
+          }
           // switch success
           that.$store.commit('updateConfirmRouteDescInfo', [
             {
@@ -643,15 +654,13 @@ export default {
                 )
               ),
               coin: that.$store.state.transferData.selectTokenInfo.token,
-              toAddress: util.shortAddress(
-                that.$store.getters.realSelectMakerInfo.makerAddress
-              ),
+              toAddress: toAddress,
             },
           ])
           this.RealTransfer()
         })
         .catch((error) => {
-          console.log(error)
+          console.warn(error)
           if (error.code === 4902) {
             // need add net
             const params = {
@@ -678,7 +687,7 @@ export default {
               })
               .then(() => {})
               .catch((error) => {
-                console.log(error)
+                console.warn(error)
                 util.showMessage(error.message, 'error')
               })
           } else {
@@ -695,13 +704,16 @@ export default {
       try {
         const web3 = new Web3(window.ethereum)
 
-        const gasLimit = await getTransferGasLimit(
+        let gasLimit = await getTransferGasLimit(
           fromChainID,
           selectMakerInfo,
           from,
           selectMakerInfo.makerAddress,
           value
         )
+        if (gasLimit < 21000) {
+          gasLimit = 21000
+        }
         await web3.eth.sendTransaction(
           {
             from,
@@ -738,28 +750,48 @@ export default {
         return
       }
 
+      if (fromChainID == 4 || fromChainID == 44) {
+        const { starkChain } = this.$store.state.web3.starkNet
+        if (!starkChain || starkChain == 'unlogin') {
+          util.showMessage('please connect starkNetWallet', 'error')
+          return
+        }
+        if (
+          fromChainID == 4 &&
+          (starkChain == 44 || starkChain == 'localhost')
+        ) {
+          util.showMessage('please switch starkNetWallet to mainnet', 'error')
+          return
+        }
+        if (
+          fromChainID == 44 &&
+          (starkChain == 4 || starkChain == 'localhost')
+        ) {
+          util.showMessage('please switch starkNetWallet to testNet', 'error')
+          return
+        }
+      }
       try {
         let contractAddress = selectMakerInfo.t1Address
         if (selectMakerInfo.c1ID != fromChainID) {
           contractAddress = selectMakerInfo.t2Address
         }
-
-        const networkId = getNetworkIdByChainId(fromChainID)
-
-        const receiverStarknetAddress = await getL2AddressByL1(
-          selectMakerInfo.makerAddress,
-          networkId
-        )
-
-        const hash = await sendTransaction(
+        const hash = await sendTransfer(
           from,
           contractAddress,
-          receiverStarknetAddress,
-          value,
-          networkId
+          selectMakerInfo.makerAddress,
+          new BigNumber(value),
+          fromChainID
         )
-
-        this.onTransferSucceed(from, selectMakerInfo, value, fromChainID, hash)
+        if (hash) {
+          this.onTransferSucceed(
+            from,
+            selectMakerInfo,
+            value,
+            fromChainID,
+            hash
+          )
+        }
       } catch (error) {
         this.$notify.error({
           title: error.message,
@@ -894,6 +926,7 @@ export default {
 
         const amount = ethers.BigNumber.from(value)
         let transactionHash = ''
+
         if (util.isEthTokenAddress(contractAddress)) {
           transactionHash = (
             await crossAddress.transfer(
@@ -935,25 +968,24 @@ export default {
         Middle.$emit('connectWallet', true)
         return
       }
+      const { fromChainID, toChainID, transferExt } =
+        this.$store.state.transferData
 
-      if (
-        this.$store.state.web3.networkId.toString() !==
-        this.$env.localChainID_netChainID[
-          this.$store.state.transferData.fromChainID
-        ]
-      ) {
-        this.addChainNetWork()
-        return
+      if (fromChainID != 4 && fromChainID != 44) {
+        if (
+          this.$store.state.web3.networkId.toString() !==
+          this.$env.localChainID_netChainID[fromChainID]
+        ) {
+          this.addChainNetWork()
+          return
+        }
       }
-
       // Only one
       if (this.transferLoading) {
         return
       }
 
       // sendTransfer
-      const { fromChainID, toChainID, transferExt } =
-        this.$store.state.transferData
       const selectMakerInfo = this.$store.getters.realSelectMakerInfo
 
       // Check fromChainID isSupportEVM
@@ -965,7 +997,20 @@ export default {
         return
       }
       this.transferLoading = true
-      // 增加check币商余额逻辑, To dydx no check
+
+      let shouldReceiveValue = orbiterCore.getToAmountFromUserAmount(
+        new BigNumber(this.$store.state.transferData.transferValue).plus(
+          new BigNumber(this.$store.getters.realSelectMakerInfo.tradingFee)
+        ),
+        this.$store.getters.realSelectMakerInfo,
+        false
+      )
+
+      if (!(await checkStateWhenConfirmTransfer(shouldReceiveValue))) {
+        this.transferLoading = false
+        return
+      }
+
       if (toChainID != 11 && toChainID != 511) {
         let shouldReceiveValue = orbiterCore.getToAmountFromUserAmount(
           new BigNumber(this.$store.state.transferData.transferValue).plus(
@@ -1078,13 +1123,16 @@ export default {
             return
           }
 
-          const gasLimit = await getTransferGasLimit(
+          let gasLimit = await getTransferGasLimit(
             fromChainID,
             selectMakerInfo,
             account,
             to,
             tValue.tAmount
           )
+          if (gasLimit < 21000) {
+            gasLimit = 21000
+          }
           const objOption = { from: account, gas: gasLimit }
           transferContract.methods
             .transfer(to, tValue.tAmount)
