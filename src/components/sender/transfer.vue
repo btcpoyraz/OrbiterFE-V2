@@ -183,6 +183,19 @@
         </div>
       </div>
     </div>
+    <div v-if="isStarknet" style="font-size: 1.2rem;color: #78797d;margin-top:1rem;padding: 0 11px;text-align: center;">
+      <svg-icon
+        style="
+          width: 1rem;
+          height: 1rem;
+          height: 1rem;
+          margin-right: 0.2rem;
+        "
+        iconName="tips"
+      ></svg-icon>
+      Centralized transfer is provided currently and trustless transfer will be launched soon.
+      <a style="text-decoration: underline;" href="https://docs.orbiter.finance/" target="__blank">More</a>
+    </div>
     <o-button
       style="margin: 2.5rem auto 0"
       width="29.5rem"
@@ -482,6 +495,18 @@ export default {
     },
   },
   computed: {
+    isStarknet() {
+      return this.refererUpper === 'STARKNET'
+    },
+    refererUpper() {
+      // Don't use [$route.query.referer], because it will delay
+      const { href } = window.location
+      const match = href.match(/referer=(\w*)/i)
+      if (match?.[1]) {
+        return match[1].toUpperCase()
+      }
+      return ''
+    },
     starkAddress() {
       var stark = this.$store.state.web3.starkNet.starkNetAddress
       if (!stark) {
@@ -995,6 +1020,7 @@ export default {
             ).toFixed(6)
           })
           .catch((error) => {
+            this.c1Balance = 0
             console.warn(error)
             return
           })
@@ -1676,7 +1702,6 @@ export default {
           })
           return
         }
-
         if (nonce > 8999) {
           this.$notify.error({
             title: `Address with the nonce over 9000 are not supported by Orbiter`,
@@ -1738,31 +1763,32 @@ export default {
               dydxAccount.positionId
             ),
           })
-        } else {
-          // Clear TransferExt
-          this.$store.commit('updateTransferExt', null)
-        }
-
-        // To starkNet
-        if (toChainID == 4 || toChainID == 44) {
+        } // To starkNet
+        else if (toChainID == 4 || toChainID == 44) {
           const { starkIsConnected, starkNetAddress, starkChain } =
             this.$store.state.web3.starkNet
           if (!starkChain || starkChain == 'unlogin') {
-            util.showMessage('please connect starkNetWallet', 'error')
+            util.showMessage('please connect StarkNet Wallet', 'error')
             return
           }
           if (
             toChainID == 4 &&
             (starkChain == 44 || starkChain == 'localhost')
           ) {
-            util.showMessage('please switch starkNetWallet to mainnet', 'error')
+            util.showMessage(
+              'please switch StarkNet Wallet to mainnet',
+              'error'
+            )
             return
           }
           if (
             toChainID == 44 &&
             (starkChain == 4 || starkChain == 'localhost')
           ) {
-            util.showMessage('please switch starkNetWallet to testNet', 'error')
+            util.showMessage(
+              'please switch StarkNet Wallet to testNet',
+              'error'
+            )
             return
           }
           if (starkNetAddress && starkIsConnected) {
@@ -1771,7 +1797,7 @@ export default {
               value: starkNetAddress,
             })
           } else {
-            util.showMessage('please connect starkNetWallet', 'error')
+            util.showMessage('please connect StarkNet Wallet', 'error')
             return
           }
         } else {
@@ -1782,21 +1808,27 @@ export default {
         if (fromChainID == 4 || fromChainID == 44) {
           const { starkChain } = this.$store.state.web3.starkNet
           if (!starkChain || starkChain == 'unlogin') {
-            util.showMessage('please connect starkNetWallet', 'error')
+            util.showMessage('please connect StarkNet Wallet', 'error')
             return
           }
           if (
             fromChainID == 4 &&
             (starkChain == 44 || starkChain == 'localhost')
           ) {
-            util.showMessage('please switch starkNetWallet to mainnet', 'error')
+            util.showMessage(
+              'please switch StarkNet Wallet to mainnet',
+              'error'
+            )
             return
           }
           if (
             fromChainID == 44 &&
             (starkChain == 4 || starkChain == 'localhost')
           ) {
-            util.showMessage('please switch starkNetWallet to testNet', 'error')
+            util.showMessage(
+              'please switch StarkNet Wallet to testNet',
+              'error'
+            )
             return
           }
         } else {
@@ -1894,6 +1926,7 @@ export default {
         )
         return (response / 10 ** precision).toFixed(6)
       } catch (error) {
+        console.warn(error)
         return 0
       }
     },
