@@ -1,6 +1,7 @@
 <template>
   <div class="history-page">
     <div class="history-content">
+      <CommTabs :active="activeName" :tabsList="tabsList" @tabsChange="tabsChange"></CommTabs>
       <div class="title">History</div>
       <div class="table historyContent">
         <div class="table-header">
@@ -81,7 +82,7 @@
 </template>
 
 <script>
-import { NoData } from '../components'
+import { NoData, CommTabs } from '../components'
 import {
   historyPanelState,
   getTransactionsHistory,
@@ -93,6 +94,7 @@ export default {
   name: 'History',
   components: {
     NoData,
+    CommTabs
   },
   computed: {
     currentPage() {
@@ -134,6 +136,12 @@ export default {
     transactionListInfo() {
       return historyPanelState.transactionListInfo
     },
+    activeName() {
+      return historyPanelState.activeName
+    },
+    tabsList() {
+      return historyPanelState.tabsList
+    }
   },
   beforeRouteEnter(to, from, next) {
     next(() => {
@@ -143,6 +151,10 @@ export default {
   methods: {
     curChange(cur) {
       getTransactionsHistory({ current: cur })
+    },
+    tabsChange(active) {
+      console.log(active)
+      this.activeName = active
     },
     closeDialog() {
       const last = JSON.parse(

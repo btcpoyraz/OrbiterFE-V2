@@ -9,13 +9,13 @@
         <Transfer @stateChanged="changeState" />
       </keep-alive>
     </div>
-    <div v-show="!isSenderTab && status === '1' && !showDetail" class="maker-box">
-      <div class="maker-title">About Maker</div>
-      <div class="maker-content">
-        <div>Orbiter's Maker provides liquidity for Layer 2 and benefits from it.</div>
-        <div @click="clickLearnMore" class="maker-link">LEARN MORE</div>
-        <div class="maker-foot-btn">COMING SOON</div>
-      </div>
+    <div v-show="!isSenderTab && status === '1' && !showDetail && !isMaker" class="maker-box">
+      <Maker />
+    </div>
+    <div v-show="!isSenderTab && status === '1' && !showDetail && isMaker" class="maker-list">
+      <keep-alive>
+        <MakerList />
+      </keep-alive>
     </div>
   </template>
   <div v-show="status !== '1' || showDetail" style="width:100%;height:100%;" class="center">
@@ -29,13 +29,13 @@
 </template>
 
 <script>
-import { Transfer, Confirm, Proceed } from './'
+import { Transfer, Confirm, Proceed, Maker, MakerList } from './'
 import { ToggleBtn } from '../../components'
-import { isMobile, curPageTabState, togglePageTab, curPageStatus, changeCurPageStatus, historyPanelState } from '../../composition/hooks'
+import { isMobile, curPageTabState, togglePageTab, curPageStatus, changeCurPageStatus, historyPanelState, isMaker } from '../../composition/hooks'
 
 export default {
   name: 'Bridge',
-  components: { Transfer, Confirm, Proceed, ToggleBtn },
+  components: { Transfer, Confirm, Proceed, ToggleBtn, Maker, MakerList },
   computed: {
     isMobile() {
       return isMobile.value
@@ -64,6 +64,9 @@ export default {
       //   userAmount: "4.509006",
       // }
       return historyPanelState.historyInfo
+    },
+    isMaker() {
+      return isMaker.value;
     }
   },
   methods: {
@@ -90,14 +93,8 @@ export default {
 <style scoped lang="scss">
 .app {
   .bridage-page {
-    .maker-box {
-      width: 480px;
-      height: 331px;
-      .maker-content {
-        .maker-foot-btn {
-          width: 400px;
-        }
-      }
+    .maker-box{
+      border-radius: 20px;
     }
     .sender-box {
       width: 480px;
@@ -112,6 +109,7 @@ export default {
     .maker-box {
       height: 100%;
       width: 100%;
+      border-radius: 20px;
     }
     .sender-box {
       width: 100%;
@@ -155,44 +153,6 @@ export default {
   }
   .sender-box {
     border-radius: 20px;
-  }
-  .maker-box {
-    border-radius: 20px;
-    padding: 34px 40px;
-    text-align: left;
-    .maker-title {
-      font-weight: 700;
-      font-size: 20px;
-      line-height: 20px;
-    }
-    .maker-content {
-      font-family: 'Inter Regular';
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-      margin-top: 30px;
-      .maker-link {
-        margin-top: 20px;
-        color: #DF2E2D;
-      }
-      .maker-link:hover {
-        text-decoration: underline;
-        cursor: pointer;
-      }
-      .maker-foot-btn {
-        height: 50px;
-        box-shadow: inset 0px -8px 0px rgba(0, 0, 0, 0.16);
-        border-radius: 40px;
-        font-weight: 700;
-        font-size: 20px;
-        line-height: 20px;
-        color: #FFF;
-        margin-top: 40px;
-        text-align: center;
-        line-height: 50px;
-        font-family: 'Inter Bold';
-      }
-    }
   }
 }
 </style>

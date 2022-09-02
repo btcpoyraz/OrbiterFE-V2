@@ -12,6 +12,20 @@
       >Connect a Wallet</CommBtn
     >
     <template v-if="isLogin">
+      <CommBtn
+        ref="ClaimBtn"
+        v-if="isClaim"
+        @click="toClaim"
+        style="margin-right: 10px"
+        >Claim</CommBtn
+      >
+      <CommBtn
+        ref="ArbitrationBtn"
+        v-if="isArbitration"
+        @click="toArbitration"
+        style="margin-right: 10px"
+        >Arbitration</CommBtn
+      >
       <span @click="showHistory" class="ops-item">History</span>
       <div
         v-if="isSelectedStarkNet"
@@ -103,6 +117,12 @@ export default {
     showAddress() {
       return showAddress()
     },
+    isClaim() {
+      return true
+    },
+    isArbitration() {
+      return true
+    }
   },
   data() {
     const selectedWallet = JSON.parse(
@@ -126,6 +146,12 @@ export default {
       setStarkNetDialog(false)
       setSelectWalletDialogVisible(true)
       this.$emit('closeDrawer')
+    },
+    toClaim() {
+
+    },
+    toArbitration() {
+
     },
     showHistory() {
       this.$emit('closeDrawer')

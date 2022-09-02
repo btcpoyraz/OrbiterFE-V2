@@ -15,6 +15,8 @@ export const historyPanelState = reactive({
   transactionList: null,
   historyInfo: null,
   isShowHistory: false,
+  activeName: 'History',
+  tabsList: [{name: 'History', label: 'History'},{name: 'Arbitration', label: 'Arbitration History'}]
 })
 
 watchEffect(() => {

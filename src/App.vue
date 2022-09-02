@@ -188,4 +188,16 @@ export default {
     }
   }
 }
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+
+.clearfix::after {
+	content: "";
+	display: block;
+	clear: both;
+}
 </style>

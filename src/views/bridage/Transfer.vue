@@ -1602,7 +1602,7 @@ export default {
     async sendTransfer() {
       if (check.checkIsBitKeep()) {
         this.$notify.error({
-          title: `Bitkeep is not supported and please try another wallet.`,
+          title: `Bitkeep is not supported by Orbiter, please try another wallet.`,
           duration: 3000,
         })
         return
@@ -1643,7 +1643,6 @@ export default {
           })
           return
         }
-
         if (nonce > 8999) {
           this.$notify.error({
             title: `Address with the nonce over 9000 are not supported by Orbiter`,

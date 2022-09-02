@@ -1,7 +1,7 @@
 import { ref, reactive } from './'
 import { transferDataState, updateTransferDataState } from './useTransferData'
 
-export const curPageTabState = ref('Sender') // 'Sender' Maker
+export const curPageTabState = ref('Maker') // 'Sender' Maker
 export const curPageStatus = ref('1') // 1 transfer 2.confirm 3.proceed
 
 export const togglePageTab = () => curPageTabState.value = curPageTabState.value == 'Sender' ? 'Maker' : 'Sender'
