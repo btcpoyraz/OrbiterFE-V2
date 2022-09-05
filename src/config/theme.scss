@@ -118,8 +118,29 @@
         background: #3F415B;
       }
     }
+    .arbitration_box {
+      .table_box {
+        .el-table {
+          color: var(--dark-page-color) !important;
+        }
+        .el-table thead {
+          background-color: var(--dark-page-box-bg);
+        }
+        .el-table th.el-table__cell>.cell {
+          color: var(--dark-page-box-color);
+        }
+      }
+    }
   }
   // ---------- History page / end ----------
+  // ---------- CommTabs page / start ----------
+  .tabs_box {
+    .el-tabs__item {
+      color: var(--dark-page-box-color);;
+    }
+    
+  }
+  // ---------- CommTabs page / end ----------
   // ---------- RaiseUpSelect component / start ----------
   .raiseup-select-box {
     background: rgba(51, 51, 51, 0.4);

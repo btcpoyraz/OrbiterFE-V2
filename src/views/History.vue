@@ -2,8 +2,8 @@
   <div class="history-page">
     <div class="history-content">
       <CommTabs :active="activeName" :tabsList="tabsList" @tabsChange="tabsChange"></CommTabs>
-      <div class="title">History</div>
-      <div class="table historyContent">
+      <!-- <div class="title">History</div> -->
+      <div class="table historyContent" v-show="activeName === 'History'">
         <div class="table-header">
           <span class="col col-1">&nbsp;</span>
           <span class="col col-2">Time</span>
@@ -58,12 +58,12 @@
         </div>
       </div>
       <NoData
-        v-if="!isApiLoading && historyData && historyData.length === 0"
+        v-if="!isApiLoading && historyData && historyData.length === 0 && activeName === 'History'"
         style="padding-top: 200px"
         >No history</NoData
       >
       <el-pagination
-        v-if="!isApiLoading && historyData && historyData.length !== 0"
+        v-if="!isApiLoading && historyData && historyData.length !== 0 && activeName === 'History'"
         @current-change="curChange"
         class="pagination"
         layout="prev, pager, next"
@@ -71,6 +71,8 @@
         :total="transactionListInfo.total"
       >
       </el-pagination>
+
+      <ArbitrationHistory v-if="activeName === 'Arbitration'"></ArbitrationHistory>
 
       <svg-icon
         @click.native="closeDialog"
@@ -83,18 +85,21 @@
 
 <script>
 import { NoData, CommTabs } from '../components'
+import ArbitrationHistory from './history/ArbitrationHistory.vue'
 import {
   historyPanelState,
   getTransactionsHistory,
   recoverSenderPageWorkingState,
   setHistoryInfo,
+  setActiveName
 } from '../composition/hooks'
 
 export default {
   name: 'History',
   components: {
     NoData,
-    CommTabs
+    CommTabs,
+    ArbitrationHistory
   },
   computed: {
     currentPage() {
@@ -153,8 +158,7 @@ export default {
       getTransactionsHistory({ current: cur })
     },
     tabsChange(active) {
-      console.log(active)
-      this.activeName = active
+      setActiveName(active)
     },
     closeDialog() {
       const last = JSON.parse(
@@ -310,7 +314,7 @@ export default {
       font-family: 'Inter Bold';
     }
     .table {
-      margin-top: 26px;
+      margin-top: 14px;
       font-weight: 400;
       font-size: 14px;
       line-height: 24px;

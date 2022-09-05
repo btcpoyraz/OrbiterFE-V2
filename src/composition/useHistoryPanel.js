@@ -12,11 +12,18 @@ export const historyPanelState = reactive({
     total: 0,
     pages: 1,
   },
+  arbitrationListInfo: {
+    current: 1,
+    size: 10,
+    total: 0,
+    pages: 1,
+  },
   transactionList: null,
   historyInfo: null,
   isShowHistory: false,
   activeName: 'History',
-  tabsList: [{name: 'History', label: 'History'},{name: 'Arbitration', label: 'Arbitration History'}]
+  tabsList: [{name: 'History', label: 'History'},{name: 'Arbitration', label: 'Arbitration History'}],
+  tableData: [{status: 1}, {status: 2}, {status: 3}, {status: 4}, {status: 5}]
 })
 
 watchEffect(() => {
@@ -37,6 +44,10 @@ export function getTraddingHistory(isRefresh = false) {
 export function setHistoryInfo(info = {}, isShowHistory = true) {
   historyPanelState.isShowHistory = isShowHistory
   historyPanelState.historyInfo = info
+}
+
+export function setActiveName(activeName) {
+  historyPanelState.activeName = activeName
 }
 
 export async function getTransactionsHistory(params = {}) {
