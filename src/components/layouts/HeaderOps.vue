@@ -151,7 +151,11 @@ export default {
 
     },
     toArbitration() {
-
+      const route = this.$route
+      route.path !== '/arbitration' &&
+        this.$router.push({
+          path: '/arbitration',
+        })
     },
     showHistory() {
       this.$emit('closeDrawer')

@@ -1,97 +1,109 @@
 <template>
   <div class="history-page">
-    <div class="history-content">
-      <CommTabs :active="activeName" :tabsList="tabsList" @tabsChange="tabsChange"></CommTabs>
-      <!-- <div class="title">History</div> -->
-      <div class="table historyContent" v-show="activeName === 'History'">
-        <div class="table-header">
-          <span class="col col-1">&nbsp;</span>
-          <span class="col col-2">Time</span>
-          <span class="col col-3">Value</span>
-          <span class="col col-4" style="text-align: center">From</span>
-          <span class="col col-5" style="text-align: center">To</span>
+    <template>
+      <div class="history-content" v-show="status === 1">
+        <CommTabs :active="activeName" :tabsList="tabsList" @tabsChange="tabsChange"></CommTabs>
+        <!-- <div class="title">History</div> -->
+        <div class="table historyContent" v-show="activeName === 'History'">
+          <div class="table-header">
+            <span class="col col-1">&nbsp;</span>
+            <span class="col col-2">Time</span>
+            <span class="col col-3">Value</span>
+            <span class="col col-4" style="text-align: center">From</span>
+            <span class="col col-5" style="text-align: center">To</span>
+          </div>
+          <div class="dydx-limit" v-if="isShowDydxLimit">
+            Limited by the dydx mechanism, the history of dYdX cannot be queried
+            temporarily
+          </div>
+          <CommLoading
+            v-if="isApiLoading"
+            style="margin: auto; margin-top: 5rem"
+            width="4rem"
+            height="4rem"
+          />
+          <div
+            v-else-if="historyData && historyData.length !== 0"
+            v-for="(item, index) in historyData"
+            :key="index"
+            @click="getHistoryInfo(item)"
+            class="contentItem"
+          >
+            <svg-icon
+              class="logo col-val col-1"
+              color="#df2e2d"
+              :iconName="iconName(item)"
+            ></svg-icon>
+            <span class="col-val col-2">{{ item.fromTimeStampShow }}</span>
+            <span class="col-val col-3">{{
+              item.userAmount + item.tokenName
+            }}</span>
+            <div
+              class="col-val col-4"
+              style="display: flex; align-items: center; justify-content: center"
+            >
+              <svg-icon
+                :iconName="logoName(item.fromChainID)"
+                style="width: 1.6rem; height: 1.6rem"
+              ></svg-icon>
+            </div>
+            <div
+              class="col-val col-5"
+              style="display: flex; align-items: center; justify-content: center"
+            >
+              <svg-icon
+                :iconName="logoName(item.toChainID)"
+                style="width: 1.6rem; height: 1.6rem"
+              ></svg-icon>
+            </div>
+          </div>
         </div>
-        <div class="dydx-limit" v-if="isShowDydxLimit">
-          Limited by the dydx mechanism, the history of dYdX cannot be queried
-          temporarily
-        </div>
-        <CommLoading
-          v-if="isApiLoading"
-          style="margin: auto; margin-top: 5rem"
-          width="4rem"
-          height="4rem"
-        />
-        <div
-          v-else-if="historyData && historyData.length !== 0"
-          v-for="(item, index) in historyData"
-          :key="index"
-          @click="getHistoryInfo(item)"
-          class="contentItem"
+        <NoData
+          v-if="!isApiLoading && historyData && historyData.length === 0 && activeName === 'History'"
+          style="padding-top: 200px"
+          >No history</NoData
         >
-          <svg-icon
-            class="logo col-val col-1"
-            color="#df2e2d"
-            :iconName="iconName(item)"
-          ></svg-icon>
-          <span class="col-val col-2">{{ item.fromTimeStampShow }}</span>
-          <span class="col-val col-3">{{
-            item.userAmount + item.tokenName
-          }}</span>
-          <div
-            class="col-val col-4"
-            style="display: flex; align-items: center; justify-content: center"
-          >
-            <svg-icon
-              :iconName="logoName(item.fromChainID)"
-              style="width: 1.6rem; height: 1.6rem"
-            ></svg-icon>
-          </div>
-          <div
-            class="col-val col-5"
-            style="display: flex; align-items: center; justify-content: center"
-          >
-            <svg-icon
-              :iconName="logoName(item.toChainID)"
-              style="width: 1.6rem; height: 1.6rem"
-            ></svg-icon>
-          </div>
-        </div>
+        <el-pagination
+          v-if="!isApiLoading && historyData && historyData.length !== 0 && activeName === 'History'"
+          @current-change="curChange"
+          class="pagination"
+          layout="prev, pager, next"
+          :current-page="currentPage"
+          :total="transactionListInfo.total"
+        >
+        </el-pagination>
+  
+        <ArbitrationHistory v-if="activeName === 'Arbitration'"></ArbitrationHistory>
+  
+        <svg-icon
+          @click.native="closeDialog"
+          class="close"
+          iconName="close"
+        ></svg-icon>
       </div>
-      <NoData
-        v-if="!isApiLoading && historyData && historyData.length === 0 && activeName === 'History'"
-        style="padding-top: 200px"
-        >No history</NoData
-      >
-      <el-pagination
-        v-if="!isApiLoading && historyData && historyData.length !== 0 && activeName === 'History'"
-        @current-change="curChange"
-        class="pagination"
-        layout="prev, pager, next"
-        :current-page="currentPage"
-        :total="transactionListInfo.total"
-      >
-      </el-pagination>
-
-      <ArbitrationHistory v-if="activeName === 'Arbitration'"></ArbitrationHistory>
-
-      <svg-icon
-        @click.native="closeDialog"
-        class="close"
-        iconName="close"
-      ></svg-icon>
-    </div>
+    </template>
+    <template>
+      <div class="second_page" v-show="status !== 1">
+        <template>
+            <ArbitrationDetails :status="detailStatus" @stateChanged="stateChanged"></ArbitrationDetails>
+        </template>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import { NoData, CommTabs } from '../components'
 import ArbitrationHistory from './history/ArbitrationHistory.vue'
+import ArbitrationDetails from './history/ArbitrationDetails.vue'
 import {
   historyPanelState,
   getTransactionsHistory,
   recoverSenderPageWorkingState,
   setHistoryInfo,
-  setActiveName
+  setActiveName,
+  pageStatus, 
+  detailStatus
 } from '../composition/hooks'
 
 export default {
@@ -99,9 +111,16 @@ export default {
   components: {
     NoData,
     CommTabs,
-    ArbitrationHistory
+    ArbitrationHistory,
+    ArbitrationDetails
   },
   computed: {
+    detailStatus() {
+      return detailStatus.value
+    },  
+    status() {
+      return pageStatus.value
+    },
     currentPage() {
       return this.transactionListInfo.current
     },
@@ -159,6 +178,9 @@ export default {
     },
     tabsChange(active) {
       setActiveName(active)
+    },
+    stateChanged(status) {
+      pageStatus.value = status
     },
     closeDialog() {
       const last = JSON.parse(

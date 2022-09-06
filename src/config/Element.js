@@ -15,7 +15,9 @@ import {
   TableColumn,
   Popover,
   Tabs,
-  TabPane
+  TabPane,
+  Timeline,
+  TimelineItem,
 } from 'element-ui'
 const element = {
   install: function(Vue) {
@@ -34,6 +36,8 @@ const element = {
     Vue.use(Option)
     Vue.use(Tabs)
     Vue.use(TabPane)
+    Vue.use(Timeline)
+    Vue.use(TimelineItem)
     // Vue.prototype.$message = Message
     Vue.prototype.$notify = Notification
     // Vue.prototype.$msgbox = MessageBox

@@ -1,76 +1,86 @@
 <template>
     <div class="arbitration_box">
-        <div class="table_box">
-            <el-table
-            :data="tableData"
-            :highlight-current-row="false"
-            style="width: 100%">
-                <el-table-column prop="date" label="Time" header-align="center" align="center">
-                    <template slot-scope="scope">
-                        <span class="table_span">7-26 14:12</span>
+        <template> 
+            <div class="table_box">
+                <el-table
+                :data="tableData"
+                :highlight-current-row="false"
+                style="width: 100%">
+                    <template #append>
+                        <CommLoading
+                            v-if="isArbitrationLoading"
+                            style="margin: auto; margin-top: 5rem"
+                            width="4rem"
+                            height="4rem"
+                        />
                     </template>
-                </el-table-column>
-                <el-table-column prop="from" label="From Tx" header-align="center" align="center">
-                    <template slot-scope="scope">
-                        <span class="table_span">0x1234...5678</span>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="to" label="To Tx" width="170px" header-align="center" align="center">
-                    <template slot-scope="scope">
-                        <span class="table_span">Transaction not found</span>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="status" label="Arbitration status" align="center" width="170px">
-                    <template slot-scope="scope">
-                        <div class="table_status" v-if="scope.row.status == 1">
-                            <svg-icon iconName="ar-pending" style="width: 16px;height: 16px"></svg-icon>
-                            <span>Pending</span>
-                        </div>
-                        <div class="table_status" v-if="scope.row.status == 2">
-                            <svg-icon iconName="ar-withdraw" style="width: 16px;height: 16px"></svg-icon>
-                            <span>Withdraw</span>
-                        </div>
-                        <div class="table_status" v-if="scope.row.status == 3">
-                            <svg-icon iconName="ar-processing" style="width: 16px;height: 16px"></svg-icon>
-                            <span>Processing payment</span>
-                        </div>
-                        <div class="table_status" v-if="scope.row.status == 4">
-                            <svg-icon iconName="ar-paid" style="width: 16px;height: 16px"></svg-icon>
-                            <span>Paid</span>
-                        </div>
-                        <div class="table_status" v-if="scope.row.status == 5">
-                            <!-- <svg-icon iconName="ar-closed" style="width: 16px;height: 16px"></svg-icon> -->
-                            <SvgIconThemed icon="ar-closed" style="width: 16px;height: 16px"/>
-                            <span>Closed</span>
-                        </div>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <NoData
-                v-if="tableData && tableData.length === 0"
-                style="padding-top: 200px"
-                >No history</NoData
-            >
-            <el-pagination
-                v-if="tableData && tableData.length !== 0"
-                @current-change="curChange"
-                class="pagination"
-                layout="prev, pager, next"
-                :current-page="currentPage"
-                :total="arbitrationListInfo.total"
-            >
-            </el-pagination>
-        </div>
+                    <el-table-column prop="date" label="Time" header-align="center" align="center">
+                        <template slot-scope="scope">
+                            <span class="table_span">7-26 14:12</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="from" label="From Tx" header-align="center" align="center">
+                        <template slot-scope="scope">
+                            <span class="table_span">0x1234...5678</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="to" label="To Tx" width="170px" header-align="center" align="center">
+                        <template slot-scope="scope">
+                            <span class="table_span">Transaction not found</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="status" label="Arbitration status" align="center" width="170px">
+                        <template slot-scope="scope">
+                            <div class="table_status" v-if="scope.row.status == 1" @click="toDetails(scope.row)">
+                                <svg-icon iconName="ar-pending" style="width: 16px;height: 16px"></svg-icon>
+                                <span>Pending</span>
+                            </div>
+                            <div class="table_status" v-if="scope.row.status == 2" @click="toDetails(scope.row)">
+                                <svg-icon iconName="ar-withdraw" style="width: 16px;height: 16px"></svg-icon>
+                                <span>Withdraw</span>
+                            </div>
+                            <div class="table_status" v-if="scope.row.status == 3" @click="toDetails(scope.row)"> 
+                                <svg-icon iconName="ar-processing" style="width: 16px;height: 16px"></svg-icon>
+                                <span>Processing payment</span>
+                            </div>
+                            <div class="table_status" v-if="scope.row.status == 4" @click="toDetails(scope.row)">
+                                <svg-icon iconName="ar-paid" style="width: 16px;height: 16px"></svg-icon>
+                                <span>Paid</span>
+                            </div>
+                            <div class="table_status" v-if="scope.row.status == 5" @click="toDetails(scope.row)">
+                                <!-- <svg-icon iconName="ar-closed" style="width: 16px;height: 16px"></svg-icon> -->
+                                <SvgIconThemed icon="ar-closed" style="width: 16px;height: 16px"/>
+                                <span>Closed</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <NoData
+                    v-if="!isArbitrationLoading && tableData && tableData.length === 0"
+                    style="padding-top: 200px"
+                    >No history</NoData
+                >
+                <el-pagination
+                    v-if="!isArbitrationLoading && tableData && tableData.length !== 0"
+                    @current-change="curChange"
+                    class="pagination"
+                    layout="prev, pager, next"
+                    :current-page="currentPage"
+                    :total="arbitrationListInfo.total"
+                >
+                </el-pagination>
+            </div>
+        </template>
     </div>
 </template>
 <script>
 import { NoData, SvgIconThemed } from '../../components'
-import { historyPanelState } from '../../composition/hooks'
+import { historyPanelState, pageStatus, detailStatus} from '../../composition/hooks'
 export default {
     name: 'ArbitrationHistory',
     components: {
         NoData,
-        SvgIconThemed
+        SvgIconThemed,
     },
     data() {
         return {
@@ -78,6 +88,9 @@ export default {
         }
     },
     computed: {
+        isArbitrationLoading() {
+            return historyPanelState.isArbitrationLoading
+        },
         currentPage() {
             return this.arbitrationListInfo.current
         },
@@ -92,6 +105,10 @@ export default {
         curChange(cur) {
 
         },
+        toDetails(row) {
+            pageStatus.value = 2
+            detailStatus.value = row.status
+        }
     },
 }
 </script>

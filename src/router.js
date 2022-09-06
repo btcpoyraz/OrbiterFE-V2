@@ -32,6 +32,14 @@ export default new Router({
       },
     },
     {
+      path: '/arbitration',
+      component: (resolve) => require(['./views/history/Arbitration'], resolve),
+      meta: {
+        title: 'Orbiter',
+        keepAlive: false,
+      },
+    },
+    {
       path: '/data',
       component: Data,
       meta: {

@@ -138,9 +138,50 @@
     .el-tabs__item {
       color: var(--dark-page-box-color);;
     }
-    
   }
   // ---------- CommTabs page / end ----------
+  // ---------- Arbitration page / start ----------
+  .arbitration-page {
+    background: var(--dark-page-bg);
+    color: var(--dark-page-box-color);
+  }
+  // ---------- Arbitration page / end ----------
+  // ---------- Arbitration Details  page / start ----------
+  .arbitration-details {
+    background: var(--dark-page-bg);
+    color: var(--dark-page-box-color);
+    .step_box {
+      
+      .el-step__icon {
+        background-color: var(--dark-page-bg);
+      }
+      .step_detail {
+        color: var(--dark-page-color);
+      }
+      .el-step__title {
+        color: var(--dark-page-color);
+      }
+    }
+    .timer_line {
+      .line_box {
+        background-color: var(--dark-page-box-bg) !important;
+      }
+    }
+  }
+  // ---------- Arbitration Details page / end ----------
+  // ---------- CommTimeLine Details page / start ----------
+  .time_line_box {
+    .el-timeline-item__dot {
+      background-color: var(--dark-page-bg) !important;
+    }
+    .el-timeline-item__timestamp {
+      color: var(--dark-page-box-color) !important;
+    }
+    .el-timeline-item__content {
+      color: var(--dark-page-color);
+    }
+  }
+  // ---------- CommTimeLine Details page / end ----------
   // ---------- RaiseUpSelect component / start ----------
   .raiseup-select-box {
     background: rgba(51, 51, 51, 0.4);
@@ -436,6 +477,18 @@
     }
   }
   // ---------- History page / end ----------
+  // ---------- Arbitration page / start ----------
+  .arbitration-page {
+    background: var(--light-page-bg);
+    color: var(--light-page-color);
+  }
+  // ---------- Arbitration page / end ----------
+  // ---------- Arbitration Details page / start ----------
+  .arbitration-details {
+    background: var(--light-page-bg);
+    color: var(--light-page-color);
+  }
+  // ---------- Arbitration Details page / end ----------
   // ---------- RaiseUpSelect component / start ----------
   .raiseup-select-box {
     background: rgba(51, 51, 51, 0.2);

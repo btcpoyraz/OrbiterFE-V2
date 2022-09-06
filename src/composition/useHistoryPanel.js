@@ -1,11 +1,14 @@
-import { reactive, watchEffect } from '.'
+import { ref, reactive, watchEffect } from '.'
 import { walletIsLogin } from './walletsResponsiveData'
 import { compatibleGlobalWalletConf } from './walletsResponsiveData'
 import { getTransactionsHistoryApi } from '../core/routes/transactions'
 import { formatDateShort } from '../util'
 
+
+export const pageStatus = ref(1)
 export const historyPanelState = reactive({
   isLoading: false,
+  isArbitrationLoading: false,
   transactionListInfo: {
     current: 1,
     size: 30,
@@ -23,7 +26,8 @@ export const historyPanelState = reactive({
   isShowHistory: false,
   activeName: 'History',
   tabsList: [{name: 'History', label: 'History'},{name: 'Arbitration', label: 'Arbitration History'}],
-  tableData: [{status: 1}, {status: 2}, {status: 3}, {status: 4}, {status: 5}]
+  tableData: [{status: 1}, {status: 2}, {status: 3}, {status: 4}, {status: 5}],
+  timeLineData: []
 })
 
 watchEffect(() => {
