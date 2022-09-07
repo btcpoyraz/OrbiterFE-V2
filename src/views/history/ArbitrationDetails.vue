@@ -83,7 +83,18 @@
                             </div>
                         </template>
                     </el-step>
-                    <el-step title="Processed successfully">
+                    <el-step title="WIthdraw">
+                        <template #icon>
+                            <svg-icon iconName="step-success"></svg-icon>
+                        </template>
+                        <template #description>
+                            <div class="step_detail">
+                                <p>Send deposit</p>
+                                <p>to mainnet</p>
+                            </div>
+                        </template>
+                    </el-step>
+                    <el-step title="Sending back to mainnet address">
                         <template #icon>
                             <svg-icon iconName="step-success"></svg-icon>
                         </template>
@@ -106,18 +117,7 @@
                             </div>
                         </template>
                     </el-step>
-                    <el-step title="WIthdraw">
-                        <template #icon>
-                            <svg-icon iconName="step-success"></svg-icon>
-                        </template>
-                        <template #description>
-                            <div class="step_detail">
-                                <p>Send deposit</p>
-                                <p>to mainnet</p>
-                            </div>
-                        </template>
-                    </el-step>
-                    <el-step title="Sending back to mainnet address">
+                    <el-step title="Processed successfully">
                         <template #icon>
                             <svg-icon iconName="step-success"></svg-icon>
                         </template>
