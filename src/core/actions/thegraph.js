@@ -1,4 +1,5 @@
 // util/thegraph.js
+import axios from 'axios'
 const nowMakerList = [
   {
     makerAddress: '0x0043d60e87c5dd08C86C3123340705a1556C4719',
@@ -2957,7 +2958,98 @@ const nowMakerList = [
   },
 ]
 
-function getMakerInfo(req, next) {
+async function fetchLpList() {
+  const endpoint = process.env['VUE_APP_SUBGRAPH']
+  const headers = {
+    'content-type': 'application/json',
+    // Authorization: '<token>',
+  }
+  const graphqlQuery = {
+    operationName: 'fetchLpList',
+    query: `
+    query fetchLpList {
+      lpEntities(where: {stopTime: null}) {
+        id
+        createdAt
+        maxPrice
+        minPrice
+        sourcePresion
+        destPresion
+        tradingFee
+        gasFee
+        startTime
+        stopTime
+        maker {
+          id
+          owner
+        }
+        pair {
+          id
+          sourceChain
+          destChain
+          sourceToken
+          destToken
+          ebcId
+        }
+      }
+    }
+    `,
+    variables: {},
+  }
+
+  const response = await axios({
+    url: endpoint,
+    method: 'post',
+    headers: headers,
+    data: graphqlQuery,
+  }).then((res) => res.data)
+  const { lpEntities } = response.data
+  // 转换成以前的结构数据
+  console.log(lpEntities, '== =======response')
+  const newLp = lpEntities.map((row) => {
+    console.log(row, '===row');
+    const pair = row['pair'];
+    return {
+      makerAddress: row.maker['owner'],
+      c1ID: Number(pair['sourceChain']),
+      c2ID: Number(pair['destChain']),
+      c1Name: 'zksync_test',
+      c2Name: 'loopring_test',
+      t1Address: '0x0000000000000000000000000000000000000000',
+      t2Address: '0x0000000000000000000000000000000000000000',
+      tName: 'ETH',
+      c1MinPrice: 0.005,
+      c1MaxPrice: 0.01,
+      c2MinPrice: 0.005,
+      c2MaxPrice: 0.01,
+      precision: 18,
+      c1AvalibleDeposit: 1000,
+      c2AvalibleDeposit: 1000,
+      c1TradingFee: 0.0001,
+      c2TradingFee: 0.0001,
+      c1GasFee: 2,
+      c2GasFee: 2,
+      c1AvalibleTimes: [
+        {
+          startTime: 1636019587,
+          endTime: 99999999999999,
+        },
+      ],
+      c2AvalibleTimes: [
+        {
+          startTime: 1636019587,
+          endTime: 99999999999999,
+        },
+      ],
+      _X_ROW_KEY: 'row_193',
+    }
+  })
+  console.log(newLp, '===newLp');
+  return
+}
+async function getMakerInfo(req, next) {
+  const lpList = await fetchLpList()
+  console.log(lpList, '====')
   return new Promise((resolve, reject) => {
     var res = {}
     res.code = 0
@@ -2976,7 +3068,8 @@ function getMakerTokenNames(maketList) {
   }
   return makerTokenNames
 }
-function getAllMakerList(req, next) {
+async function getAllMakerList(req, next) {
+  console.log('getAllMakerList -------')
   return new Promise((resolve, reject) => {
     var res = {}
     res.code = 0
