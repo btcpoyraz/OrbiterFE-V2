@@ -15,7 +15,8 @@ const MAX_BITS = {
   zkspace: 35,
   boba: 256,
   bsc: 256,
-  arbitrum_nova: 256
+  arbitrum_nova: 256,
+  orbiter: 256
 }
 
 const CHAIN_INDEX = {
@@ -47,7 +48,8 @@ const CHAIN_INDEX = {
   515: "bsc",
   15: "bsc",
   16: 'arbitrum_nova',
-  516: 'arbitrum_nova'
+  516: 'arbitrum_nova',
+  1377: 'orbiter'
 }
 
 const SIZE_OP = {
@@ -268,6 +270,7 @@ function getRAmountFromTAmount(chain, amount) {
 }
 
 function isChainSupport(chain) {
+  return true;
   if (typeof chain === 'number') {
     if (CHAIN_INDEX[chain] && MAX_BITS[CHAIN_INDEX[chain]]) {
       return true

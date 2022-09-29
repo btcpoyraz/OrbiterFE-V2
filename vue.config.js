@@ -77,6 +77,13 @@ module.exports = {
         target: 'https://l2api.orbiter.finance/',
         changeOrigin: true,
       },
+      '/wallet': {
+        target: 'http://192.168.1.91:3000',
+        pathRewrite: {
+          '^/wallet': '/wallet',
+        },
+        changeOrigin: true,
+      },
     },
     headers: {
       'Access-Control-Allow-Origin': '*',

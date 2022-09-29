@@ -24,15 +24,15 @@
                 <div class="maker-links">
                     <div class="maker-links-item">
                         <div class="maker-linksimg-box">
-                        <img src="../../assets/data/book_icon.png" alt="" srcset="">
+                            <SvgIconThemed icon="book-square" ></SvgIconThemed>
                         </div>
-                        <a href="javascript:;">Docs for Market Maker</a >
+                        <a href="javascript:;">Docs for Market Maker</a>
                     </div>
                     <div class="maker-links-item">
                         <div class="maker-linksimg-box">
-                        <img src="../../assets/data/discord_icon.png" alt="" srcset="">
+                            <SvgIconThemed icon="maker-discord" ></SvgIconThemed>
                         </div>
-                        <a href="javascript:;">Get Help in Orbiter Discord</a >
+                        <a href="javascript:;">Get Help in Orbiter Discord</a>
                     </div>
                 </div>
                 <div class="maker-foot-btn">Download the Market Maker Client</div>
@@ -42,10 +42,14 @@
 </template>
 
 <script>
-
+import {
+  SvgIconThemed,
+} from '../../components'
 export default {
     name: 'Maker',
-    
+    components: {
+        SvgIconThemed
+    }
 }
 </script>
 
@@ -123,9 +127,11 @@ export default {
                     margin-bottom: 16px;
                     .maker-linksimg-box {
                         width: 20px;
+                        height: 20px;
                         margin-right: 11px;
-                        img {
-                            width: 100%;
+                        svg, img {
+                            width: 20px;
+                            height: 20px;
                         }
                     }
                     a {
@@ -138,6 +144,7 @@ export default {
                 }
             }
             .maker-foot-btn {
+                cursor: pointer;
                 height: 50px;
                 background: linear-gradient(90.46deg, #EB382D 4.07%, #BC3035 98.55%);
                 box-shadow: inset 0px -8px 0px rgba(0, 0, 0, 0.16);

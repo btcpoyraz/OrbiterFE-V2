@@ -6,12 +6,12 @@
                 <div class="hax_title">
                     TransactionID
                 </div>
-                <el-select v-model="hax" placeholder="">
+                <el-select v-model="hax" placeholder="" @change="selectChange" no-data-text="No data">
                     <el-option
                         v-for="item in haxOptions"
-                        :key="item.value"
+                        :key="item.hash"
                         :label="item.label"
-                        :value="item.value">
+                        :value="item.hash">
                     </el-option>
                 </el-select>
             </div>
@@ -24,9 +24,9 @@
                 </div>
                 <div class="table_content">
                     <div class="table_item">
-                        <span>07-26 14:12</span>
-                        <span>0.123456ETH</span>
-                        <span><div class="line_text">0x8765...4321</div></span>
+                        <span>{{showItem.timestamp}}</span>
+                        <span>{{showItem.value}}{{showItem.symbol}}</span>
+                        <span><div class="line_text">{{showItem.fromTx}}</div></span>
                         <span>No Matched Txn</span>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 </div> 
             </div>
             <div class="btn_box">
-                <CommBtn ref="ConfirmBtn" style="width: 200px;" :disabled="!isConfirm">
+                <CommBtn ref="ConfirmBtn" style="width: 200px;" :disabled="!isConfirm" @click="confirm">
                     {{isConfirm ? 'Confirm' : 'Waiting...'}}
                 </CommBtn>
             </div>
@@ -73,13 +73,32 @@
     </div>
 </template>
 <script>
-import { CommBtn, SvgIconThemed } from '../../components'
-import { arbitrationData, haxItem, isConfirm, recoverSenderPageWorkingState } from '../../composition/hooks'
+import { CommBtn } from '../../components'
+import { arbitrationData, haxItem, isConfirm, linkWallet, recoverSenderPageWorkingState, getArbitrationData } from '../../composition/hooks'
+import { formatDateMD } from '../../util'
+import { getUserTransferProofApi } from '../../core/routes/transactions'
+import { contractMethod } from '../../contracts'
+
 export default {
     name: 'Arbitration',
+    data() {
+        return {
+            selectItem: null,
+            showItem: {
+                "hash": "",
+                "from": "",
+                "to": "",
+                "chainId": 0,
+                "symbol": "",
+                "value": "",
+                "status": false,
+                "timestamp": "",
+                "side": 0,
+            }
+        }
+    },
     components: {
         CommBtn,
-        SvgIconThemed,
     },
     computed: {
         hax: {
@@ -95,17 +114,46 @@ export default {
         },
         isConfirm() {
             return isConfirm.value
+        },
+        linkWallet() {
+            return linkWallet.value
         }
     },  
+    watch: {
+        selectItem() {
+            this.showItem = JSON.parse(JSON.stringify(this.selectItem))
+            this.showItem.timestamp = formatDateMD(this.selectItem.timestamp)
+            this.showItem.value = this.$web3.utils.fromWei(this.selectItem.value, 'ether')
+            this.showItem.symbol =this.selectItem.symbol
+        },
+        linkWallet() {
+            this.getTxData()
+        }
+    },
+    created() {
+        this.getTxData()
+    },
     methods: {
+        async getTxData() {
+            await getArbitrationData(linkWallet.value)
+            this.selectItem = this.haxOptions.find(item => item.hash == this.hax)
+            this.showItem = JSON.parse(JSON.stringify(this.selectItem))
+            this.showItem.timestamp = formatDateMD(this.selectItem.timestamp)
+            this.showItem.value = this.$web3.utils.fromWei(this.selectItem.value, 'ether')
+            this.showItem.symbol =this.selectItem.symbol
+        },
         closeDialog() {
             const last = JSON.parse(
                 localStorage.getItem('last_page_before_history') || '{}'
             )
             try {
                 if (last.path) {
-                last.path !== this.$route.path && this.$router.push(last)
-                recoverSenderPageWorkingState()
+                    if (last.path === this.$route.path) {
+                        this.$router.push({ path: '/' })
+                        return
+                    }
+                    last.path !== this.$route.path && this.$router.push(last)
+                    recoverSenderPageWorkingState()
                 } else {
                 this.$router.push({ path: '/' })
                 }
@@ -113,6 +161,49 @@ export default {
                 console.error(err)
             }
         },
+        selectChange(val) {
+            this.selectItem = this.haxOptions.find(item => item.hash == val)
+            console.log("selectItem ==>", this.selectItem)
+        },
+
+        async confirm() {
+            let txinfo = {
+                chainID: Number(this.selectItem.chainId),
+                txHash: this.selectItem.hash,
+                lpid: this.selectItem.lpId,
+                sourceAddress: this.selectItem.from,
+                destAddress: this.selectItem.to,
+                tokenAddress: this.selectItem.tokenAddress,
+                amount: this.selectItem.value,
+                nonce: Number(this.selectItem.nonce),
+                timestamp: Number(parseInt(new Date(this.selectItem.timestamp).getTime() / 1000)),
+                responseAmount: this.selectItem.expectValue,
+                ebcid: Number(this.selectItem.ebcId),
+            }
+            const res = await getUserTransferProofApi({chainId: txinfo.chainID, txid: txinfo.txHash})
+            const txproof = res.data.data
+            console.log("confirm ==>", txinfo, txproof,  JSON.stringify(txinfo))
+            const data = {
+                name: 'userChanllenge',
+                contractName: "ORMakerDeposit",
+                contractAddr: this.selectItem.makerId, 
+                arguments: [txinfo, txproof]
+            }
+            console.log('userChanllenge data ==>', data)
+            isConfirm.value = false
+            const result = await contractMethod(linkWallet.value, data).catch(err => {
+                // err
+                isConfirm.value = true
+                console.log('userChanllenge err ==>', err)
+                return
+            })
+            if (result && result.code === 200) {
+                // success
+                this.getTxData()
+                isConfirm.value = true
+            }
+            
+        }
     },
 }
 </script>
@@ -210,6 +301,10 @@ export default {
         .btn_box {
             .disabled {
                 background-color: rgba(51, 51, 51, 0.2);
+                &:hover {
+                    background: none;
+                    background-color: rgba(51, 51, 51, 0.3);
+                }
             }
         }
     }

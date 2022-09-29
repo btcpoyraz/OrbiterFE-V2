@@ -31,7 +31,8 @@
 <script>
 import { Transfer, Confirm, Proceed, Maker, MakerList } from './'
 import { ToggleBtn } from '../../components'
-import { isMobile, curPageTabState, togglePageTab, curPageStatus, changeCurPageStatus, historyPanelState, isMaker } from '../../composition/hooks'
+import { contract_obj } from '../../contracts'
+import { isMobile, curPageTabState, togglePageTab, curPageStatus, changeCurPageStatus, historyPanelState, isMaker, linkWallet, myMaker } from '../../composition/hooks'
 
 export default {
   name: 'Bridge',
@@ -67,6 +68,14 @@ export default {
     },
     isMaker() {
       return isMaker.value;
+    },
+    linkWallet() {
+      return linkWallet.value
+    }
+  },
+  watch: {
+    linkWallet() {
+      this.setIsMaker()
     }
   },
   methods: {
@@ -86,6 +95,16 @@ export default {
         }
       }
     },
+    async setIsMaker() {
+      const contract_factory = await contract_obj('ORMakerV1Factory')
+      const makerAddr = await contract_factory.methods.getMaker(linkWallet.value).call()
+      if (makerAddr != '0x0000000000000000000000000000000000000000') {
+        isMaker.value = true
+        myMaker.value = makerAddr
+      } else {
+        isMaker.value = false
+      }
+    }
   }
 }
 </script>

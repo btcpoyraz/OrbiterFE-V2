@@ -33,6 +33,14 @@ export function formatDate(date) {
     dt.getSeconds()
   )}`
 }
+export function formatDateMD(date) {
+  const dt = new Date(date)
+  return `${padZero(dt.getMonth() + 1)}-${padZero(
+    dt.getDate()
+  )} ${padZero(dt.getHours())}:${padZero(dt.getMinutes())}
+  `
+}
+
 
 function padZero(tar) {
   if (+tar < 10) return `0${tar}`

@@ -67,7 +67,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { CommBtn, SvgIconThemed } from '../'
-import { transferDataState, isMobile } from '../../composition/hooks'
+import { transferDataState, isMobile, linkWallet } from '../../composition/hooks'
 import {
   compatibleGlobalWalletConf,
   walletIsLogin,
@@ -81,7 +81,10 @@ import {
   starkAddress,
   showAddress,
   saveSenderPageWorkingState,
+  isClaim,
+  isArbitration,
 } from '../../composition/hooks'
+import { getArbitrationTxApi } from '../../core/routes/transactions'
 
 export default {
   name: 'HeaderOps',
@@ -117,11 +120,14 @@ export default {
     showAddress() {
       return showAddress()
     },
+    linkWallet() {
+      return linkWallet.value
+    },
     isClaim() {
-      return true
+      return isClaim.value
     },
     isArbitration() {
-      return true
+      return isArbitration.value
     }
   },
   data() {
@@ -130,6 +136,11 @@ export default {
     )
     return {
       selectedWallet,
+    }
+  },
+  watch: {
+    linkWallet() {
+      this.getIsArbitration()
     }
   },
   methods: {
@@ -146,6 +157,15 @@ export default {
       setStarkNetDialog(false)
       setSelectWalletDialogVisible(true)
       this.$emit('closeDrawer')
+    },
+    async getIsArbitration() {
+      let data = await getArbitrationTxApi({replyAccount: linkWallet.value, pageSize: 1})
+      if (data && data.data.data.rows.length != 0) {
+        isArbitration.value = true
+      } else {
+        isArbitration.value = false
+      }
+      console.log(isArbitration.value)
     },
     toClaim() {
 

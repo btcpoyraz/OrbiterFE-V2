@@ -144,6 +144,23 @@
   .arbitration-page {
     background: var(--dark-page-bg);
     color: var(--dark-page-box-color);
+    .arbitration_box {
+      .el-input--suffix .el-input__inner {
+        background-color: var(--dark-page-box-bg);
+        color: var(--dark-page-box-color);
+      }
+      .table_box {
+        .table_title {
+          background: var(--dark-page-box-bg) !important;
+          color: var(--dark-page-box-color);
+          border-top-left-radius: 12px;
+          border-top-right-radius: 12px;
+        }
+      }
+      .detail_item .detail_text span {
+        color: var(--dark-page-box-color) !important;
+      }
+    }
   }
   // ---------- Arbitration page / end ----------
   // ---------- Arbitration Details  page / start ----------

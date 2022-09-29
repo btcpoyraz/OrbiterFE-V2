@@ -6,7 +6,7 @@
                 <svg-icon @click.native="closerButton" class="close" iconName="close" style="width: 12px;height: 12px;"></svg-icon>
             </div>
             <div class="step_box">
-                <el-steps :active="1" align-center v-show="status === 1">
+                <el-steps :active="1" align-center v-show="status === 0">
                     <el-step title="Arbitration begins">
                         <template #icon>
                             <svg-icon iconName="step-success"></svg-icon>
@@ -195,14 +195,20 @@ export default {
     }
 }
 .app-mobile {
+    width: 100%;
     .arbitration-details{
-        width: 100%;
+        height: 100%;
+        width: 100% !important;
     }
 }
 .arbitration-details {
+    border-radius: 20px;
+    overflow: hidden;
+    padding-bottom: 20px;
     .details_content{
         position: relative;
         .close_box {
+            cursor: pointer;
             position: absolute;
             top: 14px;
             right: 26px;
@@ -235,10 +241,13 @@ export default {
             width: 100%;
             padding: 0 20px;
             .line_box {
-                padding: 16px 32px;
+                padding: 16px 32px 0;
                 background-color: #F5F5F5;
                 border-radius: 20px;
             }
+        }
+        .btn_box {
+            margin-top: 60px;
         }
     }
 }
@@ -262,6 +271,9 @@ export default {
 }
 .step_box >>> .el-step.is-horizontal .el-step__line{
     top: 20px;
+}
+.step_box >>> .el-step.is-center .el-step__description {
+    padding: 0;
 }
 .step_box >>> .el-step.is-center .el-step__description{
     font-size: 14px;

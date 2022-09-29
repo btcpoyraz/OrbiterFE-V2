@@ -8,6 +8,8 @@ import { store } from './store'
 import './config/theme.scss'
 import './config/global.css'
 import env from '../env'
+import Web3 from 'web3'
+import { maker_rpc } from './contracts'
 
 import './icons'
 
@@ -22,7 +24,7 @@ import CommLoading from './components/CommLoading.vue'
 import Loader from './views/data/Loader'
 import { isDev, isLocal } from './util/env'
 import { GOOGLE_ANALYTICS_ID_TEST, GOOGLE_ANALYTICS_ID } from './const/index'
-import eruda from 'eruda'
+// import eruda from 'eruda'
 
 // inject more powerful log method on the console object
 import './util/enhancedLogger'
@@ -44,6 +46,7 @@ Vue.use(ant)
 Vue.use(element)
 Vue.use(VueClipboard)
 Vue.prototype.$env = env
+Vue.prototype.$web3 = new Web3(maker_rpc)
 
 Vue.use(VueGtag, {
   config: {

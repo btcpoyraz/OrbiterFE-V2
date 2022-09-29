@@ -31,7 +31,7 @@
                     </el-table-column>
                     <el-table-column prop="status" label="Arbitration status" align="center" width="170px">
                         <template slot-scope="scope">
-                            <div class="table_status" v-if="scope.row.status == 1" @click="toDetails(scope.row)">
+                            <div class="table_status" v-if="scope.row.status == 0" @click="toDetails(scope.row)">
                                 <svg-icon iconName="ar-pending" style="width: 16px;height: 16px"></svg-icon>
                                 <span>Pending</span>
                             </div>
@@ -74,8 +74,10 @@
     </div>
 </template>
 <script>
+import { formatDateMD } from '../../util'
 import { NoData, SvgIconThemed } from '../../components'
-import { historyPanelState, pageStatus, detailStatus} from '../../composition/hooks'
+import { historyPanelState, pageStatus, detailStatus, getArbitrationHistory} from '../../composition/hooks'
+
 export default {
     name: 'ArbitrationHistory',
     components: {
@@ -84,7 +86,7 @@ export default {
     },
     data() {
         return {
-            
+
         }
     },
     computed: {
@@ -98,17 +100,28 @@ export default {
             return historyPanelState.arbitrationListInfo
         },
         tableData() {
+            let tableList = historyPanelState.tableData
+            tableList.map(v => {
+                v.updatedAt = formatDateMD(v.updatedAt)
+                let subStr1 = v.fromTx.id.substr(0, 6)
+                let subStr2 = v.fromTx.id.substr(v.hash.length - 4, 4)
+                v.fromTx.id = subStr1 + '...' + subStr2
+            })
+            console.log("tabledata ==>", tableList)
             return historyPanelState.tableData
         },
     },
+    created() {
+        getArbitrationHistory()
+    },
     methods: {
         curChange(cur) {
-
+            console.log('cur ==>', cur)
         },
         toDetails(row) {
             pageStatus.value = 2
             detailStatus.value = row.status
-        }
+        },
     },
 }
 </script>

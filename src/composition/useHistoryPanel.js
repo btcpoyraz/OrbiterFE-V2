@@ -3,6 +3,8 @@ import { walletIsLogin } from './walletsResponsiveData'
 import { compatibleGlobalWalletConf } from './walletsResponsiveData'
 import { getTransactionsHistoryApi } from '../core/routes/transactions'
 import { formatDateShort } from '../util'
+import { GraphQLClient, gql } from 'graphql-request'
+import env from '../../env'
 
 
 export const pageStatus = ref(1)
@@ -26,7 +28,9 @@ export const historyPanelState = reactive({
   isShowHistory: false,
   activeName: 'History',
   tabsList: [{name: 'History', label: 'History'},{name: 'Arbitration', label: 'Arbitration History'}],
-  tableData: [{status: 1}, {status: 2}, {status: 3}, {status: 4}, {status: 5}],
+  tableData: [
+    // {status: 1}, {status: 2}, {status: 3}, {status: 4}, {status: 5}
+  ],
   timeLineData: []
 })
 
@@ -134,4 +138,48 @@ export async function getTransactionsHistory(params = {}) {
     historyPanelState.transactionListInfo = resInfo
     historyPanelState.transactionList = list
   }
+}
+
+export const getArbitrationHistory = async () => {
+  historyPanelState.isArbitrationLoading = true
+  const endpoint = env.graphUrl
+  const queryQl = gql`
+  query MyQuery {
+    grievanceRecordEntities {
+      id
+      expectToken
+      expectValue
+      finishAt
+      hash
+      status
+      updatedAt
+      fromTx {
+        id
+      }
+      toTx {
+        id
+      }
+    }
+  }`
+  const graphQLClient = new GraphQLClient(endpoint, {})
+  const resp = await graphQLClient.request(queryQl)
+  let data = resp.grievanceRecordEntities
+  data.push({
+    id: '',
+    expectToken: '',
+    expectValue: '1000000000000000000',
+    finishAt: '',
+    hash: '0x6f2f848966e96f25f25980554f0862875016a82067bb41f728f1fc1ab563c602',
+    status: 0,
+    updatedAt: 1664350158000,
+    fromTx: {
+      id: '0x6f2f848966e96f25f25980554f0862875016a82067bb41f728f1fc1ab563c602'
+    },
+    toTx: {
+      id: ''
+    }
+  })
+  historyPanelState.tableData = data
+  historyPanelState.isArbitrationLoading = false
+  // console.log("getArbitrationHistory ==>", data)
 }

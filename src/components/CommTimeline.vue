@@ -30,8 +30,7 @@ export default {
     name: 'CommTimeline',
     props: {
         timeLineData: {
-            type: Array,
-            default: []
+            type: Array
         }
     },
     components: {
@@ -56,7 +55,7 @@ export default {
     left: 11px;
 }
 .time_line_box >>> .el-timeline-item__timestamp.is-top {
-    padding-top: 6px;
+    padding-top: 10px;
 }
 .time_line_box >>> .el-timeline-item__timestamp {
     color: rgba(51, 51, 51, 0.4);

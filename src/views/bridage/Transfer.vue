@@ -215,7 +215,6 @@
         </o-tooltip>
       </div>
     </div>
-
     <CommDialog ref="SelectFromChainPopupRef">
       <div slot="PoperContent" style="width: 100%">
         <ObSelectChain
@@ -285,6 +284,7 @@ import {
 } from '../../composition/walletsResponsiveData'
 import walletDispatchers from '../../util/walletsDispatchers'
 import { METAMASK } from '../../util/walletsDispatchers/index'
+import { uniq }  from 'lodash';
 import {
   transferDataState,
   realSelectMakerInfo,
@@ -649,8 +649,8 @@ export default {
           info.text = 'INSUFFICIENT FUNDS'
           info.disabled = 'disabled'
         } else if (this.toValue > 0 && this.toValue > this.makerMaxBalance) {
-          info.text = 'INSUFFICIENT LIQUIDITY'
-          info.disabled = 'disabled'
+          info.text = 'INSUFFICIENT LIQUIDITY Test'
+          // info.disabled = 'disabled'
         }
 
         if (this.isShowUnreachMinInfo || this.isShowMax) {
@@ -1365,7 +1365,7 @@ export default {
     },
     showChainIcon(isFrom = true) {
       const localChainID = transferDataState[`${isFrom ? 'from' : 'to'}ChainID`]
-      return chain2icon(localChainID)
+      return chain2icon(Number(localChainID))
     },
     selectedTokenChange(val) {
       const tar = this.tokens.find((v) => v.value == val)
@@ -1388,50 +1388,91 @@ export default {
       })
     },
     initChainArray() {
-      this.fromChainArray = []
-      this.makerInfoList.filter((makerInfo) => {
-        // Don't show dydx
-        if (
-          makerInfo.c1ID == 11 ||
-          makerInfo.c1ID == 511 ||
-          makerInfo.c2ID == 11 ||
-          makerInfo.c2ID == 511
-        ) {
-          return
-        }
+      this.fromChainArray = uniq(this.makerInfoList.map(row=>{
+        return row.c1ID;
+      }));
+      updateTransferFromChainID(this.fromChainArray[0])
+      // this.makerInfoList.filter((makerInfo) => {
+      //   // Don't show dydx
+      //   if (
+      //     makerInfo.c1ID == 11 ||
+      //     makerInfo.c1ID == 511 ||
+      //     makerInfo.c2ID == 11 ||
+      //     makerInfo.c2ID == 511
+      //   ) {
+      //     return
+      //   }
 
-        if (this.fromChainArray.indexOf(makerInfo.c1ID) === -1) {
-          // sources fiter
-          if (
-            this.queryParams.sources.length <= 0 ||
-            this.queryParams.sources.indexOf(makerInfo.c1ID) > -1
-          ) {
-            this.fromChainArray.push(makerInfo.c1ID)
-          }
-        }
-        if (this.fromChainArray.indexOf(makerInfo.c2ID) === -1) {
-          if (
-            this.queryParams.sources.length <= 0 ||
-            this.queryParams.sources.indexOf(makerInfo.c2ID) > -1
-          ) {
-            this.fromChainArray.push(makerInfo.c2ID)
-          }
-        }
-      })
+      //   if (this.fromChainArray.indexOf(makerInfo.c1ID) === -1) {
+      //     // sources fiter
+      //     if (
+      //       this.queryParams.sources.length <= 0 ||
+      //       this.queryParams.sources.indexOf(makerInfo.c1ID) > -1
+      //     ) {
+      //       this.fromChainArray.push(makerInfo.c1ID)
+      //     }
+      //   }
+      //   if (this.fromChainArray.indexOf(makerInfo.c2ID) === -1) {
+      //     if (
+      //       this.queryParams.sources.length <= 0 ||
+      //       this.queryParams.sources.indexOf(makerInfo.c2ID) > -1
+      //     ) {
+      //       this.fromChainArray.push(makerInfo.c2ID)
+      //     }
+      //   }
+      // })
 
       // default from chain id
-      let fromChainID = this.fromChainArray[0]
-      if (this.queryParams.source) {
-        for (const item of this.fromChainArray) {
-          if (item == this.queryParams.source) {
-            fromChainID = item
-            break
-          }
-        }
-      }
-
-      updateTransferFromChainID(fromChainID)
+      // let fromChainID = this.fromChainArray[0]
+      // if (this.queryParams.source) {
+      //   for (const item of this.fromChainArray) {
+      //     if (item == this.queryParams.source) {
+      //       fromChainID = item
+      //       break
+      //     }
+      //   }
+      // }
+      // updateTransferFromChainID(fromChainID)
     },
+    // async getChainLp() {
+    //   const endpoint = this.$env.graphUrl
+    //   console.log(defaultMaker.value)
+    //   const query = gql`
+    //     query MyQuery {
+    //       lpEntities(where: {maker_contains: "${defaultMaker.value.toLowerCase()}", status: 1, stopTime: null}) {
+    //         maxPrice
+    //         minPrice
+    //         gasFee
+    //         destPresion
+    //         sourcePresion
+    //         tradingFee
+    //         maker {
+    //           id
+    //         }
+    //         pair {
+    //           id
+    //           sourceChain
+    //           sourceToken
+    //           destChain
+    //           destToken
+    //         }
+    //       }
+    //     }
+    //   `
+    //   const graphQLClient = new GraphQLClient(endpoint, {})
+    //   const resp = await graphQLClient.request(query)
+    //   const data = resp.lpEntities
+    //   // console.log("resp data ==>", data)
+    //   let fromChainArray = []
+    //   data.map(v => {
+    //     if (!fromChainArray.includes(Number(v.pair.sourceChain))) {
+    //       fromChainArray.push(Number(v.pair.sourceChain))
+    //     }
+    //   })
+    //   this.fromChainArray = fromChainArray
+    //   console.log("fromChainArray ==>", fromChainArray)
+      
+    // },
     fromMax() {
       if (!walletIsLogin.value) {
         this.transferValue = '0'
@@ -1529,6 +1570,7 @@ export default {
       this.showFromChainPopupClick()
     },
     getFromChainInfo(e) {
+      console.log("e ==>" , e)
       updateTransferFromChainID(e.localID)
       // Change query params's source
       const { path, query } = this.$route

@@ -31,6 +31,12 @@ export const chain2idMap = {
   "Arbitrum Nova": 16,
   "Arbitrum Nova(Goerli)": 516,
 }
+export const makerToken = [
+  {
+    symbol: 'ETH',
+    address: '0x0000000000000000000000000000000000000000',
+  },
+]
 
 export const chain2icon = item => {
   let iconName = 'tokenLogo'

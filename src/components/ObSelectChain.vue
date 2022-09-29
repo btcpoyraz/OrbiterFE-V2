@@ -73,6 +73,7 @@ export default {
     return {
       keyword: '',
       loadingIndex: -1,
+      lpData: null,
     }
   },
   computed: {
@@ -80,7 +81,7 @@ export default {
       var newArray = []
       for (let index = 0; index < this.ChainData.length; index++) {
         const item = this.ChainData[index]
-        const iconName = chain2icon(item)
+        const iconName = chain2icon(Number(item))
         var chainData = {
           icon: iconName,
           chain: util.chainName(item, this.$env.localChainID_netChainID[item]),

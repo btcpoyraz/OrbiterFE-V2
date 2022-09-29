@@ -18,14 +18,14 @@
                         <img src="../../assets/data/setting_icon.png" alt="" srcset="">
                     </div>
                 </div>
-                <div class="node_price fr">
+                <!-- <div class="node_price fr">
                     <span>2022 Feb 15</span>
                     <span>|</span>
                     <span>Margin</span>
                     <span>35 {{showChainUnit(item.localUintID)}}</span>
-                </div>
+                </div> -->
             </div>
-            <div class="node_total">
+            <!-- <div class="node_total">
                 <div class="total_left clearfix fl">
                     <div class="total_item fl">
                         <span>Total Revenue</span>
@@ -44,7 +44,7 @@
                         <span>15h ago</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="node_item clearfix">
                 <div class="item_left fl">
                     Network & Balance
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div class="node_warning">
+            <!-- <div class="node_warning">
                 <div class="warning_text" v-show="item.warning == 1">
                     <svg-icon iconName="warning-h" style="width: 17px; height: 17px"></svg-icon>
                     <span>2 To_Txns have been missed for more than 30 mins!</span>
@@ -73,7 +73,7 @@
                     <span>Handle</span>
                     <svg-icon iconName="export_icon" style="width: 15px;height: 15px;"></svg-icon>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="create_setting">
             <div class="create_box">
@@ -94,10 +94,14 @@ import {
 } from '../../components'
 import {
   makerDataStatus,
-  chainUnit
+  chainUnit,
+  myMaker
 } from '../../composition/hooks'
 import { chain2icon } from '../../util'
 import SvgIcon from '../../components/SvgIcon/SvgIcon.vue'
+import { GraphQLClient, gql } from 'graphql-request'
+
+
 export default {
     name: 'MakerList',
     data() {
@@ -106,7 +110,7 @@ export default {
         }
     },
     created () {
-        
+        this.getLpNodes()
     },
     computed: { 
         nodeList() {
@@ -124,6 +128,45 @@ export default {
         showChainUnit(localUintID) {
             return chainUnit(localUintID)
         },
+        async getLpNodes() {
+            const endpoint = this.$env.graphUrl
+            const query = gql`
+                query MyQuery {
+                    lpEntities(where: {maker_contains: "${myMaker.value}", status: 1, stopTime: null}) {
+                        maxPrice
+                        minPrice
+                        gasFee
+                        destPresion
+                        sourcePresion
+                        tradingFee
+                        startTime
+                        stopTime
+                        status
+                        maker {
+                            id
+                        }
+                        pair {
+                            id
+                            sourceChain
+                            sourceToken
+                            destChain
+                            destToken
+                        }
+                    }
+                }
+            `
+            const graphQLClient = new GraphQLClient(endpoint, {})
+            const resp = await graphQLClient.request(query)
+            const data = resp.lpEntities
+            // console.log("resp data ==>", data)
+            let networkList = []
+            data.map(v => {
+                if (!networkList.includes(Number(v.pair.destChain))) {
+                    networkList.push(Number(v.pair.destChain))
+                }
+            })
+            
+        }
     },
 }
 </script>
