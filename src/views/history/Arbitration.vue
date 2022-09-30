@@ -77,7 +77,7 @@ import { CommBtn } from '../../components'
 import { arbitrationData, haxItem, isConfirm, linkWallet, recoverSenderPageWorkingState, getArbitrationData } from '../../composition/hooks'
 import { formatDateMD } from '../../util'
 import { getUserTransferProofApi } from '../../core/routes/transactions'
-import { contractMethod } from '../../contracts'
+import { contractMethod, contract_obj } from '../../contracts'
 
 export default {
     name: 'Arbitration',
@@ -167,6 +167,7 @@ export default {
         },
 
         async confirm() {
+            isConfirm.value = false
             let txinfo = {
                 chainID: Number(this.selectItem.chainId),
                 txHash: this.selectItem.hash,
@@ -178,19 +179,24 @@ export default {
                 nonce: Number(this.selectItem.nonce),
                 timestamp: Number(parseInt(new Date(this.selectItem.timestamp).getTime() / 1000)),
                 responseAmount: this.selectItem.expectValue,
+                responseSafetyCode: Number(this.selectItem.expectSafetyCode),
                 ebcid: Number(this.selectItem.ebcId),
             }
             const res = await getUserTransferProofApi({chainId: txinfo.chainID, txid: txinfo.txHash})
             const txproof = res.data.data
-            console.log("confirm ==>", txinfo, txproof,  JSON.stringify(txinfo))
+            const contract_manager = await contract_obj('ORManager')
+            const ebcAddr = await contract_manager.methods.getEBC(txinfo.ebcid).call()
+            const contract_ORProtocalV1 = await contract_obj('ORProtocalV1', ebcAddr)
+            const value = await contract_ORProtocalV1.methods.getChanllengePledgeAmountCoefficient().call()
+            console.log("confirm ==>", txinfo, txproof, value, JSON.stringify(txinfo))
             const data = {
                 name: 'userChanllenge',
                 contractName: "ORMakerDeposit",
-                contractAddr: this.selectItem.makerId, 
+                contractAddr: this.selectItem.makerId,
+                value,
                 arguments: [txinfo, txproof]
             }
             console.log('userChanllenge data ==>', data)
-            isConfirm.value = false
             const result = await contractMethod(linkWallet.value, data).catch(err => {
                 // err
                 isConfirm.value = true

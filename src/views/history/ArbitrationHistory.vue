@@ -16,17 +16,18 @@
                     </template>
                     <el-table-column prop="date" label="Time" header-align="center" align="center">
                         <template slot-scope="scope">
-                            <span class="table_span">7-26 14:12</span>
+                            <span class="table_span">{{scope.row.updatedAt}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="from" label="From Tx" header-align="center" align="center">
                         <template slot-scope="scope">
-                            <span class="table_span">0x1234...5678</span>
+                            <span class="table_span">{{scope.row.fromTx.id}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="to" label="To Tx" width="170px" header-align="center" align="center">
                         <template slot-scope="scope">
-                            <span class="table_span">Transaction not found</span>
+                            <span class="table_span" v-if="!scope.row.toTx">Transaction not found</span>
+                            <span class="table_span" v-else>{{scope.row.toTx.id}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="status" label="Arbitration status" align="center" width="170px">
@@ -102,10 +103,16 @@ export default {
         tableData() {
             let tableList = historyPanelState.tableData
             tableList.map(v => {
+                console.log('v ==>', v)
                 v.updatedAt = formatDateMD(v.updatedAt)
-                let subStr1 = v.fromTx.id.substr(0, 6)
-                let subStr2 = v.fromTx.id.substr(v.hash.length - 4, 4)
-                v.fromTx.id = subStr1 + '...' + subStr2
+                let fromStr1 = v.fromTx.id.substr(0, 6)
+                let fromStr2 = v.fromTx.id.substr(v.hash.length - 4, 4)
+                v.fromTx.id = fromStr1 + '...' + fromStr2
+                if (v.toTx && v.toTx.id != '') {
+                    let toStr1 = v.toTx.id.substr(0, 6)
+                    let toStr2 = v.toTx.id.substr(v.hash.length - 4, 4)
+                    v.toTx.id = toStr1 + '...' + toStr2
+                }
             })
             console.log("tabledata ==>", tableList)
             return historyPanelState.tableData

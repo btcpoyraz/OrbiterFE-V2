@@ -164,21 +164,6 @@ export const getArbitrationHistory = async () => {
   const graphQLClient = new GraphQLClient(endpoint, {})
   const resp = await graphQLClient.request(queryQl)
   let data = resp.grievanceRecordEntities
-  data.push({
-    id: '',
-    expectToken: '',
-    expectValue: '1000000000000000000',
-    finishAt: '',
-    hash: '0x6f2f848966e96f25f25980554f0862875016a82067bb41f728f1fc1ab563c602',
-    status: 0,
-    updatedAt: 1664350158000,
-    fromTx: {
-      id: '0x6f2f848966e96f25f25980554f0862875016a82067bb41f728f1fc1ab563c602'
-    },
-    toTx: {
-      id: ''
-    }
-  })
   historyPanelState.tableData = data
   historyPanelState.isArbitrationLoading = false
   // console.log("getArbitrationHistory ==>", data)

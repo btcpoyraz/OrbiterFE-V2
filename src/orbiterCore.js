@@ -270,7 +270,7 @@ function getRAmountFromTAmount(chain, amount) {
 }
 
 function isChainSupport(chain) {
-  return true;
+  return true
   if (typeof chain === 'number') {
     if (CHAIN_INDEX[chain] && MAX_BITS[CHAIN_INDEX[chain]]) {
       return true

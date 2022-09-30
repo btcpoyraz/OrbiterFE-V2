@@ -8,15 +8,18 @@ import { maker_rpc, contract_obj } from './index'
 export const contractMethod = async (accounts, params) => {
     const web3 = await new Web3(maker_rpc);
     const contract = await contract_obj(params.contractName, params.contractAddr)
+    console.log("contract ==>", contract)
     const nonce =  await web3.eth.getTransactionCount(accounts)
-    const gasPrice = await web3.eth.getGasPrice()
+    // const gasPrice = await web3.eth.getGasPrice()
+    // console.log("gasPrice ==>", gasPrice)
     const value = params.value ? params.value : 0
     const parameters = params.arguments.length === 0 ? null : params.arguments
     console.log("parameters ==>", parameters)
     const data = parameters == null ? await contract.methods[params.name]().encodeABI() : await contract.methods[params.name](...parameters).encodeABI()
-    // return
-    let gasLimit = parameters == null ? await contract.methods[params.name]().estimateGas({from: accounts, to: params.contractAddr,gasPrice: web3.utils.toHex(gasPrice), value: web3.utils.toHex(value)}) : await contract.methods[params.name](...parameters).estimateGas({from: accounts, to: params.contractAddr, gasPrice: web3.utils.toHex(gasPrice), value: web3.utils.toHex(value)})
-    gasLimit = parseInt(gasLimit * 1.2 + '')
+    console.log('data ==>', data)
+    // let gasLimit = parameters == null ? await contract.methods[params.name]().estimateGas({from: accounts, to: params.contractAddr,gasPrice: web3.utils.toHex(gasPrice), value: web3.utils.toHex(value)}) : await contract.methods[params.name](...parameters).estimateGas({from: accounts, to: params.contractAddr, gasPrice: web3.utils.toHex(gasPrice), value: web3.utils.toHex(value)})
+    // gasLimit = parseInt(gasLimit * 1.5 + '')
+    // console.log("gasLimit ==>", gasLimit)
 
     return new Promise((resolve, reject) => {
 
@@ -50,8 +53,8 @@ export const contractMethod = async (accounts, params) => {
         }
         const param = [{
             nonce: web3.utils.toHex(nonce),
-            gasPrice: web3.utils.toHex(gasPrice),
-            gas: web3.utils.toHex(gasLimit),
+            // gasPrice: web3.utils.toHex(gasPrice),
+            // gas: web3.utils.toHex(gasLimit),
             from: accounts,
             to: params.contractAddr,
             value: web3.utils.toHex(value),

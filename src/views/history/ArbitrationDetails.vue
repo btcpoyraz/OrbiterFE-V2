@@ -131,7 +131,7 @@
             </div>
             <div class="timer_line">
                 <div class="line_box">
-                    <CommTimeline :timeLineData="timeLineData"></CommTimeline>
+                    <CommTimeline :timeLineData="timeLineData" :step="step"></CommTimeline>
                 </div>
             </div>
             <div class="btn_box" v-if="status == 3">
@@ -177,6 +177,13 @@ export default {
         },
         timeLineData() {
             return historyPanelState.timeLineData
+        },
+        step() {
+            let step = 0
+            if (this.status == 0) {
+                step = 2
+            } 
+            return step
         }
     },
     methods: {
@@ -190,7 +197,7 @@ export default {
 .app {
     .arbitration-details{
         width: 600px;
-        height: 570px;
+        min-height: 570px;
         border-radius: 20px;
     }
 }
