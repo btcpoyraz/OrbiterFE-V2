@@ -3,6 +3,43 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "makerId",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "useLimit",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32[]",
+        "name": "pairs",
+        "type": "bytes32[]"
+      }
+    ],
+    "name": "ChainDepositChange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "uint8",
         "name": "version",
@@ -17,15 +54,127 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "bytes32",
-        "name": "chanllengeid",
-        "type": "bytes32"
+        "internalType": "uint256",
+        "name": "chainId",
+        "type": "uint256"
       },
       {
         "indexed": true,
         "internalType": "enum IORMakerDeposit.chanllengeState",
-        "name": "state",
+        "name": "opType",
         "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "chanllengeId",
+        "type": "bytes32"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "chainID",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "txHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "lpid",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "sourceAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "destAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "responseAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "responseSafetyCode",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ebcid",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct OperationsLib.txInfo",
+        "name": "txInfo",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "chanllengeState",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "responseTxinfo",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stopTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "pledgeAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ebcid",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct OperationsLib.chanllengeInfo",
+        "name": "chanllenge",
+        "type": "tuple"
       }
     ],
     "name": "LogChanllengeInfo",
@@ -37,7 +186,32 @@
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "lpid",
+        "name": "pairId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "lpId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "LogLPStop",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "pairId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "lpId",
         "type": "bytes32"
       },
       {
@@ -45,12 +219,6 @@
         "internalType": "enum IORMakerDeposit.lpState",
         "name": "state",
         "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "time",
-        "type": "uint256"
       },
       {
         "components": [
@@ -122,31 +290,6 @@
       }
     ],
     "name": "LogLpInfo",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "lpid",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "enum IORMakerDeposit.lpState",
-        "name": "state",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "time",
-        "type": "uint256"
-      }
-    ],
-    "name": "LogLpInfoSys",
     "type": "event"
   },
   {
@@ -574,9 +717,9 @@
     "name": "lpInfo",
     "outputs": [
       {
-        "internalType": "bool",
-        "name": "LPRootHash",
-        "type": "bool"
+        "internalType": "bytes32",
+        "name": "lpId",
+        "type": "bytes32"
       },
       {
         "internalType": "uint256",
@@ -648,6 +791,11 @@
           },
           {
             "internalType": "uint256",
+            "name": "responseSafetyCode",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "ebcid",
             "type": "uint256"
           }
@@ -706,6 +854,11 @@
           {
             "internalType": "uint256",
             "name": "responseAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "responseSafetyCode",
             "type": "uint256"
           },
           {
@@ -850,6 +1003,11 @@
           },
           {
             "internalType": "uint256",
+            "name": "responseSafetyCode",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "ebcid",
             "type": "uint256"
           }
@@ -921,6 +1079,11 @@
           {
             "internalType": "uint256",
             "name": "responseAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "responseSafetyCode",
             "type": "uint256"
           },
           {

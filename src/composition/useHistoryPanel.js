@@ -5,9 +5,12 @@ import { getTransactionsHistoryApi } from '../core/routes/transactions'
 import { formatDateShort } from '../util'
 import { GraphQLClient, gql } from 'graphql-request'
 import env from '../../env'
+import { linkWallet, myMaker } from './hooks'
 
 
 export const pageStatus = ref(1)
+export const activeName = ref('History')
+export const isDisabled = ref(true)
 export const historyPanelState = reactive({
   isLoading: false,
   isArbitrationLoading: false,
@@ -26,12 +29,11 @@ export const historyPanelState = reactive({
   transactionList: null,
   historyInfo: null,
   isShowHistory: false,
-  activeName: 'History',
-  tabsList: [{name: 'History', label: 'History'},{name: 'Arbitration', label: 'Arbitration History'}],
+  tabsList: [{name: 'History', label: 'History'},{name: 'Arbitration', label: 'Arbitration History'}, {name: 'MakerArbitration', label: 'Maker Arbitration'}],
   tableData: [
     // {status: 1}, {status: 2}, {status: 3}, {status: 4}, {status: 5}
   ],
-  timeLineData: []
+  timeLineData: {}
 })
 
 watchEffect(() => {
@@ -54,8 +56,15 @@ export function setHistoryInfo(info = {}, isShowHistory = true) {
   historyPanelState.historyInfo = info
 }
 
-export function setActiveName(activeName) {
-  historyPanelState.activeName = activeName
+export function setActiveName(name) {
+  // console.log("active", name)
+  console.log('linkWallet ==>', linkWallet.value , myMaker.value)
+  if (name == 'MakerArbitration') {
+    getMakerArbitrationHistory(myMaker.value)
+  } else if (name == 'Arbitration') {
+    getArbitrationHistory(linkWallet.value)
+  }
+  activeName.value = name
 }
 
 export async function getTransactionsHistory(params = {}) {
@@ -140,30 +149,140 @@ export async function getTransactionsHistory(params = {}) {
   }
 }
 
-export const getArbitrationHistory = async () => {
+export const getUserArbitrationHistory = async (account) => {
+  await getArbitrationHistory(account)
+  return historyPanelState.tableData
+}
+
+export const getArbitrationHistory = async (account) => {
+  console.log('account ==>', account)
+  historyPanelState.tableData = []
   historyPanelState.isArbitrationLoading = true
   const endpoint = env.graphUrl
   const queryQl = gql`
   query MyQuery {
-    grievanceRecordEntities {
+    grievanceEntities(
+      where: {fromTx_: {from: "${account}"}}
+      orderDirection: desc
+      orderBy: createdAt
+    ){
       id
       expectToken
       expectValue
-      finishAt
       hash
       status
-      updatedAt
+      createdAt
+      waitingTime
+      makerId
+      operations {
+        id
+        action
+        content
+        timestamp
+        address
+      }
       fromTx {
         id
+        timestamp
+        value
+        chainId
+        token
+        from
+        to
+        nonce
       }
       toTx {
         id
+        timestamp
+        value
+        chainId
+        token
+        from
+        to
+        nonce
+      }
+      lp {
+        id
+        pair {
+          ebcId
+        }
       }
     }
   }`
   const graphQLClient = new GraphQLClient(endpoint, {})
   const resp = await graphQLClient.request(queryQl)
-  let data = resp.grievanceRecordEntities
+  let data = resp.grievanceEntities
+  data.map(async v => { 
+    let timer = parseInt(new Date().getTime() / 1000)
+    console.log("v ==>", v.waitingTime, timer, v.status == 0 && timer >= v.waitingTime)
+    if (v.status == 0 && timer >= v.waitingTime) {
+      v.status = 3
+    } else if (v.status == 2) {
+      v.status = 1
+    }
+  })
+  historyPanelState.tableData = data
+  historyPanelState.isArbitrationLoading = false
+  // console.log("getArbitrationHistory ==>", data)
+}
+
+export const getMakerArbitrationHistory = async (maker) => {
+  console.log('maker ==>', maker)
+  historyPanelState.tableData = []
+  historyPanelState.isArbitrationLoading = true
+  const endpoint = env.graphUrl
+  const queryQl = gql`
+  query MyQuery {
+    grievanceEntities(
+      where: {makerId: "${maker}", status: 0}
+      orderDirection: desc
+      orderBy: createdAt
+    ){
+      id
+      expectToken
+      expectValue
+      hash
+      status
+      createdAt
+      makerId
+      operations {
+        id
+        action
+        content
+        timestamp
+        address
+      }
+      fromTx {
+        id
+        timestamp
+        value
+        chainId
+        token
+        from
+        to
+        nonce
+      }
+      toTx {
+        id
+        timestamp
+        value
+        chainId
+        token
+        from
+        to
+        nonce
+      }
+      lp {
+        id
+        pair {
+          ebcId
+        }
+      }
+    }
+  }`
+  const graphQLClient = new GraphQLClient(endpoint, {})
+  const resp = await graphQLClient.request(queryQl)
+  let data = resp.grievanceEntities
   historyPanelState.tableData = data
   historyPanelState.isArbitrationLoading = false
   // console.log("getArbitrationHistory ==>", data)

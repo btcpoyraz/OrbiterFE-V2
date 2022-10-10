@@ -73,7 +73,7 @@
         >
         </el-pagination>
   
-        <ArbitrationHistory v-if="activeName === 'Arbitration'"></ArbitrationHistory>
+        <ArbitrationHistory v-if="activeName === 'Arbitration' || activeName === 'MakerArbitration'"></ArbitrationHistory>
   
         <svg-icon
           @click.native="closeDialog"
@@ -83,7 +83,7 @@
       </div>
     </template>
     <template>
-      <div class="second_page" v-show="status !== 1">
+      <div class="second_page" v-if="status !== 1">
         <template>
             <ArbitrationDetails :status="detailStatus" @stateChanged="stateChanged"></ArbitrationDetails>
         </template>
@@ -102,6 +102,7 @@ import {
   recoverSenderPageWorkingState,
   setHistoryInfo,
   setActiveName,
+  activeName,
   pageStatus, 
   detailStatus
 } from '../composition/hooks'
@@ -161,7 +162,7 @@ export default {
       return historyPanelState.transactionListInfo
     },
     activeName() {
-      return historyPanelState.activeName
+      return activeName.value
     },
     tabsList() {
       return historyPanelState.tabsList

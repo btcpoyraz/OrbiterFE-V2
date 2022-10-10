@@ -1,17 +1,19 @@
 <template>
     <div class="tabs_box">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="handleClick" :before-leave="beforeHandle">
             <el-tab-pane :label="item.label" :name="item.name" v-for="(item, index) in tabsList" :key="index"></el-tab-pane>
         </el-tabs>
     </div>
 </template>
 <script>
+import util from '../util/util'
+import { isMaker } from '../composition/hooks'
+
 export default {
     name: 'CommTabs',
     props: {
         tabsList: {
             type: Array,
-            default: []
         },
         active: {
             type: String,
@@ -23,11 +25,27 @@ export default {
             activeName: ''
         }
     },
+    watch: {
+        active(val) {
+            this.activeName = val
+        }
+    },
     created() {
         this.activeName = this.active
     },
     methods: {
-        handleClick(tab, event) {
+        beforeHandle(active) {
+            if (active === 'MakerArbitration') {
+                util.showMessage(
+                    `Not a maker`,
+                    'error'
+                )
+                return isMaker.value
+            } else {
+                return true
+            }
+        },
+        handleClick() {
             this.$emit('tabsChange', this.activeName)
         }
     }

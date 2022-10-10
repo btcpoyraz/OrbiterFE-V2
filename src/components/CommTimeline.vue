@@ -1,41 +1,47 @@
 <template>
     <div class="time_line_box">
         <el-timeline :reverse="false">
-            <el-timeline-item timestamp="2018/4/1" placement="top" v-if="step >= 1">
+            <el-timeline-item :timestamp="timeLineData.showfromTimeStamp" placement="top" v-if="step >= 1">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
                 <span>Arbitration Begins Lock Maker Deposit</span>
             </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/2" placement="top" v-if="step >= 2">
+            <el-timeline-item :timestamp="timeLineData.showCreateAt" placement="top" v-if="step >= 2">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
                 <span>Transaction sent to maker for processing</span>
             </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/3" placement="top" v-if="step >= 3">
+            <el-timeline-item :timestamp="timeLineData.showtoTimeStamp" placement="top" v-if="status == 1 && step >= 3">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
-                <span>maker timeout not processed</span>
+                <span>Maker processed</span>
             </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/4" placement="top" v-if="step >= 4">
+            <el-timeline-item :timestamp="timeLineData.showwaitingTime" placement="top" v-if="step >= 3 && status != 1">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
-                <span>Apply for withdrawal deposit 0.123456ETH (0.112956 + 0.01 + 0.005)</span>
+                <span>Maker timeout not processed</span>
             </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/5" placement="top" v-if="step >= 5">
+            <el-timeline-item :timestamp="timeLineData.showWithDrawStartTime" placement="top" v-if="step >= 4">
+                <template #dot>
+                    <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
+                </template>
+                <span>Apply for withdrawal deposit {{timeLineData.showExpectValue}}ETH </span>
+            </el-timeline-item>
+            <el-timeline-item :timestamp="timeLineData.showWithDrawTime" placement="top" v-if="step >= 5">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
                 <span>Deposit sent to mainnet address</span>
             </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/6" placement="top" v-if="step >= 6">
+            <el-timeline-item :timestamp="timeLineData.showFinishTime" placement="top" v-if="step >= 6">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
-                <span>Sending back to mainnet address  0x1234...5678</span>
+                <span>Sending back to mainnet address {{timeLineData.showToaddr}}</span>
             </el-timeline-item>
     </el-timeline>
     </div>
@@ -47,8 +53,12 @@ import {
 export default {
     name: 'CommTimeline',
     props: {
+        status: {
+            type: Number,
+            default: 0
+        },
         timeLineData: {
-            type: Array
+            type: Object
         },
         step: {
             type: Number,
@@ -57,6 +67,9 @@ export default {
     },
     components: {
         SvgIconThemed
+    },
+    created() {
+        console.log('timeLineData ==>', this.timeLineData)
     }
 }
 </script>

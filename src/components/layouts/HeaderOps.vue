@@ -83,8 +83,11 @@ import {
   saveSenderPageWorkingState,
   isClaim,
   isArbitration,
+  historyPanelState,
+  setActiveName
 } from '../../composition/hooks'
 import { getArbitrationTxApi } from '../../core/routes/transactions'
+import { GraphQLClient, gql } from 'graphql-request'
 
 export default {
   name: 'HeaderOps',
@@ -141,6 +144,7 @@ export default {
   watch: {
     linkWallet() {
       this.getIsArbitration()
+      this.getIsClaim()
     }
   },
   methods: {
@@ -165,10 +169,50 @@ export default {
       } else {
         isArbitration.value = false
       }
-      console.log(isArbitration.value)
     },
-    toClaim() {
-
+    async getIsClaim() {
+      const endpoint = this.$env.graphUrl
+      const queryQl = gql`
+      query MyQuery {
+        grievanceEntities(where: {fromTx_: {from: "${linkWallet.value}"}}){
+          id
+          expectToken
+          expectValue
+          hash
+          status
+          createdAt
+          waitingTime
+          fromTx {
+            from
+            id
+            timestamp
+            value
+          }
+          toTx {
+            id
+            timestamp
+            value
+          }
+        }
+      }`
+      const graphQLClient = new GraphQLClient(endpoint, {})
+      const resp = await graphQLClient.request(queryQl)
+      let data = resp.grievanceEntities
+      let timer = parseInt(new Date().getTime() / 1000)
+      if (data && data.length != 0 && data.filter(item => timer >= item.waitingTime).length != 0) {
+        isClaim.value = true
+      } else {
+        isClaim.value = false
+      }
+    },
+    async toClaim() {
+      const route = this.$route
+      setActiveName('Arbitration')
+      historyPanelState.activeName = 'Arbitration'
+      route.path !== '/history' &&
+        this.$router.push({
+          path: '/history',
+        })
     },
     toArbitration() {
       const route = this.$route

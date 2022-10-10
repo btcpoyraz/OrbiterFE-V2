@@ -12,7 +12,7 @@
       <keep-alive>
         <TopNav />
       </keep-alive>
-      <div class="main">
+      <div class="main" v-if="isRefresh">
         <keep-alive>
           <router-view v-if="$route.meta.keepAlive" class="router" />
         </keep-alive>
@@ -41,10 +41,17 @@ import * as darkbg from './assets/v2/dark-bg.png'
 import * as topbg from './assets/v2/light-top-bg.jpg'
 import HeaderDialog from './components/layouts/HeaderDialog.vue'
 import { performInitMobileAppWallet } from './util/walletsDispatchers/utils'
+import { linkWallet, isMaker, myMaker } from './composition/hooks'
+import { contract_obj } from './contracts'
 
 const { walletDispatchersOnInit } = walletDispatchers
 
 export default {
+  provide() {
+    return {
+      reload: this.reload, 
+    }
+  },
   name: 'App',
   computed: {
     isMobile() {
@@ -89,12 +96,21 @@ export default {
         'background-image': `url(${lightbg}), url(${topbg})`,
       }
     },
+    linkWallet() {
+      return linkWallet.value
+    }
   },
   data() {
     return {
       // lightbg,
       // darkbg,
       // topbg,
+      isRefresh: true
+    }
+  },
+  watch: {
+    linkWallet() {
+      this.setIsMaker()
     }
   },
   components: {
@@ -114,6 +130,12 @@ export default {
   //   },
   // },
   methods: {
+    reload() {
+      this.isRefresh = false;
+      this.$nextTick(function () {
+        this.isRefresh = true;
+      });
+    },
     performInitCurrentLoginWallet() {
       performInitMobileAppWallet()
 
@@ -133,6 +155,16 @@ export default {
       const matchInitDispatcher = walletDispatchersOnInit[walletType]
       matchInitDispatcher && matchInitDispatcher()
     },
+    async setIsMaker() {
+      const contract_factory = await contract_obj('ORMakerV1Factory')
+      const makerAddr = await contract_factory.methods.getMaker(linkWallet.value).call()
+      if (makerAddr != '0x0000000000000000000000000000000000000000') {
+        isMaker.value = true
+        myMaker.value = makerAddr
+      } else {
+        isMaker.value = false
+      }
+    }
   },
 }
 </script>

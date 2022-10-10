@@ -3,6 +3,7 @@ import {
   Select,
   Option,
   Step,
+  Input,
   InputNumber,
   Loading,
   Notification,
@@ -23,6 +24,7 @@ const element = {
   install: function(Vue) {
     Vue.use(Steps)
     Vue.use(Step)
+    Vue.use(Input)
     Vue.use(InputNumber)
     Vue.use(Loading)
     Vue.use(Button)

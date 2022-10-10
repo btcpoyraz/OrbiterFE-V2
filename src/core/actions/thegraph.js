@@ -3004,7 +3004,7 @@ async function getMaker() {
 }
 
 async function getChainLp() {
-  const web3 = new Web3(maker_rpc)
+  const web3 = new Web3(maker_rpc())
   const endpoint = env.graphUrl
   await getMaker()
   console.log('defaultMaker ==>', defaultMaker.value.toLowerCase())

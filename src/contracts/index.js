@@ -1,14 +1,25 @@
 import Web3 from 'web3'
 import { contractMethod } from './request_tx'
+import { linkNetwork } from './metamask'
+import env from '../../env'
+import chainList from '../config/chains.json'
 
-export const maker_rpc = process.env.VUE_APP_CHAIN_RPC
-export const default_config = {
-    chainid: process.env.VUE_APP_CHAIN_ID,
-    name: process.env.VUE_APP_CHAIN_NAME,
-    symbol: process.env.VUE_APP_CHAIN_SYMBOL,
-    decimals: process.env.VUE_APP_CHAIN_DECIMALS,
-    rpcUrls: process.env.VUE_APP_CHAIN_RPC,
-    blockExplorerUrls: process.env.VUE_APP_CHAIN_BLOCK
+
+export const maker_rpc = () => {
+    const chainid = process.env.VUE_APP_MAKER_CHAIN_ID
+    return env.localProvider[chainid]
+}
+export const default_config = () => {
+    const chainid = process.env.VUE_APP_MAKER_CHAIN_ID
+    const chainsItem = chainList.chainList.filter(item => item.chainId == chainid)
+    return {
+        chainid: chainsItem[0].chainId,
+        name: chainsItem[0].name,
+        symbol: chainsItem[0].nativeCurrency.symbol,
+        decimals: chainsItem[0].nativeCurrency.decimals,
+        rpcUrls: env.localProvider[chainid],
+        blockExplorerUrls: chainsItem[0].blockExplorerUrls
+    }
 }
 
 export const contract_config = {
@@ -29,9 +40,9 @@ export const contract_config = {
 }
 
 export const contract_obj = async (name, addr = '') => {
-    const web3 = await new Web3(default_config.rpcUrls);
+    const web3 = await new Web3(maker_rpc());
     const contractObj = new web3.eth.Contract(contract_config[name].abi, addr === '' ? contract_config[name].addr : addr)
     return contractObj
 }
 
-export { contractMethod }
+export { contractMethod, linkNetwork }

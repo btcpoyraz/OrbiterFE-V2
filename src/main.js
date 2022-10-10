@@ -46,7 +46,7 @@ Vue.use(ant)
 Vue.use(element)
 Vue.use(VueClipboard)
 Vue.prototype.$env = env
-Vue.prototype.$web3 = new Web3(maker_rpc)
+Vue.prototype.$web3 = new Web3(maker_rpc())
 
 Vue.use(VueGtag, {
   config: {

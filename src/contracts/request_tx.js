@@ -6,20 +6,23 @@ import { maker_rpc, contract_obj } from './index'
  * @param {Object} params data {name: "", value: 0, contractName: '', contractName: '' , arguments: [...]}
  */
 export const contractMethod = async (accounts, params) => {
-    const web3 = await new Web3(maker_rpc);
+    const web3 = await new Web3(maker_rpc());
     const contract = await contract_obj(params.contractName, params.contractAddr)
-    console.log("contract ==>", contract)
     const nonce =  await web3.eth.getTransactionCount(accounts)
-    // const gasPrice = await web3.eth.getGasPrice()
-    // console.log("gasPrice ==>", gasPrice)
+    const gasPrice = await web3.eth.getGasPrice()
+    console.log("gasPrice ==>", gasPrice)
     const value = params.value ? params.value : 0
     const parameters = params.arguments.length === 0 ? null : params.arguments
     console.log("parameters ==>", parameters)
     const data = parameters == null ? await contract.methods[params.name]().encodeABI() : await contract.methods[params.name](...parameters).encodeABI()
     console.log('data ==>', data)
-    // let gasLimit = parameters == null ? await contract.methods[params.name]().estimateGas({from: accounts, to: params.contractAddr,gasPrice: web3.utils.toHex(gasPrice), value: web3.utils.toHex(value)}) : await contract.methods[params.name](...parameters).estimateGas({from: accounts, to: params.contractAddr, gasPrice: web3.utils.toHex(gasPrice), value: web3.utils.toHex(value)})
-    // gasLimit = parseInt(gasLimit * 1.5 + '')
-    // console.log("gasLimit ==>", gasLimit)
+    let gasLimit = parameters == null ? await contract.methods[params.name]().estimateGas({from: accounts, to: params.contractAddr,gasPrice: web3.utils.toHex(gasPrice), value: web3.utils.toHex(value)}) : await contract.methods[params.name](...parameters).estimateGas({from: accounts, to: params.contractAddr, gasPrice: web3.utils.toHex(gasPrice), value: web3.utils.toHex(value)})
+    if (gasLimit <= 210000) {
+        gasLimit = 210000
+    } else {
+        gasLimit = parseInt(gasLimit * 1.3 + '')
+    }
+    console.log("gasLimit ==>", gasLimit)
 
     return new Promise((resolve, reject) => {
 
@@ -53,12 +56,13 @@ export const contractMethod = async (accounts, params) => {
         }
         const param = [{
             nonce: web3.utils.toHex(nonce),
-            // gasPrice: web3.utils.toHex(gasPrice),
-            // gas: web3.utils.toHex(gasLimit),
+            gasPrice: web3.utils.toHex(gasPrice),
+            gas: web3.utils.toHex(gasLimit),
             from: accounts,
             to: params.contractAddr,
             value: web3.utils.toHex(value),
-            data
+            data,
+            chainid: '0x539'
         }]
         console.log('param ==>', param)
         const ethereum = (window).ethereum

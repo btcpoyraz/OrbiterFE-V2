@@ -77,7 +77,7 @@ import { CommBtn } from '../../components'
 import { arbitrationData, haxItem, isConfirm, linkWallet, recoverSenderPageWorkingState, getArbitrationData } from '../../composition/hooks'
 import { formatDateMD } from '../../util'
 import { getUserTransferProofApi } from '../../core/routes/transactions'
-import { contractMethod, contract_obj } from '../../contracts'
+import { contractMethod, contract_obj, linkNetwork } from '../../contracts'
 
 export default {
     name: 'Arbitration',
@@ -122,7 +122,7 @@ export default {
     watch: {
         selectItem() {
             this.showItem = JSON.parse(JSON.stringify(this.selectItem))
-            this.showItem.timestamp = formatDateMD(this.selectItem.timestamp)
+            this.showItem.timestamp = formatDateMD(this.selectItem.timestamp * 1000)
             this.showItem.value = this.$web3.utils.fromWei(this.selectItem.value, 'ether')
             this.showItem.symbol =this.selectItem.symbol
         },
@@ -138,7 +138,7 @@ export default {
             await getArbitrationData(linkWallet.value)
             this.selectItem = this.haxOptions.find(item => item.hash == this.hax)
             this.showItem = JSON.parse(JSON.stringify(this.selectItem))
-            this.showItem.timestamp = formatDateMD(this.selectItem.timestamp)
+            this.showItem.timestamp = formatDateMD(this.selectItem.timestamp * 1000)
             this.showItem.value = this.$web3.utils.fromWei(this.selectItem.value, 'ether')
             this.showItem.symbol =this.selectItem.symbol
         },
@@ -177,7 +177,7 @@ export default {
                 tokenAddress: this.selectItem.tokenAddress,
                 amount: this.selectItem.value,
                 nonce: Number(this.selectItem.nonce),
-                timestamp: Number(parseInt(new Date(this.selectItem.timestamp).getTime() / 1000)),
+                timestamp: this.selectItem.timestamp,
                 responseAmount: this.selectItem.expectValue,
                 responseSafetyCode: Number(this.selectItem.expectSafetyCode),
                 ebcid: Number(this.selectItem.ebcId),
@@ -197,15 +197,20 @@ export default {
                 arguments: [txinfo, txproof]
             }
             console.log('userChanllenge data ==>', data)
-            const result = await contractMethod(linkWallet.value, data).catch(err => {
-                // err
-                isConfirm.value = true
-                console.log('userChanllenge err ==>', err)
-                return
-            })
-            if (result && result.code === 200) {
-                // success
-                this.getTxData()
+            const isNetwork = await linkNetwork()
+            if (isNetwork) {
+                const result = await contractMethod(linkWallet.value, data).catch(err => {
+                    // err
+                    isConfirm.value = true
+                    console.log('userChanllenge err ==>', err)
+                    return
+                })
+                if (result && result.code === 200) {
+                    // success
+                    this.getTxData()
+                    isConfirm.value = true
+                }
+            } else {
                 isConfirm.value = true
             }
             

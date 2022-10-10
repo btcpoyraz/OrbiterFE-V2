@@ -41,6 +41,11 @@ export function formatDateMD(date) {
   `
 }
 
+export function formatDateOnMDS(date) {
+  const dt = new Date(date)
+  return `${padZero(dt.getHours())}:${padZero(dt.getMinutes())} on ${padZero(dt.getMonth() + 1)}/${padZero(dt.getDate())}/${dt.getFullYear()}
+  `
+}
 
 function padZero(tar) {
   if (+tar < 10) return `0${tar}`
