@@ -164,6 +164,7 @@ export default {
     },
     async getIsArbitration() {
       let data = await getArbitrationTxApi({replyAccount: linkWallet.value, pageSize: 1})
+      console.log("getArbitrationTxApi data ==>", data)
       if (data && data.data.data.rows.length != 0) {
         isArbitration.value = true
       } else {

@@ -12,8 +12,8 @@ export const linkNetwork = async () => {
     if (ethereum.networkVersion != chainInfo.chainid) {
         try {
             await ethereum.request({
-              method: 'wallet_switchEthereumChain',
-              params: [{ chainId: utils.utils.toHex(chainInfo.chainid + '') }],
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: utils.toHex(chainInfo.chainid + '') }],
             });
             return true
         } catch (switchError) {
@@ -42,6 +42,9 @@ export const linkNetwork = async () => {
                     return false
                 })
                 return result;
+            } else {
+                console.log("switchError ==>", switchError)
+                return false
             }
         }
     } else {

@@ -65,6 +65,11 @@ export default {
             default: 0
         }
     },
+    watch: {
+        step(value) {
+            return value
+        }
+    },
     components: {
         SvgIconThemed
     },

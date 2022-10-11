@@ -1631,12 +1631,13 @@ export default {
         toChainID == 99
       ) {
         this.transferValue =
-          realSelectMakerInfo.value.precision === 18
+          realSelectMakerInfo.value.precision == 18
             ? this.transferValue.replace(/^\D*(\d*(?:\.\d{0,5})?).*$/g, '$1')
             : this.transferValue.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')
       } else {
+        
         this.transferValue =
-          realSelectMakerInfo.value.precision === 18
+          realSelectMakerInfo.value.precision == 18
             ? this.transferValue.replace(/^\D*(\d*(?:\.\d{0,6})?).*$/g, '$1')
             : this.transferValue.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')
       }

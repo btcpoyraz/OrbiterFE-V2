@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </div> -->
-            <div class="node_item clearfix">
+            <!-- <div class="node_item clearfix">
                 <div class="item_left fl">
                     Network & Balance
                 </div>
@@ -59,7 +59,7 @@
                         <span v-show="val.balance.metis && val.balance.metis != 0">{{val.balance.metis}}Metis</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="node_warning">
                 <div class="warning_text" v-show="item.warning == 1">
                     <svg-icon iconName="warning-h" style="width: 17px; height: 17px"></svg-icon>

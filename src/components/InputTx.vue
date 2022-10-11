@@ -40,7 +40,7 @@ export default {
     },
     data() {
         return {
-            toTextarea: '0x4acaf9c123c5d19d5ed7ae35aa5dfc565be6b0e9482535f8f6d2839a273b185b',
+            toTextarea: '',
         }
     },
     components: {

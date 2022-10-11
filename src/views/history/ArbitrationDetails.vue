@@ -282,7 +282,7 @@ export default {
             if (!isWithdraw.value) return
             isWithdraw.value = false
             this.timeLineData.showWithDrawStartTime = formatDateOnMDS(new Date().getTime())
-            // console.log('timeLineData ==>', this.timeLineData)
+            console.log('timeLineData ==>', this.timeLineData)
             const resq = await this.getLpinfos(this.timeLineData.lp.id)
             // console.log('resq lpinfo ==>', resq)
             const userTx = {
@@ -297,7 +297,7 @@ export default {
                 timestamp: Number(this.timeLineData.fromTx.timestamp),
                 responseAmount: this.timeLineData.expectValue,
                 responseSafetyCode: Number(this.timeLineData.fromTx.nonce),
-                ebcid: Number(this.timeLineData.ebcId),
+                ebcid: Number(this.timeLineData.lp.pair.ebcId),
             }
             const lpinfo = {
                 sourceChain: Number(resq[0].pair.sourceChain),

@@ -103,7 +103,7 @@ function getToAmountFromUserAmount(userAmount, selectMakerInfo, isWei) {
   let gasFee = toAmount_tradingFee
     .multipliedBy(new BigNumber(selectMakerInfo.gasFee))
     .dividedBy(new BigNumber(1000))
-  let digit = selectMakerInfo.precision === 18 ? 5 : 2
+  let digit = selectMakerInfo.precision == 18 ? 5 : 2
   let gasFee_fix = gasFee.decimalPlaces(digit, BigNumber.ROUND_UP)
   let toAmount_fee = toAmount_tradingFee.minus(gasFee_fix)
 

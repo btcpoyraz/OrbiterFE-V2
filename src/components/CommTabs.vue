@@ -36,10 +36,12 @@ export default {
     methods: {
         beforeHandle(active) {
             if (active === 'MakerArbitration') {
-                util.showMessage(
-                    `Not a maker`,
-                    'error'
-                )
+                if (!isMaker.value) {
+                    util.showMessage(
+                        `Not a maker`,
+                        'error'
+                    )
+                }
                 return isMaker.value
             } else {
                 return true
