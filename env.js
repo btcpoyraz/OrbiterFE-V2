@@ -1,5 +1,5 @@
 const baseUrl = `https://twy7zbm79a.execute-api.ap-northeast-1.amazonaws.com`
-const baseDomain = `http://rinkeby_dashboard.orbiter.finance:3003`
+const baseDomain = `http://ec2-54-178-23-104.ap-northeast-1.compute.amazonaws.com:3003`
 const historyApiUrl = `${baseDomain}/api`
 export const netStateUrl = `${baseDomain}`
 export default {

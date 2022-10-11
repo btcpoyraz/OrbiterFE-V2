@@ -73,6 +73,8 @@ export default {
         return "Arbitrum Nova"
       case 516:
         return "Arbitrum Nova(Goerli)"
+      case 599:
+        return "Orbiter(Goerli)"
     }
     const chain = chainList.chainList.filter(
       (_chain) => _chain.chainId == netChainID
