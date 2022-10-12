@@ -1,7 +1,6 @@
 const baseUrl = `https://twy7zbm79a.execute-api.ap-northeast-1.amazonaws.com`
-const baseDomain = `http://ec2-54-178-23-104.ap-northeast-1.compute.amazonaws.com:3003`
-const historyApiUrl = `${baseDomain}/api`
-export const netStateUrl = `${baseDomain}`
+const historyApiUrl = `${process.env.VUE_APP_HISTORY_API_BASE}/api`
+export const netStateUrl = `${process.env.VUE_APP_NETSTATE_API_BASE}`
 export default {
   // baseUrl: process.env.NODE_ENV === 'production' ? 'https://twy7zbm79a.execute-api.ap-northeast-1.amazonaws.com' : '/send',
   baseUrl,
