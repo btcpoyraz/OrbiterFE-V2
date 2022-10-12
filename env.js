@@ -4,9 +4,9 @@ export const netStateUrl = `${process.env.VUE_APP_NETSTATE_API_BASE}`
 export default {
   // baseUrl: process.env.NODE_ENV === 'production' ? 'https://twy7zbm79a.execute-api.ap-northeast-1.amazonaws.com' : '/send',
   baseUrl,
-  baseTraddingUrl: historyApiUrl, //process.env.NODE_ENV === 'production' ? historyApiUrl : 'http://localhost:3000/api',
+  historyApiBase: historyApiUrl, //process.env.NODE_ENV === 'production' ? historyApiUrl : 'http://localhost:3000/api',
   graphUrl: process.env.VUE_APP_MAKER_GRAPHQL_URL,
-  transitionUrl: process.env.VUE_APP_TRANSTION_URL,
+  spvApiBase: process.env.VUE_APP_SPV_API_BASE,
   credential: false,
   localProvider: {
     1: process.env.VUE_APP_HP,
