@@ -350,7 +350,7 @@
       "name": "Optimism(G)",
       "chainId": 420,
       "shortName": "ogov",
-      "networkId": 420,
+      "networkId": 420, 
       "nativeCurrency": {
         "name": "Görli Ether",
         "symbol": "ETH",
@@ -359,6 +359,20 @@
       "rpc": ["https://goerli.optimism.io"],
       "faucets": [],
       "infoURL": "https://blockscout.com/optimism/goerli/"
+    },
+    {
+      "name": "Orbiter Goerli",
+      "chainId": 599,
+      "shortName": "Orbiter(G)",
+      "networkId": 599, 
+      "nativeCurrency": {
+        "name": "Ether",
+        "symbol": "ETH",
+        "decimals": 18
+      },
+      "rpc": ["http://orbitertransation.c75nk6zcldocdocke8at.ap-northeast-1.rds.amazonaws.com:8545"],
+      "faucets": [],
+      "infoURL": ""
     }
   ]
 }

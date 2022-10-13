@@ -50,7 +50,7 @@ const CHAIN_INDEX = {
   15: "bsc",
   16: 'arbitrum_nova',
   516: 'arbitrum_nova',
-  1377: 'orbiter'
+  599: 'orbiter'
 }
 
 const SIZE_OP = {

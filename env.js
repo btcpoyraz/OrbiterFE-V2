@@ -25,7 +25,8 @@ export default {
     515: process.env.VUE_APP_HP_BSC_R,
     15: process.env.VUE_APP_HP_BSC,
     16: 'https://nova.arbitrum.io/rpc',
-    516: 'https://goerli-rollup.arbitrum.io/rpc'
+    516: 'https://goerli-rollup.arbitrum.io/rpc',
+    599: 'http://orbitertransation.c75nk6zcldocdocke8at.ap-northeast-1.rds.amazonaws.com:8545'
   },
   localWSProvider: {
     1: process.env.VUE_APP_WP,
@@ -42,7 +43,8 @@ export default {
     513: process.env.VUE_APP_WP_BOBA_R,
     514: 'wss://zksync2-testnet.zksync.dev/ws',
     16: 'https://nova.arbitrum.io/rpc',
-    516: 'https://goerli-rollup.arbitrum.io/rpc'
+    516: 'https://goerli-rollup.arbitrum.io/rpc',
+    599: 'http://orbitertransation.c75nk6zcldocdocke8at.ap-northeast-1.rds.amazonaws.com:8545'
   },
   supportLocalNetWorksIDs: [
     '1',
@@ -74,7 +76,8 @@ export default {
     '513',
     '514',
     "515",
-    '516'
+    '516',
+    '599'
   ],
   localChainID_netChainID: {
     1: '1', // mainnet
@@ -105,7 +108,8 @@ export default {
     514: '280',//zksync2(G)
     515: "97", // bsc test
     16: '42170', // ar nova
-    516: '421613' // ar nova g
+    516: '421613', // ar nova g
+    599: '599'
   },
   crossAddressContracts: {
     1: '0xD9D74a29307cc6Fc8BF424ee4217f1A587FBc8Dc',
