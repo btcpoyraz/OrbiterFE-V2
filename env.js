@@ -16,7 +16,7 @@ export default {
     5: process.env.VUE_APP_HP_R, // goerli
     22: process.env.VUE_APP_HP_AR_R,
     66: process.env.VUE_APP_HP_PO_G,
-    77: process.env.VUE_APP_HP_OP_G,
+    77: "https://goerli.optimism.io",
     10: process.env.VUE_APP_HP_MT,
     510: process.env.VUE_APP_HP_MT_R,
     13: process.env.VUE_APP_HP_BOBA,
@@ -92,10 +92,10 @@ export default {
     13: '288', // boba mainnet,
     15: "56", // bsc mainnet,
     22: '421611', // arbitrum test
-    33: '4', // zktest
+    33: '5', // zktest
     44: '5', // starknet(R)
     66: '80001', // polygon(R)
-    77: '420', // optimism(K)
+    77: '420', // optimism(G)
     88: '3', // ropsten
     99: '5', // loopring(G)
     510: '588', //metis test
@@ -112,7 +112,7 @@ export default {
     2: '0xD9D74a29307cc6Fc8BF424ee4217f1A587FBc8Dc',
     3: '',
     4: '',
-    5: '0x783703C20dF627893952d59DF40f556A172d1719',
+    5: '0xD9D74a29307cc6Fc8BF424ee4217f1A587FBc8Dc',
     6: '0xD9D74a29307cc6Fc8BF424ee4217f1A587FBc8Dc',
     7: '0xD9D74a29307cc6Fc8BF424ee4217f1A587FBc8Dc',
     8: '',
@@ -148,7 +148,7 @@ export default {
     11: 'https://trade.dydx.exchange/',
     511: 'https://trade.stage.dydx.exchange/',
     12: 'https://zkspace.info/transaction/',
-    512: 'https://v3-goerli.zkswap.info/transaction/',
+    512: 'https://v3-rinkeby.zkswap.info/transaction/',
     13: 'https://blockexplorer.boba.network/tx/',
     513: 'https://blockexplorer.rinkeby.boba.network/tx/',
     15: "https://bscscan.com/tx/",
