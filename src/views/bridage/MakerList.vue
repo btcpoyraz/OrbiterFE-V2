@@ -78,11 +78,11 @@
         <div class="create_setting">
             <div class="create_box">
                 <SvgIconThemed icon="add-circle" style="width: 24px;height: 24px"/>
-                <span>New Node</span>
+                <a :href="dashBoardUrl" target="_blank">New Node</a>
             </div>
             <div class="setting_box">
                 <SvgIconThemed icon="add-circle" style="width: 24px;height: 24px"/>
-                <span>Set</span>
+                <a :href="dashBoardUrl" target="_blank">Set</a>
             </div>
         </div>
     </div>
@@ -106,11 +106,12 @@ export default {
     name: 'MakerList',
     data() {
         return {
-            
+            dashBoardUrl: ''
         }
     },
     created () {
         this.getLpNodes()
+        this.dashBoardUrl = this.$env.dashBoardUrl
     },
     computed: { 
         nodeList() {

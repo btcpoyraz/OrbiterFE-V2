@@ -78,7 +78,7 @@ module.exports = {
         changeOrigin: true,
       },
       '/wallet': {
-        target: 'http://ec2-54-178-23-104.ap-northeast-1.compute.amazonaws.com:3000/wallet',
+        target: 'https://maker_dashboard_test.orbiter.finance/api/spv/wallet',
         // target: 'http://192.168.1.91:3000/wallet',
         pathRewrite: {
           '^/wallet': '',

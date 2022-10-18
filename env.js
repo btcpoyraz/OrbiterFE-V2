@@ -7,6 +7,7 @@ export default {
   historyApiBase: historyApiUrl, //process.env.NODE_ENV === 'production' ? historyApiUrl : 'http://localhost:3000/api',
   graphUrl: process.env.VUE_APP_MAKER_GRAPHQL_URL,
   spvApiBase: process.env.VUE_APP_SPV_API_BASE,
+  dashBoardUrl: process.env.VUE_APP_DASH_BOARD_URL,
   credential: false,
   localProvider: {
     1: process.env.VUE_APP_HP,

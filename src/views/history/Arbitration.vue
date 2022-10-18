@@ -136,11 +136,15 @@ export default {
     methods: {
         async getTxData() {
             await getArbitrationData(linkWallet.value)
-            this.selectItem = this.haxOptions.find(item => item.hash == this.hax)
-            this.showItem = JSON.parse(JSON.stringify(this.selectItem))
-            this.showItem.timestamp = formatDateMD(this.selectItem.timestamp * 1000)
-            this.showItem.value = this.$web3.utils.fromWei(this.selectItem.value, 'ether')
-            this.showItem.symbol =this.selectItem.symbol
+            if (this.haxOptions.length != 0) {
+                this.selectItem = this.haxOptions.find(item => item.hash == this.hax)
+                this.showItem = JSON.parse(JSON.stringify(this.selectItem))
+                this.showItem.timestamp = formatDateMD(this.selectItem.timestamp * 1000)
+                this.showItem.value = this.$web3.utils.fromWei(this.selectItem.value, 'ether')
+                this.showItem.symbol =this.selectItem.symbol
+            } else {
+                this.$router.back()
+            }
         },
         closeDialog() {
             const last = JSON.parse(
@@ -208,6 +212,9 @@ export default {
                 if (result && result.code === 200) {
                     // success
                     this.getTxData()
+                    if (this.haxOptions.length == 0) {
+                        this.$router.back()
+                    }
                     isConfirm.value = true
                 }
             } else {

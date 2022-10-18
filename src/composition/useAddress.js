@@ -1,9 +1,10 @@
 import { web3State } from "../composition/hooks";
 import { compatibleGlobalWalletConf } from './walletsResponsiveData'
-import { ref } from './'
+import { ref, reactive } from './'
 
 export const linkWallet = ref('')
 export const defaultMaker = ref('')
+export const makerList = reactive([])
 export const myMaker = ref('')
 
 export function showAddress() {

@@ -41,7 +41,7 @@
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
-                <span>Sending back to mainnet address {{timeLineData.showToaddr}}</span>
+                <span>Sending back to mainnet address {{timeLineData.showTotx}}</span>
             </el-timeline-item>
     </el-timeline>
     </div>

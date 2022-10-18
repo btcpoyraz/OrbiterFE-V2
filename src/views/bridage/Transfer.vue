@@ -1507,6 +1507,9 @@ export default {
     },
     transfer_mid() {
       const { fromChainID, toChainID, selectTokenInfo } = transferDataState
+      if (!this.fromChainArray.includes(toChainID)) {
+        return
+      }
       updateTransferFromChainID(toChainID)
       updateTransferTokenInfo(selectTokenInfo)
       // Wait toChainArray updated
@@ -1570,18 +1573,18 @@ export default {
       this.showFromChainPopupClick()
     },
     getFromChainInfo(e) {
-      console.log("e ==>" , e)
       updateTransferFromChainID(e.localID)
       // Change query params's source
-      const { path, query } = this.$route
-      for (const key in queryParamsChainMap) {
-        if (queryParamsChainMap[key] == e.localID) {
-          if (!util.equalsIgnoreCase(query.source, key)) {
-            this.$router.replace({ path, query: { ...query, source: key } })
-            break
-          }
-        }
-      }
+      // const { path, query } = this.$route
+      // for (const key in queryParamsChainMap) {
+      //   if (queryParamsChainMap[key] == e.localID) {
+      //     if (!util.equalsIgnoreCase(query.source, key)) {
+      //       console.log('xxxxxxxxxx', query, key)
+      //       this.$router.replace({ path, query: { ...query, source: key } })
+      //       break
+      //     }
+      //   }
+      // }
       this.setDefaultTokenWhenNotSupport()
     },
     // open selectChain
@@ -1602,15 +1605,15 @@ export default {
       updateTransferToChainID(e.localID)
 
       // Change query params's source
-      const { path, query } = this.$route
-      for (const key in queryParamsChainMap) {
-        if (queryParamsChainMap[key] == e.localID) {
-          if (!util.equalsIgnoreCase(query.dest, key)) {
-            this.$router.replace({ path, query: { ...query, dest: key } })
-            break
-          }
-        }
-      }
+      // const { path, query } = this.$route
+      // for (const key in queryParamsChainMap) {
+      //   if (queryParamsChainMap[key] == e.localID) {
+      //     if (!util.equalsIgnoreCase(query.dest, key)) {
+      //       this.$router.replace({ path, query: { ...query, dest: key } })
+      //       break
+      //     }
+      //   }
+      // }
       this.setDefaultTokenWhenNotSupport()
     },
     // open selectChain

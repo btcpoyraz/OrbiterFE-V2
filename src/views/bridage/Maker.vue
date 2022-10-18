@@ -38,6 +38,12 @@
                 <div class="maker-foot-btn">Download the Market Maker Client</div>
             </div>
         </div>
+        <div class="create_setting">
+            <div class="create_box">
+                <SvgIconThemed icon="add-circle" style="width: 24px;height: 24px"/>
+                <a :href="dashBoardUrl" target="_blank">New Node</a>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -49,7 +55,15 @@ export default {
     name: 'Maker',
     components: {
         SvgIconThemed
-    }
+    },
+    data() {
+        return {
+            dashBoardUrl: ''
+        }
+    },
+    created() {
+        this.dashBoardUrl = this.$env.dashBoardUrl
+    },
 }
 </script>
 
@@ -71,6 +85,7 @@ export default {
     }
 }
 .Maker {
+    position: relative;
     .maker-box-no {
         padding: 34px 40px 38px;
         text-align: left;
@@ -163,6 +178,26 @@ export default {
                 }
             }
         }
-  }
+    }
+    .create_setting {
+        position: absolute;
+        top: -55px;
+        right: 15px;
+        display: flex;
+        align-items: center;
+        .create_box {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            svg {
+                height: 24px;
+                margin-right: 6px;
+            }
+            span {
+                font-size: 16px;
+                color: rgba(51, 51, 51, 0.8);
+            }
+        }
+    }
 }
 </style>

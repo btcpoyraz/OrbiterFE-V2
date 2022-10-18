@@ -3,7 +3,7 @@ import { GraphQLClient, gql } from 'graphql-request'
 import { chain2icon, makerToken } from '../../util/chain2id'
 import Web3 from 'web3'
 import { maker_rpc } from '../../contracts'
-import { defaultMaker } from '../../composition/hooks'
+import { defaultMaker, makerList } from '../../composition/hooks'
 
 // util/thegraph.js
 // const nowMakerList = [
@@ -2983,21 +2983,24 @@ function getQueryVariable(variable) {
 }
 async function getMaker() {
   const makeraddr = getQueryVariable('maker')
-  if (!makeraddr) {
-    const endpoint = env.graphUrl
-    const queryQl = gql`
-      query MyQuery {
-        makerEntities {
-          id
-          owner
-        }
+  const endpoint = env.graphUrl
+  const queryQl = gql`
+    query MyQuery {
+      makerEntities {
+        id
+        owner
       }
-    `
-    const graphQLClient = new GraphQLClient(endpoint, {})
-    const resp = await graphQLClient.request(queryQl)
-    const data = resp.makerEntities
-    console.log('maker data==>', data)
-    defaultMaker.value = data[0].id
+    }
+  `
+  const graphQLClient = new GraphQLClient(endpoint, {})
+  const resp = await graphQLClient.request(queryQl)
+  const data = resp.makerEntities
+  console.log('maker list data ==>', data)
+  if (resp && resp.makerEntities) {
+    makerList.values = data
+  }
+  if (!makeraddr) {
+    defaultMaker.value = data[0].owner
   } else {
     defaultMaker.value = makeraddr
   }
@@ -3007,10 +3010,11 @@ async function getChainLp() {
   const web3 = new Web3(maker_rpc())
   const endpoint = env.graphUrl
   await getMaker()
-  console.log('defaultMaker ==>', defaultMaker.value.toLowerCase())
+  const makerAddress = makerList.values.find(item => item.owner == defaultMaker.value)
+  console.log('defaultMaker ==>', makerAddress.id.toLowerCase())
   const queryQl = gql`
     query MyQuery {
-      lpEntities(where: {maker_contains: "${defaultMaker.value.toLowerCase()}", status: 1, stopTime: null}) {
+      lpEntities(where: {maker_contains: "${makerAddress.id.toLowerCase()}", status: 1, stopTime: null}) {
         maxPrice
         minPrice
         gasFee

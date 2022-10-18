@@ -67,7 +67,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { CommBtn, SvgIconThemed } from '../'
-import { transferDataState, isMobile, linkWallet } from '../../composition/hooks'
+import { transferDataState, isMobile, linkWallet, arbitrationData } from '../../composition/hooks'
 import {
   compatibleGlobalWalletConf,
   walletIsLogin,
@@ -84,9 +84,9 @@ import {
   isClaim,
   isArbitration,
   historyPanelState,
-  setActiveName
+  setActiveName,
+  getArbitrationData
 } from '../../composition/hooks'
-import { getArbitrationTxApi } from '../../core/routes/transactions'
 import { GraphQLClient, gql } from 'graphql-request'
 
 export default {
@@ -163,13 +163,19 @@ export default {
       this.$emit('closeDrawer')
     },
     async getIsArbitration() {
-      let data = await getArbitrationTxApi({replyAccount: linkWallet.value, pageSize: 1})
-      console.log("getArbitrationTxApi data ==>", data)
-      if (data && data.data.data.rows.length != 0) {
+      await getArbitrationData(this.linkWallet)
+      if (arbitrationData.haxOptions.length != 0) {
         isArbitration.value = true
       } else {
         isArbitration.value = false
       }
+      // let data = await getArbitrationTxApi({replyAccount: linkWallet.value, pageSize: 1})
+      // console.log("getArbitrationTxApi data ==>", data)
+      // if (data && data.data.data.rows.length != 0) {
+      //   isArbitration.value = true
+      // } else {
+      //   isArbitration.value = false
+      // }
     },
     async getIsClaim() {
       const endpoint = this.$env.graphUrl

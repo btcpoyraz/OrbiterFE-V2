@@ -281,6 +281,7 @@ export default {
         async getWithdraw() {
             if (!isWithdraw.value) return
             isWithdraw.value = false
+            this.step = 
             this.timeLineData.showWithDrawStartTime = formatDateOnMDS(new Date().getTime())
             console.log('timeLineData ==>', this.timeLineData)
             const resq = await this.getLpinfos(this.timeLineData.lp.id)
@@ -345,10 +346,10 @@ export default {
                             // let totx1 = res[0].toTx.id.substr(0, 6)
                             // let totx2 = res[0].toTx.id.substr(res[0].toTx.id.length - 4, 4)
                             // this.timeLineData.toTx.showToaddr = totx1 + '...' + totx2
-                            this.timeLineData.toTx.showToaddr = ''
+                            // this.timeLineData.toTx.showToaddr = ''
                             let totx1 = result.hax.substr(0, 6)
                             let totx2 = result.hax.substr(result.hax.length - 4, 4)
-                            this.timeLineData.showTotx= totx1 + '...' + totx2
+                            this.timeLineData.showTotx = totx1 + '...' + totx2
                             getArbitrationHistory()
                             clearInterval(timer)
                         } 

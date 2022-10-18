@@ -34,9 +34,12 @@ const getChainEntities = async () => {
 }   
 const getDate = async (addr) => {
     let res = await getArbitrationTxApi({replyAccount: addr, pageSize: 100})
-    const data = res.data.data.rows
-    console.log('data ==>', data)
-    return data
+    if (res.data.data && res.data.data.rows) {
+        const data = res.data.data.rows
+        console.log('data ==>', data)
+        return data
+    }
+    return []
 }
 export const getArbitrationData = async (addr) => {
     let data = await getDate(addr)
@@ -45,22 +48,28 @@ export const getArbitrationData = async (addr) => {
     console.log('resp ==>', resp, history, data)
     isConfirm.value = true
     let arr = []
-    data.map(v => {
-        let chainItem = resp.filter(item => item.id == v.chainId)
-        let timer = parseInt(new Date().getTime() / 1000)
-        let endTime = Number(v.timestamp) + Number(chainItem[0].maxReceiptTime)
-        let isHistory = history.filter(item => item.fromTx.id == v.hash)
-        console.log(timer, endTime)
-        if (timer >= endTime && isHistory.length == 0) {
-            let subStr1 = v.hash.substr(0, 14)
-            let subStr2 = v.hash.substr(v.hash.length - 12, 12)
-            v.label = subStr1 + '...' + subStr2
-            let fromTx1 = v.hash.substr(0, 6)
-            let fromTx2 = v.hash.substr(v.hash.length - 4, 4)
-            v.fromTx = fromTx1 + '...' + fromTx2
-            arr.push(v)
-        }
-    })
-    haxItem.value = arr[0].hash
-    arbitrationData.haxOptions = arr
+    if (data.length != 0) {
+        data.map(v => {
+            let chainItem = resp.filter(item => item.id == v.chainId)
+            let timer = parseInt(new Date().getTime() / 1000)
+            let endTime = Number(v.timestamp) + Number(chainItem[0].maxReceiptTime)
+            let isHistory = history.filter(item => item.fromTx.id == v.hash)
+            console.log(timer, endTime)
+            if (timer >= endTime && isHistory.length == 0) {
+                let subStr1 = v.hash.substr(0, 14)
+                let subStr2 = v.hash.substr(v.hash.length - 12, 12)
+                v.label = subStr1 + '...' + subStr2
+                let fromTx1 = v.hash.substr(0, 6)
+                let fromTx2 = v.hash.substr(v.hash.length - 4, 4)
+                v.fromTx = fromTx1 + '...' + fromTx2
+                arr.push(v)
+            }
+        })
+    }
+    if (arr.length == 0) {
+        isArbitration.value = false
+    } else {
+        haxItem.value = arr[0].hash
+        arbitrationData.haxOptions = arr
+    }
 }
