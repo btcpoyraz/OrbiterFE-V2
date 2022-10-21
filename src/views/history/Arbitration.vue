@@ -74,7 +74,7 @@
 </template>
 <script>
 import { CommBtn } from '../../components'
-import { arbitrationData, haxItem, isConfirm, linkWallet, recoverSenderPageWorkingState, getArbitrationData } from '../../composition/hooks'
+import { arbitrationData, haxItem, isConfirm, linkWallet, getArbitrationData } from '../../composition/hooks'
 import { formatDateMD } from '../../util'
 import { getUserTransferProofApi } from '../../core/routes/transactions'
 import { contractMethod, contract_obj, linkNetwork } from '../../contracts'
@@ -147,23 +147,7 @@ export default {
             }
         },
         closeDialog() {
-            const last = JSON.parse(
-                localStorage.getItem('last_page_before_history') || '{}'
-            )
-            try {
-                if (last.path) {
-                    if (last.path === this.$route.path) {
-                        this.$router.push({ path: '/' })
-                        return
-                    }
-                    last.path !== this.$route.path && this.$router.push(last)
-                    recoverSenderPageWorkingState()
-                } else {
-                this.$router.push({ path: '/' })
-                }
-            } catch (err) {
-                console.error(err)
-            }
+            this.$router.back()
         },
         selectChange(val) {
             this.selectItem = this.haxOptions.find(item => item.hash == val)

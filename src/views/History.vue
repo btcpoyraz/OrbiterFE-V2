@@ -99,7 +99,6 @@ import ArbitrationDetails from './history/ArbitrationDetails.vue'
 import {
   historyPanelState,
   getTransactionsHistory,
-  recoverSenderPageWorkingState,
   setHistoryInfo,
   setActiveName,
   activeName,
@@ -184,19 +183,20 @@ export default {
       pageStatus.value = status
     },
     closeDialog() {
-      const last = JSON.parse(
-        localStorage.getItem('last_page_before_history') || '{}'
-      )
-      try {
-        if (last.path) {
-          last.path !== this.$route.path && this.$router.push(last)
-          recoverSenderPageWorkingState()
-        } else {
-          this.$router.push({ path: '/' })
-        }
-      } catch (err) {
-        console.error(err)
-      }
+      this.$router.back()
+      // const last = JSON.parse(
+      //   localStorage.getItem('last_page_before_history') || '{}'
+      // )
+      // try {
+      //   if (last.path) {
+      //     last.path !== this.$route.path && this.$router.push(last)
+      //     recoverSenderPageWorkingState()
+      //   } else {
+      //     this.$router.push({ path: '/' })
+      //   }
+      // } catch (err) {
+      //   console.error(err)
+      // }
     },
     getHistoryInfo(e) {
       setHistoryInfo(e)
