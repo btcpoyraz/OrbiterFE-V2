@@ -81,7 +81,7 @@
                 <a :href="dashBoardUrl" target="_blank">New Node</a>
             </div>
             <div class="setting_box">
-                <SvgIconThemed icon="add-circle" style="width: 24px;height: 24px"/>
+                <SvgIconThemed icon="setting-2" style="width: 24px;height: 24px"/>
                 <a :href="dashBoardUrl" target="_blank">Set</a>
             </div>
         </div>
