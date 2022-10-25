@@ -85,7 +85,7 @@ export default {
   },
   zkSync2: {
     Mainnet: 'https://zksync2.zkscan.io/api',
-    Rinkeby: 'https://zksync2-testnet.zkscan.io/api',
+    Rinkeby: 'https://zksync2-testnet.zkscan.io/api/v0.2',
     chainID: '14',
     rinkeyChainID: '514',
   },

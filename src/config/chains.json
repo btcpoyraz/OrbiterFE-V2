@@ -245,7 +245,7 @@
         "wss://zksync2-testnet.zksync.dev/ws"
       ],
       "faucets": [],
-      "infoURL": "https://zksync2-testnet.zkscan.io/"
+      "infoURL": "https://explorer.zksync.io/"
     },
     {
       "name": "BSC(R)",

@@ -120,7 +120,6 @@ import { DydxHelper } from '../../util/dydx/dydx_helper'
 import { checkStateWhenConfirmTransfer } from '../../util/confirmCheck'
 import zkspace from '../../core/actions/zkspace'
 import config from '../../core/utils/config'
-import env from '../../../env'
 import * as ethers from 'ethers'
 import * as zksync2 from 'zksync-web3'
 import * as zksync from 'zksync'
@@ -384,20 +383,20 @@ export default {
       }
     },
     async zk2Transfer(fromChainID, toChainID, selectMakerInfo) {
-      const zksync2Provider = new zksync2.Provider(
-        env.localProvider[fromChainID]
-      )
-      const tokenAddress =
+      // const zksync2Provider = new zksync2.Provider(
+      //   env.localProvider[fromChainID]
+      //   )
+        const tokenAddress =
         fromChainID == selectMakerInfo.c1ID
-          ? selectMakerInfo.t1Address
-          : selectMakerInfo.t2Address
-      const isTokenLiquid = await zksync2Provider.isTokenLiquid(tokenAddress)
-      if (!isTokenLiquid) {
-        // throw new Error('the token can not be used for fee')
-      }
-      var rAmount = new BigNumber(transferDataState.transferValue)
-        .plus(new BigNumber(selectMakerInfo.tradingFee))
-        .multipliedBy(new BigNumber(10 ** selectMakerInfo.precision))
+        ? selectMakerInfo.t1Address
+        : selectMakerInfo.t2Address
+        // const isTokenLiquid = await zksync2Provider.isTokenLiquid(tokenAddress)
+        // if (!isTokenLiquid) {
+          // throw new Error('the token can not be used for fee')
+          // }
+          var rAmount = new BigNumber(transferDataState.transferValue)
+          .plus(new BigNumber(selectMakerInfo.tradingFee))
+          .multipliedBy(new BigNumber(10 ** selectMakerInfo.precision))
       var rAmountValue = rAmount.toFixed()
       var p_text = 9000 + Number(toChainID) + ''
       var tValue = orbiterCore.getTAmountFromRAmount(
@@ -421,34 +420,41 @@ export default {
       const toAddress = selectMakerInfo.makerAddress
       // const amountToSend = '100000000000000'
       const amountToSend = tValue.tAmount
+      // const params = {
+      //   from: compatibleGlobalWalletConf.value.walletPayload.walletAddress,
+      //   txType: 0x71,
+      //   customData: {
+      //     feeToken: '',
+      //   },
+      //   to: '',
+      //   value: ethers.BigNumber.from(0),
+      //   data: '0x',
+      // }
       const params = {
-        from: compatibleGlobalWalletConf.value.walletPayload.walletAddress,
-        txType: 0x71,
-        customData: {
-          feeToken: '',
-        },
-        to: '',
-        value: ethers.BigNumber.from(0),
-        data: '0x',
+        to: toAddress,
+        amount: ethers.BigNumber.from(amountToSend),
+        token: tokenAddress
       }
       const isMainCoin =
         tokenAddress.toLowerCase() ===
         '0x000000000000000000000000000000000000800a'
       if (!isMainCoin) {
-        const web3 = new Web3()
-        const tokenContract = new web3.eth.Contract(Coin_ABI, tokenAddress)
-        params.data = tokenContract.methods
-          .transfer(toAddress, web3.utils.toHex(amountToSend))
-          .encodeABI()
-        params.to = tokenAddress
-        params.customData.feeToken = tokenAddress
+        // const web3 = new Web3()
+        // const tokenContract = new web3.eth.Contract(Coin_ABI, tokenAddress)
+        // params.data = tokenContract.methods
+        //   .transfer(toAddress, web3.utils.toHex(amountToSend))
+        //   .encodeABI()
+        // params.to = tokenAddress
+        // params.customData.feeToken = tokenAddress
+        params.token = tokenAddress
       } else {
-        params.value = ethers.BigNumber.from(amountToSend)
-        params.to = toAddress
-        params.customData.feeToken =
-          '0x0000000000000000000000000000000000000000'
+        // params.value = ethers.BigNumber.from(amountToSend)
+        // params.to = toAddress
+        // params.customData.feeToken =
+        //   '0x0000000000000000000000000000000000000000'
+        params.token = "0x0000000000000000000000000000000000000000"
       }
-      const transferResult = await signer.sendTransaction(params)
+      const transferResult = await signer.transfer(params)
       if (transferResult.hash) {
         selectMakerInfo.makerAddress = params.from
         this.onTransferSucceed(
