@@ -53,6 +53,7 @@ export const realSelectMakerInfo = computed(() => {
   let fromChainID = transferDataState.fromChainID
   if (selectMakerInfo.c1ID === fromChainID) {
     return {
+      id: selectMakerInfo.c1Key,
       makerAddress: selectMakerInfo.makerAddress,
       c1ID: selectMakerInfo.c1ID,
       c2ID: selectMakerInfo.c2ID,
@@ -71,6 +72,7 @@ export const realSelectMakerInfo = computed(() => {
     }
   } else {
     return {
+      id: selectMakerInfo.c2Key,
       makerAddress: selectMakerInfo.makerAddress,
       c1ID: selectMakerInfo.c2ID,
       c2ID: selectMakerInfo.c1ID,
