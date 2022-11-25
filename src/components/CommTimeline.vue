@@ -41,7 +41,7 @@
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
-                <span>Sending back to mainnet address {{timeLineData.showTotx}}</span>
+                <span>Sending back to mainnet address <span @click="goToExplore(timeLineData)">{{timeLineData.showTotx}}</span></span>
             </el-timeline-item>
     </el-timeline>
     </div>
@@ -75,6 +75,15 @@ export default {
     },
     created() {
         console.log('timeLineData ==>', this.timeLineData)
+    },
+    methods: {
+        goToExplore(txData) {
+            console.log('tx', txData);
+            if (txData?.fromTx?.chainId) {
+                const url = this.$env.txExploreUrl[txData.fromTx.chainId] + txData.toTx.id;
+                window.open(url, '_blank');
+            }
+        },
     }
 }
 </script>
