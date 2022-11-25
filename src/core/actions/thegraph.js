@@ -3127,4 +3127,4 @@ export default {
   getMakerTokenNames,
   getAllMakerList,
 }
-export { getMakerInfo, getMakerTokenNames, getAllMakerList }
+export { getMakerInfo, getMakerTokenNames, getAllMakerList, nowMakerList };

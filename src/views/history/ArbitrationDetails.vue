@@ -100,7 +100,7 @@
                         </template>
                         <template #description>
                             <div class="step_tx">
-                                <span>Tx:{{timeLineData.showTotx}}</span>
+                                <span @click="goToExplore(timeLineData)">Tx:{{timeLineData.showTotx}}</span>
                             </div>
                         </template>
                     </el-step>
@@ -224,6 +224,13 @@ export default {
         this.initData()
     },
     methods: {
+        goToExplore(txData) {
+            console.log('tx', txData);
+            if (txData?.fromTx?.chainId) {
+                const url = this.$env.txExploreUrl[txData.fromTx.chainId] + txData.toTx.id;
+                window.open(url, '_blank');
+            }
+        },
         initData() {
             let data = this.detailRow
             data.showCreateAt = formatDateOnMDS(data.createdAt * 1000)

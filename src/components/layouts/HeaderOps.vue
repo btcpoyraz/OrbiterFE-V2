@@ -88,6 +88,7 @@ import {
   getArbitrationData
 } from '../../composition/hooks'
 import { GraphQLClient, gql } from 'graphql-request'
+import { nowMakerList } from "../../core/actions/thegraph";
 
 export default {
   name: 'HeaderOps',
@@ -164,7 +165,7 @@ export default {
     },
     async getIsArbitration() {
       await getArbitrationData(this.linkWallet)
-      if (arbitrationData.haxOptions.length != 0) {
+      if (arbitrationData.haxOptions.length !== 0 && nowMakerList.find(item=>item.makerAddress.toLowerCase() === this.linkWallet.toLowerCase())) {
         isArbitration.value = true
       } else {
         isArbitration.value = false

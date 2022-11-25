@@ -3,8 +3,10 @@
         <template> 
             <div class="table_box">
                 <el-table
+                ref="singleTable"
                 :data="tableData"
                 :highlight-current-row="false"
+                @current-change="handleCurrentChange"
                 style="width: 100%">
                     <template #append>
                         <CommLoading
@@ -27,7 +29,7 @@
                     <el-table-column prop="to" label="To Tx" width="170px" header-align="center" align="center">
                         <template slot-scope="scope">
                             <span class="table_span" v-if="!scope.row.toTx">Transaction not found</span>
-                            <span class="table_span to_hax" v-else>{{scope.row.showToTx}}</span>
+                            <span @click="goToExplore(scope.row)" class="table_span to_hax" v-else>{{scope.row.showToTx}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="status" label="Arbitration status" align="center" width="170px" v-if="activeName === 'Arbitration'">
@@ -36,11 +38,11 @@
                                 <svg-icon iconName="ar-pending" style="width: 16px;height: 16px"></svg-icon>
                                 <span>Pending</span>
                             </div>
-                            <!-- <div class="table_status" v-if="row.status == 2" @click="toDetails(row)">
+                            <div class="table_status" v-if="row.status == 2" @click="toDetails(row)">
                                 <svg-icon iconName="ar-withdraw" style="width: 16px;height: 16px"></svg-icon>
                                 <span>Withdraw</span>
-                            </div> -->
-                            <div class="table_status" v-if="row.status == 3" @click="toDetails(row)"> 
+                            </div>
+                            <div class="table_status" v-if="row.status == 3" @click="toDetails(row)">
                                 <svg-icon iconName="ar-processing" style="width: 16px;height: 16px"></svg-icon>
                                 <span>Processing payment</span>
                             </div>
@@ -153,6 +155,17 @@ export default {
         // getArbitrationHistory(linkWallet.value)
     },
     methods: {
+        handleCurrentChange(row){
+            this.toDetails(row);
+            this.$refs.singleTable.setCurrentRow();
+        },
+        goToExplore(txData) {
+            console.log('tx', txData);
+            if (txData?.fromTx?.chainId) {
+                const url = this.$env.txExploreUrl[txData.fromTx.chainId] + txData.toTx.id;
+                window.open(url, '_blank');
+            }
+        },
         curChange(cur) {
             console.log('cur ==>', cur)
         },

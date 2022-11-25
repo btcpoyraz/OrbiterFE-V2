@@ -215,10 +215,16 @@ export const getArbitrationHistory = async (account) => {
   data.map(async v => { 
     let timer = parseInt(new Date().getTime() / 1000)
     console.log("v ==>", v.waitingTime, timer, v.status == 0 && timer >= v.waitingTime)
+    if (v.status === 1) {
+      v.status = 4
+    } else
     if (v.status == 0 && timer >= v.waitingTime) {
-      v.status = 3
+      v.status = 2;
     } else if (v.status == 2) {
       v.status = 1
+      if (!v.toTx) {
+        v.status = 3;
+      }
     }
   })
   historyPanelState.tableData = data

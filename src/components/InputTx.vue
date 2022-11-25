@@ -12,6 +12,7 @@
             </div>
             <div class="inputItem">
                 <el-input
+                    resize="none"
                     type="textarea"
                     :rows="3"
                     placeholder=""
