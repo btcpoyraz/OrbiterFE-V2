@@ -41,7 +41,7 @@
         <div class="create_setting">
             <div class="create_box">
                 <SvgIconThemed icon="add-circle" style="width: 24px;height: 24px"/>
-                <a :href="dashBoardUrl" target="_blank">New Node</a>
+                <span @click="toDashBoardUrl" target="_blank">{{ isLogin ? 'New Node' : 'Connect a Wallet' }}</span>
             </div>
         </div>
     </div>
@@ -51,6 +51,8 @@
 import {
   SvgIconThemed,
 } from '../../components'
+import { walletIsLogin } from "../../composition/walletsResponsiveData";
+import Middle from '../../util/middle/middle';
 export default {
     name: 'Maker',
     components: {
@@ -64,6 +66,20 @@ export default {
     created() {
         this.dashBoardUrl = this.$env.dashBoardUrl
     },
+    computed:{
+        isLogin() {
+            return walletIsLogin.value
+        },
+    },
+    methods:{
+        toDashBoardUrl() {
+            if (walletIsLogin.value) {
+                window.open(this.dashBoardUrl);
+            } else {
+                Middle.$emit('connectWallet', true);
+            }
+        }
+    }
 }
 </script>
 
@@ -194,7 +210,7 @@ export default {
                 margin-right: 6px;
             }
             span {
-                font-size: 16px;
+                font-size: 15px;
                 color: rgba(51, 51, 51, 0.8);
             }
         }
