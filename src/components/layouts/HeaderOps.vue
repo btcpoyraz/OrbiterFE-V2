@@ -67,7 +67,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { CommBtn, SvgIconThemed } from '../'
-import { transferDataState, isMobile, linkWallet, arbitrationData } from '../../composition/hooks'
+import { transferDataState, isMobile, linkWallet, arbitrationData, getDate } from '../../composition/hooks';
 import {
   compatibleGlobalWalletConf,
   walletIsLogin,
@@ -88,7 +88,6 @@ import {
   getArbitrationData
 } from '../../composition/hooks'
 import { GraphQLClient, gql } from 'graphql-request'
-import { nowMakerList } from "../../core/actions/thegraph";
 
 export default {
   name: 'HeaderOps',
@@ -165,7 +164,7 @@ export default {
     },
     async getIsArbitration() {
       await getArbitrationData(this.linkWallet)
-      if (arbitrationData.haxOptions.length !== 0 && nowMakerList.find(item=>item.makerAddress.toLowerCase() === this.linkWallet.toLowerCase())) {
+      if (arbitrationData.haxOptions.length !== 0 && (await getDate(this.linkWallet)).length) {
         isArbitration.value = true
       } else {
         isArbitration.value = false
