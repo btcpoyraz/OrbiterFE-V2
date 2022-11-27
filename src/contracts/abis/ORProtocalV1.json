@@ -46,12 +46,12 @@
     },
     {
         "inputs": [],
-        "name": "DepositAmountCoefficient",
+        "name": "EthPunishCoefficient",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint16",
                 "name": "",
-                "type": "uint256"
+                "type": "uint16"
             }
         ],
         "stateMutability": "view",
@@ -59,12 +59,12 @@
     },
     {
         "inputs": [],
-        "name": "EthPunishCoefficient",
+        "name": "PauseAfterStopInterval",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint32",
                 "name": "",
-                "type": "uint256"
+                "type": "uint32"
             }
         ],
         "stateMutability": "view",
@@ -75,8 +75,37 @@
         "name": "TokenPunishCoefficient",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint16",
                 "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "calculateCompensation",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "baseValue",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "additiveValue",
                 "type": "uint256"
             }
         ],
@@ -139,6 +168,11 @@
                     },
                     {
                         "internalType": "uint256",
+                        "name": "responseSafetyCode",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
                         "name": "ebcid",
                         "type": "uint256"
                     }
@@ -197,6 +231,11 @@
                     {
                         "internalType": "uint256",
                         "name": "responseAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "responseSafetyCode",
                         "type": "uint256"
                     },
                     {
@@ -282,6 +321,11 @@
                     },
                     {
                         "internalType": "uint256",
+                        "name": "responseSafetyCode",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
                         "name": "ebcid",
                         "type": "uint256"
                     }
@@ -294,11 +338,6 @@
                 "internalType": "bytes32[]",
                 "name": "_txproof",
                 "type": "bytes32[]"
-            },
-            {
-                "internalType": "address",
-                "name": "from",
-                "type": "address"
             }
         ],
         "name": "checkUserChallenge",
@@ -326,6 +365,32 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "getETHPunishCoefficient",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getPauseAfterStopInterval",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "uint256",
@@ -338,11 +403,16 @@
                 "type": "uint256"
             }
         ],
-        "name": "getDepositAmount",
+        "name": "getPledgeAmount",
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "",
+                "name": "baseValue",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "additiveValue",
                 "type": "uint256"
             }
         ],
@@ -351,44 +421,12 @@
     },
     {
         "inputs": [],
-        "name": "getDepositAmountCoefficient",
+        "name": "getPledgeAmountSafeRate",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint32",
                 "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "getETHPunish",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getETHPunishCoefficient",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
+                "type": "uint32"
             }
         ],
         "stateMutability": "view",
@@ -446,6 +484,11 @@
                     {
                         "internalType": "uint256",
                         "name": "responseAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "responseSafetyCode",
                         "type": "uint256"
                     },
                     {
@@ -534,25 +577,6 @@
                 "type": "uint256"
             }
         ],
-        "stateMutability": "pure",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "getTokenPunish",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
         "stateMutability": "view",
         "type": "function"
     },
@@ -561,9 +585,9 @@
         "name": "getTokenPunishCoefficient",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint16",
                 "name": "",
-                "type": "uint256"
+                "type": "uint16"
             }
         ],
         "stateMutability": "view",
@@ -573,8 +597,33 @@
         "inputs": [
             {
                 "internalType": "address",
-                "name": "managerAddress",
+                "name": "_controlContract",
                 "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_chanllengePledgeAmountCoefficient",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_pledgeAmountSafeRate",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_ethPunishCoefficient",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_tokenPunishCoefficie",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_pauseAfterStopInterval",
+                "type": "uint32"
             }
         ],
         "name": "initialize",
@@ -610,6 +659,19 @@
     },
     {
         "inputs": [],
+        "name": "pledgeAmountSafeRate",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "renounceOwnership",
         "outputs": [],
         "stateMutability": "nonpayable",
@@ -624,70 +686,59 @@
             }
         ],
         "name": "setChanllengePledgeAmountCoefficient",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
         "inputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint16",
                 "name": "hundredDigits",
-                "type": "uint256"
-            }
-        ],
-        "name": "setDepositAmountCoefficient",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "hundredDigits",
-                "type": "uint256"
+                "type": "uint16"
             }
         ],
         "name": "setETHPunishCoefficient",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
         "inputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint32",
+                "name": "value",
+                "type": "uint32"
+            }
+        ],
+        "name": "setPauseAfterStopInterval",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "value",
+                "type": "uint32"
+            }
+        ],
+        "name": "setPledgeAmountSafeRate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
                 "name": "hundredDigits",
-                "type": "uint256"
+                "type": "uint16"
             }
         ],
         "name": "setTokenPunishCoefficient",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -702,92 +753,6 @@
         "name": "transferOwnership",
         "outputs": [],
         "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "chainID",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "bytes32",
-                        "name": "txHash",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "bytes32",
-                        "name": "lpid",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "sourceAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "destAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "tokenAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "amount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "nonce",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "responseAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "ebcid",
-                        "type": "uint256"
-                    }
-                ],
-                "internalType": "struct OperationsLib.txInfo",
-                "name": "userInfo",
-                "type": "tuple"
-            }
-        ],
-        "name": "userChanllengeWithDraw",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            },
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "pure",
         "type": "function"
     }
 ]
