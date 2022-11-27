@@ -27,7 +27,7 @@ export default {
     15: process.env.VUE_APP_HP_BSC,
     16: 'https://nova.arbitrum.io/rpc',
     516: 'https://goerli-rollup.arbitrum.io/rpc',
-    599: 'http://orbitertransation.c75nk6zcldocdocke8at.ap-northeast-1.rds.amazonaws.com:8545'
+    599: 'http://ec2-54-178-23-104.ap-northeast-1.compute.amazonaws.com:8545'
   },
   localWSProvider: {
     1: process.env.VUE_APP_WP,
