@@ -41,7 +41,7 @@
         <div class="create_setting">
             <div class="create_box">
                 <SvgIconThemed icon="add-circle" style="width: 24px;height: 24px"/>
-                <span @click="toDashBoardUrl" target="_blank">{{ isLogin ? 'New Node' : 'Connect a Wallet' }}</span>
+                <span @click="toDashBoardUrl" target="_blank">New Node</span>
             </div>
         </div>
     </div>
@@ -73,11 +73,7 @@ export default {
     },
     methods:{
         toDashBoardUrl() {
-            if (walletIsLogin.value) {
-                window.open(this.dashBoardUrl);
-            } else {
-                Middle.$emit('connectWallet', true);
-            }
+            window.open(this.dashBoardUrl);
         }
     }
 }
@@ -210,7 +206,7 @@ export default {
                 margin-right: 6px;
             }
             span {
-                font-size: 15px;
+                font-size: 16px;
                 color: rgba(51, 51, 51, 0.8);
             }
         }

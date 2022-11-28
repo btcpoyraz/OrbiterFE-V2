@@ -3,43 +3,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "makerId",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "useLimit",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes32[]",
-        "name": "pairs",
-        "type": "bytes32[]"
-      }
-    ],
-    "name": "ChainDepositChange",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": false,
         "internalType": "uint8",
         "name": "version",
@@ -54,21 +17,63 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "chainId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "enum IORMakerDeposit.chanllengeState",
-        "name": "opType",
-        "type": "uint8"
+        "internalType": "address",
+        "name": "makerPool",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "bytes32",
-        "name": "chanllengeId",
+        "name": "id",
         "type": "bytes32"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "chanllengeState",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "responseTxinfo",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stopTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "pledged",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ebcid",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct OperationsLib.chanllengeInfo",
+        "name": "chanllenge",
+        "type": "tuple"
       },
       {
         "components": [
@@ -137,6 +142,25 @@
         "internalType": "struct OperationsLib.txInfo",
         "name": "txInfo",
         "type": "tuple"
+      }
+    ],
+    "name": "LogChanllengeInfo",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "makerPool",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
       },
       {
         "components": [
@@ -161,8 +185,18 @@
             "type": "uint256"
           },
           {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
             "internalType": "uint256",
-            "name": "pledgeAmount",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "pledged",
             "type": "uint256"
           },
           {
@@ -177,7 +211,7 @@
         "type": "tuple"
       }
     ],
-    "name": "LogChanllengeInfo",
+    "name": "LogChanllengerMakeGood",
     "type": "event"
   },
   {
@@ -914,6 +948,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "chanllengeID",
+        "type": "bytes32"
+      }
+    ],
+    "name": "chanllengerMakeGood",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

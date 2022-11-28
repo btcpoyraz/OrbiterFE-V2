@@ -32,58 +32,6 @@
         "type": "event"
     },
     {
-        "inputs": [],
-        "name": "ChanllengePledgeAmountCoefficient",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "EthPunishCoefficient",
-        "outputs": [
-            {
-                "internalType": "uint16",
-                "name": "",
-                "type": "uint16"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "PauseAfterStopInterval",
-        "outputs": [
-            {
-                "internalType": "uint32",
-                "name": "",
-                "type": "uint32"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "TokenPunishCoefficient",
-        "outputs": [
-            {
-                "internalType": "uint16",
-                "name": "",
-                "type": "uint16"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "address",
@@ -106,6 +54,19 @@
             {
                 "internalType": "uint256",
                 "name": "additiveValue",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "challengePledgedAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
                 "type": "uint256"
             }
         ],
@@ -352,45 +313,6 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "getChanllengePledgeAmountCoefficient",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getETHPunishCoefficient",
-        "outputs": [
-            {
-                "internalType": "uint16",
-                "name": "",
-                "type": "uint16"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getPauseAfterStopInterval",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "uint256",
@@ -545,64 +467,13 @@
     {
         "inputs": [
             {
-                "internalType": "uint256",
-                "name": "chainID",
-                "type": "uint256"
-            }
-        ],
-        "name": "getStartDealyTime",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "pure",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "chainID",
-                "type": "uint256"
-            }
-        ],
-        "name": "getStopDealyTime",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getTokenPunishCoefficient",
-        "outputs": [
-            {
-                "internalType": "uint16",
-                "name": "",
-                "type": "uint16"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
                 "internalType": "address",
                 "name": "_controlContract",
                 "type": "address"
             },
             {
                 "internalType": "uint256",
-                "name": "_chanllengePledgeAmountCoefficient",
+                "name": "_challengePledgedAmount",
                 "type": "uint256"
             },
             {
@@ -612,23 +483,31 @@
             },
             {
                 "internalType": "uint16",
-                "name": "_ethPunishCoefficient",
+                "name": "_mainCoinPunishRate",
                 "type": "uint16"
             },
             {
                 "internalType": "uint16",
-                "name": "_tokenPunishCoefficie",
+                "name": "_tokenPunishRate",
                 "type": "uint16"
-            },
-            {
-                "internalType": "uint32",
-                "name": "_pauseAfterStopInterval",
-                "type": "uint32"
             }
         ],
         "name": "initialize",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "mainCoinPunishRate",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -685,7 +564,7 @@
                 "type": "uint256"
             }
         ],
-        "name": "setChanllengePledgeAmountCoefficient",
+        "name": "setChallengePledgedAmount",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -694,24 +573,11 @@
         "inputs": [
             {
                 "internalType": "uint16",
-                "name": "hundredDigits",
+                "name": "value",
                 "type": "uint16"
             }
         ],
-        "name": "setETHPunishCoefficient",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint32",
-                "name": "value",
-                "type": "uint32"
-            }
-        ],
-        "name": "setPauseAfterStopInterval",
+        "name": "setMainCoinPunishRate",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -733,13 +599,26 @@
         "inputs": [
             {
                 "internalType": "uint16",
-                "name": "hundredDigits",
+                "name": "value",
                 "type": "uint16"
             }
         ],
-        "name": "setTokenPunishCoefficient",
+        "name": "setTokenPunishRate",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "tokenPunishRate",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {

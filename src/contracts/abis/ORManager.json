@@ -31,6 +31,11 @@
             "type": "uint256"
           },
           {
+            "internalType": "uint256",
+            "name": "stopDelayTime",
+            "type": "uint256"
+          },
+          {
             "internalType": "address[]",
             "name": "tokenList",
             "type": "address[]"
@@ -206,6 +211,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "stopDelayTime",
+        "type": "uint256"
+      },
+      {
         "internalType": "bool",
         "name": "isUsed",
         "type": "bool"
@@ -328,6 +338,38 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "ebc",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ebcId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "chainId",
         "type": "uint256"
       }
@@ -354,6 +396,11 @@
           {
             "internalType": "uint256",
             "name": "maxReceiptTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stopDelayTime",
             "type": "uint256"
           },
           {
@@ -384,19 +431,6 @@
       }
     ],
     "name": "getEBC",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getSPV",
     "outputs": [
       {
         "internalType": "address",
@@ -615,6 +649,11 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "stopDelayTime",
+        "type": "uint256"
+      },
+      {
         "internalType": "address[]",
         "name": "tokenList",
         "type": "address[]"
@@ -677,6 +716,58 @@
     "name": "setTokenInfo",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "spv",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "tokenInfos",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "chainID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenPresion",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "mainTokenAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
