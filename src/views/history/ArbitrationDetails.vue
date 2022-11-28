@@ -237,8 +237,8 @@ export default {
             data.showfromTimeStamp = formatDateOnMDS(data.fromTx.timestamp * 1000)
             if (data.status == 1) {
                 if (data.toTx == null) {
-                    let usetWithdrawal = data.operations.filter(item => item.action == 'user:withdrawal')
-                    data.showtoTimeStamp = formatDateOnMDS(usetWithdrawal[0].timestamp * 1000)
+                    let usetWithdrawal = data.events.filter(item => item.action == 'user:withdrawal')
+                    data.showtoTimeStamp = formatDateOnMDS(usetWithdrawal[0].createdAt * 1000)
                 } else {
                     data.showtoTimeStamp = formatDateOnMDS(data.toTx.timestamp * 1000)
                 }
@@ -346,10 +346,10 @@ export default {
                     let timer = setInterval(async () => {
                         let res = await this.getFinish()
                         console.log("res finish data ==>", res[0])
-                        let userWithDraw = res[0].operations.filter(item => item.action == 'user:withdrawal')
+                        let userWithDraw = res[0].events.filter(item => item.action == 'user:withdrawal')
                         if (userWithDraw.length != 0) {
                             detailStatus.value = 4
-                            this.timeLineData.showFinishTime = formatDateOnMDS(userWithDraw[0].timestamp * 1000)
+                            this.timeLineData.showFinishTime = formatDateOnMDS(userWithDraw[0].createdAt * 1000)
                             // let totx1 = res[0].toTx.id.substr(0, 6)
                             // let totx2 = res[0].toTx.id.substr(res[0].toTx.id.length - 4, 4)
                             // this.timeLineData.toTx.showToaddr = totx1 + '...' + totx2
@@ -374,11 +374,11 @@ export default {
                 grievanceEntities(
                     where: {makerId: "${this.timeLineData.makerId}", hash: "${this.timeLineData.hash}"}
                 ) {
-                    operations {
+                    events {
                         id
                         action
                         content
-                        timestamp
+                        createdAt
                         address
                     }
                     hash
