@@ -72,4 +72,5 @@ export const getArbitrationData = async (addr) => {
         haxItem.value = arr[0].hash
         arbitrationData.haxOptions = arr
     }
+    return data;
 }

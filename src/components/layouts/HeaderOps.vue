@@ -67,7 +67,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { CommBtn, SvgIconThemed } from '../'
-import { transferDataState, isMobile, linkWallet, arbitrationData, getDate } from '../../composition/hooks';
+import { transferDataState, isMobile, linkWallet, arbitrationData } from '../../composition/hooks';
 import {
   compatibleGlobalWalletConf,
   walletIsLogin,
@@ -163,8 +163,8 @@ export default {
       this.$emit('closeDrawer')
     },
     async getIsArbitration() {
-      await getArbitrationData(this.linkWallet)
-      if (arbitrationData.haxOptions.length !== 0 && (await getDate(this.linkWallet)).length) {
+      const count = (await getArbitrationData(this.linkWallet)).length;
+      if (arbitrationData.haxOptions.length !== 0 && count) {
         isArbitration.value = true
       } else {
         isArbitration.value = false

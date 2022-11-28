@@ -182,7 +182,7 @@ export default {
             const contract_manager = await contract_obj('ORManager')
             const ebcAddr = await contract_manager.methods.getEBC(txinfo.ebcid).call()
             const contract_ORProtocalV1 = await contract_obj('ORProtocalV1', ebcAddr)
-            const value = await contract_ORProtocalV1.methods.getChanllengePledgeAmountCoefficient().call()
+            const value = await contract_ORProtocalV1.methods.challengePledgedAmount().call()
             console.log("confirm ==>", txinfo, txproof, value, JSON.stringify(txinfo))
             const data = {
                 name: 'userChanllenge',
