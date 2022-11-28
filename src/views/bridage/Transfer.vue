@@ -649,8 +649,8 @@ export default {
           info.text = 'INSUFFICIENT FUNDS'
           info.disabled = 'disabled'
         } else if (this.toValue > 0 && this.toValue > this.makerMaxBalance) {
-          info.text = 'INSUFFICIENT LIQUIDITY Test'
-          // info.disabled = 'disabled'
+          info.text = 'INSUFFICIENT LIQUIDITY'
+          info.disabled = 'disabled'
         }
 
         if (this.isShowUnreachMinInfo || this.isShowMax) {
