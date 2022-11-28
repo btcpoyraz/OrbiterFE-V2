@@ -188,7 +188,7 @@ export default {
           hash
           status
           createdAt
-          waitingTime
+          latestReplyTime
           fromTx {
             from
             id
@@ -206,7 +206,7 @@ export default {
       const resp = await graphQLClient.request(queryQl)
       let data = resp.grievanceEntities
       let timer = parseInt(new Date().getTime() / 1000)
-      if (data && data.length != 0 && data.filter(item => timer >= item.waitingTime).length != 0) {
+      if (data && data.length != 0 && data.filter(item => timer >= item.latestReplyTime).length != 0) {
         isClaim.value = true
       } else {
         isClaim.value = false
