@@ -173,12 +173,13 @@ export const getArbitrationHistory = async (account) => {
       status
       createdAt
       latestReplyTime
+      endTime
       makerId
-      operations {
+      events {
         id
         action
         content
-        timestamp
+        createdAt
         address
       }
       fromTx {
