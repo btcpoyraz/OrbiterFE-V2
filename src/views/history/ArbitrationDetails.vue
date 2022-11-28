@@ -243,7 +243,7 @@ export default {
                     data.showtoTimeStamp = formatDateOnMDS(data.toTx.timestamp * 1000)
                 }
             } else if (data.status == 3) {
-                data.showwaitingTime = formatDateOnMDS(data.waitingTime * 1000)
+                data.showwaitingTime = formatDateOnMDS(data.latestReplyTime * 1000)
             }
             historyPanelState.timeLineData = data
         },

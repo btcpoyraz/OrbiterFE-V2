@@ -172,7 +172,7 @@ export const getArbitrationHistory = async (account) => {
       hash
       status
       createdAt
-      waitingTime
+      latestReplyTime
       makerId
       operations {
         id
@@ -214,11 +214,11 @@ export const getArbitrationHistory = async (account) => {
   let data = resp.grievanceEntities
   data.map(async v => { 
     let timer = parseInt(new Date().getTime() / 1000)
-    console.log("v ==>", v.waitingTime, timer, v.status == 0 && timer >= v.waitingTime)
+    console.log("v ==>", v.latestReplyTime, timer, v.status == 0 && timer >= v.latestReplyTime)
     if (v.status === 1) {
       v.status = 4
     } else
-    if (v.status == 0 && timer >= v.waitingTime) {
+    if (v.status == 0 && timer >= v.latestReplyTime) {
       v.status = 2;
     } else if (v.status == 2) {
       v.status = 1
