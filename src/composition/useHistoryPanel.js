@@ -252,7 +252,7 @@ export const getMakerArbitrationHistory = async (maker) => {
       status
       createdAt
       makerId
-      operations {
+      events {
         id
         action
         content
