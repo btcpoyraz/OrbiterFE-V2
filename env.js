@@ -17,7 +17,7 @@ export default {
     5: process.env.VUE_APP_HP_R, // goerli
     22: process.env.VUE_APP_HP_AR_R,
     66: process.env.VUE_APP_HP_PO_G,
-    77: "https://goerli.optimism.io",
+    77: "https://opt-goerli.g.alchemy.com/v2/q-xxWQ-QPpQxC74H1FlKrhsgQ7V-EhEW",
     10: process.env.VUE_APP_HP_MT,
     510: process.env.VUE_APP_HP_MT_R,
     13: process.env.VUE_APP_HP_BOBA,

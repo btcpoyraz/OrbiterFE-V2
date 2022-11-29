@@ -45,22 +45,22 @@ async function getAllZksTokenList(localChainID) {
     }
 }
 async function getZKSTokenList(req) {
-    const url = `${req.localChainID === 512 ? config.ZKSpace.Rinkeby : config.ZKSpace.Mainnet
-        }/tokens?from=${req.from}&limit=${req.limit}&direction=${req.direction}`
-    try {
-        const response = await axios.get(url)
-        if (response.status === 200) {
-            var respData = response.data
-            if (respData.success) {
-                return respData.data
-            } else {
-                throw new Error(`respData.status not success`)
-            }
-        } else {
-            throw new Error(`getZKSTokenList NetWorkError`)
-        }
-    } catch (error) {
-        console.error('getZKSTokenList error =', error)
-        throw new Error(`getZKSTokenList error = ${error.message}`)
-    }
+    // const url = `${req.localChainID === 512 ? config.ZKSpace.Rinkeby : config.ZKSpace.Mainnet
+    //     }/tokens?from=${req.from}&limit=${req.limit}&direction=${req.direction}`
+    // try {
+    //     const response = await axios.get(url)
+    //     if (response.status === 200) {
+    //         var respData = response.data
+    //         if (respData.success) {
+    //             return respData.data
+    //         } else {
+    //             throw new Error(`respData.status not success`)
+    //         }
+    //     } else {
+    //         throw new Error(`getZKSTokenList NetWorkError`)
+    //     }
+    // } catch (error) {
+    //     console.error('getZKSTokenList error =', error)
+    //     throw new Error(`getZKSTokenList error = ${error.message}`)
+    // }
 }
