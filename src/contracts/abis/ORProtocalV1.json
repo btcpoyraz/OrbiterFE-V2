@@ -560,7 +560,7 @@
         "inputs": [
             {
                 "internalType": "uint256",
-                "name": "_wei",
+                "name": "value",
                 "type": "uint256"
             }
         ],

@@ -4,6 +4,25 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "caller",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint8",
         "name": "version",
         "type": "uint8"
@@ -18,7 +37,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "makerPool",
+        "name": "factory",
         "type": "address"
       },
       {
@@ -31,7 +50,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "chanllengeState",
+            "name": "challengeState",
             "type": "uint256"
           },
           {
@@ -66,13 +85,18 @@
           },
           {
             "internalType": "uint256",
+            "name": "compensate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "ebcid",
             "type": "uint256"
           }
         ],
         "indexed": false,
-        "internalType": "struct OperationsLib.chanllengeInfo",
-        "name": "chanllenge",
+        "internalType": "struct OperationsLib.challengeInfo",
+        "name": "challenge",
         "type": "tuple"
       },
       {
@@ -144,7 +168,7 @@
         "type": "tuple"
       }
     ],
-    "name": "LogChanllengeInfo",
+    "name": "LogChallengeInfo",
     "type": "event"
   },
   {
@@ -153,7 +177,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "makerPool",
+        "name": "factory",
         "type": "address"
       },
       {
@@ -166,7 +190,7 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "chanllengeState",
+            "name": "challengeState",
             "type": "uint256"
           },
           {
@@ -201,17 +225,22 @@
           },
           {
             "internalType": "uint256",
+            "name": "compensate",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "ebcid",
             "type": "uint256"
           }
         ],
         "indexed": false,
-        "internalType": "struct OperationsLib.chanllengeInfo",
-        "name": "chanllenge",
+        "internalType": "struct OperationsLib.challengeInfo",
+        "name": "challenge",
         "type": "tuple"
       }
     ],
-    "name": "LogChanllengerMakeGood",
+    "name": "LogChallengerMakeGood",
     "type": "event"
   },
   {
@@ -654,14 +683,27 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "challengePleged",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "chanllengeID",
+        "name": "challengeID",
         "type": "bytes32"
       }
     ],
-    "name": "chanllengerMakeGood",
+    "name": "challengerMakeGood",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1103,7 +1145,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct OperationsLib.lpChange[]",
+        "internalType": "struct OperationsLib.lpRestart[]",
         "name": "_lpinfos",
         "type": "tuple[]"
       }
@@ -1255,7 +1297,7 @@
         "type": "bytes32[]"
       }
     ],
-    "name": "makerChanllenger",
+    "name": "makerChallenger",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1448,7 +1490,7 @@
         "type": "bytes32[]"
       }
     ],
-    "name": "userChanllenge",
+    "name": "userChallenge",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
@@ -1612,5 +1654,9 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   }
 ]
