@@ -29,7 +29,7 @@ export const historyPanelState = reactive({
   transactionList: null,
   historyInfo: null,
   isShowHistory: false,
-  tabsList: [{name: 'History', label: 'History'},{name: 'Arbitration', label: 'Arbitration History'}, {name: 'MakerArbitration', label: 'Maker Arbitration'}],
+  tabsList: [{name: 'History', label: 'History'},{name: 'Arbitration', label: 'Arbitration History'}],
   tableData: [
     // {status: 1}, {status: 2}, {status: 3}, {status: 4}, {status: 5}
   ],
@@ -216,16 +216,22 @@ export const getArbitrationHistory = async (account) => {
   data.map(async v => { 
     let timer = parseInt(new Date().getTime() / 1000)
     console.log("v ==>", v.latestReplyTime, timer, v.status == 0 && timer >= v.latestReplyTime)
-    if (v.status === 1) {
-      v.status = 4
-    } else
     if (v.status == 0 && timer >= v.latestReplyTime) {
       v.status = 2;
     } else if (v.status == 2) {
-      v.status = 1
-      if (!v.toTx) {
-        v.status = 3;
+      if (v.events && v.events.length) {
+        const it = v.events.find(it => it.action === "user:withdrawal");
+        if (it?.content && it.content.length) {
+          if (!v.toTx) {
+            v.toTx = {
+              chainId: 599,
+              id: it.content[0],
+              timestamp: it.createdAt
+            };
+          }
+        }
       }
+      v.status = 4
     }
   })
   historyPanelState.tableData = data

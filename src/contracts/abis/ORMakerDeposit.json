@@ -385,6 +385,93 @@
         "type": "tuple"
       }
     ],
+    "name": "LogLPAction",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "pairId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "lpId",
+        "type": "bytes32"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "sourceChain",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "destChain",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "sourceTAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "destTAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sourcePresion",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "destPresion",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ebcid",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "gasFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tradingFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct OperationsLib.lpInfo",
+        "name": "lpinfo",
+        "type": "tuple"
+      }
+    ],
     "name": "LogLPPause",
     "type": "event"
   },

@@ -15,6 +15,7 @@ export const detailRow = reactive({})
 export const isWithdraw = ref(true)
 export const isClaim = ref(false)
 export const isArbitration = ref(false)
+export const isMakerArbitration = ref(false)
 
 const getChainEntities = async () => {
     const endpoint = env.graphUrl
@@ -72,4 +73,5 @@ export const getArbitrationData = async (addr) => {
         haxItem.value = arr[0].hash
         arbitrationData.haxOptions = arr
     }
+    return data;
 }

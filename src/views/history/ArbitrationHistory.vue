@@ -6,7 +6,6 @@
                 ref="singleTable"
                 :data="tableData"
                 :highlight-current-row="false"
-                @current-change="handleCurrentChange"
                 style="width: 100%">
                     <template #append>
                         <CommLoading
@@ -16,31 +15,32 @@
                             height="4rem"
                         />
                     </template>
-                    <el-table-column prop="date" label="Time" header-align="center" align="center">
+                    <el-table-column prop="date" label="Time" header-align="center" align="center" width="130px">
                         <template slot-scope="scope">
-                            <span class="table_span">{{scope.row.showCreatedAt}}</span>
+                            <span class="table_span" @click="toDetails(scope.row)">{{scope.row.showCreatedAt}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="from" label="From Tx" header-align="center" align="center">
+                    <el-table-column prop="from" label="From Tx" width="150px" header-align="center" align="center">
                         <template slot-scope="scope">
-                            <span class="table_span">{{scope.row.showFromTx}}</span>
+                            <span class="table_span" @click="toDetails(scope.row)">{{scope.row.showFromTx}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="to" label="To Tx" width="170px" header-align="center" align="center">
+                    <el-table-column prop="to" label="To Tx" width="150px" header-align="center" align="center">
                         <template slot-scope="scope">
-                            <span class="table_span" v-if="!scope.row.toTx">Transaction not found</span>
-                            <span @click="goToExplore(scope.row)" class="table_span to_hax" v-else>{{scope.row.showToTx}}</span>
+                            <span class="table_span" v-if="!scope.row.toTx" @click="toDetails(scope.row)">Transaction not found</span>
+                            <span @click="goToExplore(scope.row)" :class="$store.state.themeMode + '-to_hax table_span'" v-else>{{scope.row.showToTx}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="status" label="Arbitration status" align="center" width="170px" v-if="activeName === 'Arbitration'">
+                    <el-table-column prop="status" label="Status" header-align="center" align="center" width="130px" v-if="activeName === 'Arbitration'">
                         <template #default="{ row }">
                             <div class="table_status" v-if="row.status == 0" @click="toDetails(row)">
                                 <svg-icon iconName="ar-pending" style="width: 16px;height: 16px"></svg-icon>
                                 <span>Pending</span>
                             </div>
                             <div class="table_status" v-if="row.status == 2" @click="toDetails(row)">
-                                <svg-icon iconName="ar-withdraw" style="width: 16px;height: 16px"></svg-icon>
+                                 <svg-icon iconName="ar-withdraw" style="width: 16px;height: 16px"></svg-icon>
                                 <span>Withdraw</span>
+                                <span class="red_dot"></span>
                             </div>
                             <div class="table_status" v-if="row.status == 3" @click="toDetails(row)">
                                 <svg-icon iconName="ar-processing" style="width: 16px;height: 16px"></svg-icon>
@@ -278,15 +278,21 @@ export default {
         margin-top: 14px;
         font-size: 14px;
         .table_status {
+            text-align: center;
             display: flex;
             align-items: center;
+            justify-content: center;
             padding-left: 10px;
             cursor: pointer;
             svg {
                 margin-right: 6px;
             }
         }
-        .to_hax {
+        .dark-to_hax {
+            border-bottom: 1px solid #ffffff;
+            cursor: pointer;
+        }
+        .light-to_hax {
             border-bottom: 1px solid #333;
             cursor: pointer;
         }
@@ -340,4 +346,8 @@ export default {
     display: flex;
     justify-content: right;
 }
+.table_span{
+    cursor: pointer;
+}
+.red_dot{ display:block; background:#f00; border-radius:50%; width:0.4em; height:0.4em; top:10px; right:10px; position:absolute; }
 </style>

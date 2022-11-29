@@ -1,43 +1,43 @@
 <template>
     <div class="time_line_box">
         <el-timeline :reverse="false">
-            <el-timeline-item :timestamp="timeLineData.showfromTimeStamp" placement="top" v-if="step >= 1">
+            <el-timeline-item class="time_line" :timestamp="timeLineData.showfromTimeStamp" placement="top" v-if="step >= 1">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
                 <span>Arbitration Begins Lock Maker Deposit</span>
             </el-timeline-item>
-            <el-timeline-item :timestamp="timeLineData.showCreateAt" placement="top" v-if="step >= 2">
+            <el-timeline-item class="time_line" :timestamp="timeLineData.showCreateAt" placement="top" v-if="step >= 2">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
                 <span>Transaction sent to maker for processing</span>
             </el-timeline-item>
-            <el-timeline-item :timestamp="timeLineData.showtoTimeStamp" placement="top" v-if="status == 1 && step >= 3">
+            <el-timeline-item class="time_line" :timestamp="timeLineData.showtoTimeStamp" placement="top" v-if="status == 1 && step >= 3">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
                 <span>Maker processed</span>
             </el-timeline-item>
-            <el-timeline-item :timestamp="timeLineData.showwaitingTime" placement="top" v-if="step >= 3 && status != 1">
+            <el-timeline-item class="time_line" :timestamp="showWaitingTime" placement="top" v-if="step >= 3 && status != 1">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
                 <span>Maker timeout not processed</span>
             </el-timeline-item>
-            <el-timeline-item :timestamp="timeLineData.showWithDrawStartTime" placement="top" v-if="step >= 4">
+            <el-timeline-item class="time_line" :timestamp="showWithDrawStartTime" placement="top" v-if="status > 2">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
                 <span>Apply for withdrawal deposit {{timeLineData.showExpectValue}}ETH </span>
             </el-timeline-item>
-            <el-timeline-item :timestamp="timeLineData.showWithDrawTime" placement="top" v-if="step >= 5">
+            <el-timeline-item class="time_line" :timestamp="showWithDrawStartTime" placement="top" v-if="status > 2">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
                 <span>Deposit sent to mainnet address</span>
             </el-timeline-item>
-            <el-timeline-item :timestamp="timeLineData.showFinishTime" placement="top" v-if="step >= 6">
+            <el-timeline-item class="time_line" :timestamp="showWithDrawStartTime" placement="top" v-if="step >= 6">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
@@ -50,6 +50,7 @@
 import {
     SvgIconThemed,
 } from './'
+import { formatDateOnMDS } from "../util";
 export default {
     name: 'CommTimeline',
     props: {
@@ -70,6 +71,26 @@ export default {
             return value
         }
     },
+    computed: {
+        showWaitingTime() {
+            const data = this.timeLineData;
+            const events = data.events;
+            if (events && events.length) {
+                const event = events.find(item => item.action === 'launch');
+                if (event?.createdAt) return formatDateOnMDS(+event.createdAt * 1000);
+            }
+            return null;
+        },
+        showWithDrawStartTime() {
+            const data = this.timeLineData;
+            const events = data.events;
+            if (events && events.length) {
+                const event = events.find(item => item.action === 'user:withdrawal');
+                if (event?.createdAt) return formatDateOnMDS(+event.createdAt * 1000);
+            }
+            return null;
+        },
+    },
     components: {
         SvgIconThemed
     },
@@ -88,6 +109,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+    .time_line{
+        margin-bottom: -10px;
+    }
 .time_line_box {
     text-align: left;
     ul{

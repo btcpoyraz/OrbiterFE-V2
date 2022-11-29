@@ -6,7 +6,7 @@
                 <div class="maker-list">
                     <div class="maker-list-item">
                         <span class="maker-list-icon">1</span>
-                        <span class="maker-list-details">Download the <a href="javascript:;">Market Maker Client</a> and rent a <a href="javascript:;">cloud service.</a></span>
+                        <span class="maker-list-details">Download the <a @click="toMakerClient">Market Maker Client</a> and rent a <a @click="comeSoon">Cloud Service.</a></span>
                     </div>
                     <div class="maker-list-item">
                         <span class="maker-list-icon">2</span>
@@ -26,20 +26,20 @@
                         <div class="maker-linksimg-box">
                             <SvgIconThemed icon="book-square" ></SvgIconThemed>
                         </div>
-                        <a href="javascript:;">Docs for Market Maker</a>
+                        <a @click="toDoc">Docs for Market Maker</a>
                     </div>
                     <div class="maker-links-item">
                         <div class="maker-linksimg-box">
                             <SvgIconThemed icon="maker-discord" ></SvgIconThemed>
                         </div>
-                        <a href="javascript:;">Get Help in Orbiter Discord</a>
+                        <a @click="toDiscord">Get Help in Orbiter Discord</a>
                     </div>
                 </div>
-                <div class="maker-foot-btn">Download the Market Maker Client</div>
+                <div @click="comeSoon" class="maker-foot-btn">Download the Market Maker Client</div>
             </div>
         </div>
         <div class="create_setting">
-            <div class="create_box">
+            <div :class="$store.state.themeMode + '-create_box'">
                 <SvgIconThemed icon="add-circle" style="width: 24px;height: 24px"/>
                 <span @click="toDashBoardUrl" target="_blank">New Node</span>
             </div>
@@ -64,7 +64,7 @@ export default {
         }
     },
     created() {
-        this.dashBoardUrl = this.$env.dashBoardUrl
+        this.dashBoardUrl = this.$env.dashBoardUrl + '/makerNode';
     },
     computed:{
         isLogin() {
@@ -74,6 +74,21 @@ export default {
     methods:{
         toDashBoardUrl() {
             window.open(this.dashBoardUrl);
+        },
+        toMakerClient() {
+            window.open('https://github.com/Orbiter-Finance/OrbitalModule');
+        },
+        toDoc() {
+            window.open('https://docs.orbiter.finance/');
+        },
+        toDiscord(){
+            window.open('https://discord.com/invite/hJJvXP7C73');
+        },
+        comeSoon(){
+            this.$notify.info({
+                title: `Coming Soon.`,
+                duration: 3000,
+            })
         }
     }
 }
@@ -197,7 +212,20 @@ export default {
         right: 15px;
         display: flex;
         align-items: center;
-        .create_box {
+        .dark-create_box {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            svg {
+                height: 24px;
+                margin-right: 6px;
+            }
+            span {
+                font-size: 16px;
+                color: #F5F5F5;
+            }
+        }
+        .light-create_box {
             cursor: pointer;
             display: flex;
             align-items: center;
