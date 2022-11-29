@@ -13,6 +13,13 @@
     >
     <template v-if="isLogin">
       <CommBtn
+              ref="MakerArbitration"
+              v-if="isMakerArbitration"
+              @click="toDashBoardUrl"
+              style="margin-right: 10px"
+      >Maker Arbitration</CommBtn
+      >
+      <CommBtn
         ref="ClaimBtn"
         v-if="isClaim"
         @click="toClaim"
@@ -83,11 +90,13 @@ import {
   saveSenderPageWorkingState,
   isClaim,
   isArbitration,
+  isMakerArbitration,
   historyPanelState,
   setActiveName,
   getArbitrationData
 } from '../../composition/hooks'
 import { GraphQLClient, gql } from 'graphql-request'
+import { nowMakerList } from "../../core/actions/thegraph";
 
 export default {
   name: 'HeaderOps',
@@ -129,6 +138,9 @@ export default {
     isClaim() {
       return isClaim.value
     },
+    isMakerArbitration() {
+      return isMakerArbitration.value;
+    },
     isArbitration() {
       return isArbitration.value
     }
@@ -138,7 +150,7 @@ export default {
       localStorage.getItem('selectedWallet') || '{}'
     )
     return {
-      selectedWallet,
+      selectedWallet
     }
   },
   watch: {
@@ -147,8 +159,14 @@ export default {
       this.getIsClaim()
     }
   },
+  created() {
+    this.dashBoardUrl = this.$env.dashBoardUrl + '/maker';
+  },
   methods: {
     ...mapMutations(['toggleThemeMode']),
+    toDashBoardUrl() {
+      window.open(this.dashBoardUrl);
+    },
     async connectStarkNetWallet() {
       if (this.starkAddress === 'not connected') {
         await connectStarkNetWallet()
@@ -163,19 +181,14 @@ export default {
       this.$emit('closeDrawer')
     },
     async getIsArbitration() {
-      const count = (await getArbitrationData(this.linkWallet)).length;
-      if (arbitrationData.haxOptions.length !== 0 && count) {
+      const arbitrationDataCount = (await getArbitrationData(this.linkWallet)).length;
+      const haxOptionsCount  = arbitrationData.haxOptions.length;
+      if (haxOptionsCount && arbitrationDataCount) {
         isArbitration.value = true
       } else {
         isArbitration.value = false
       }
-      // let data = await getArbitrationTxApi({replyAccount: linkWallet.value, pageSize: 1})
-      // console.log("getArbitrationTxApi data ==>", data)
-      // if (data && data.data.data.rows.length != 0) {
-      //   isArbitration.value = true
-      // } else {
-      //   isArbitration.value = false
-      // }
+      isMakerArbitration.value = !!((haxOptionsCount || arbitrationDataCount) && nowMakerList.find(item => item.makerAddress.toLowerCase() === linkWallet.value.toLowerCase()));
     },
     async getIsClaim() {
       const endpoint = this.$env.graphUrl
@@ -206,7 +219,7 @@ export default {
       const resp = await graphQLClient.request(queryQl)
       let data = resp.grievanceEntities
       let timer = parseInt(new Date().getTime() / 1000)
-      if (data && data.length != 0 && data.filter(item => timer >= item.latestReplyTime).length != 0) {
+      if (data && data.find(v =>v.status === 0 && timer >= v.latestReplyTime)) {
         isClaim.value = true
       } else {
         isClaim.value = false
@@ -230,7 +243,8 @@ export default {
     },
     showHistory() {
       this.$emit('closeDrawer')
-
+        setActiveName('History')
+       historyPanelState.activeName == 'History'
       const route = this.$route
       route.path !== '/history' &&
         localStorage.setItem(

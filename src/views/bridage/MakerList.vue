@@ -111,7 +111,7 @@ export default {
     },
     created () {
         this.getLpNodes()
-        this.dashBoardUrl = this.$env.dashBoardUrl
+        this.dashBoardUrl = this.$env.dashBoardUrl + '/makerNode';
     },
     computed: { 
         nodeList() {

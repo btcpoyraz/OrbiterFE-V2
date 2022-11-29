@@ -24,7 +24,7 @@
                         </template>
                     </el-step>
                 </el-steps>
-                <el-steps :active="1" align-center v-if="status === 2">
+                <el-steps :active="1" align-center v-if="status === 3">
                     <el-step title="Arbitration begins">
                         <template #icon>
                             <svg-icon iconName="step-success"></svg-icon>
@@ -53,7 +53,7 @@
                         </template>
                     </el-step>
                 </el-steps>
-                <el-steps :active="1" align-center v-if="status === 3">
+                <el-steps :active="1" align-center v-if="status === 2">
                     <el-step title="Arbitration begins">
                         <template #icon>
                             <svg-icon iconName="step-success"></svg-icon>
@@ -100,7 +100,7 @@
                         </template>
                         <template #description>
                             <div class="step_tx">
-                                <span @click="goToExplore(timeLineData)">Tx:{{timeLineData.showTotx}}</span>
+                                <span @click="goToExplore(timeLineData)">Tx:{{timeLineData.showTotx || showTx}}</span>
                             </div>
                         </template>
                     </el-step>
@@ -123,7 +123,7 @@
                         </template>
                         <template #description>
                             <div class="step_tx">
-                                <span v-if="timeLineData.toTx != null">Tx:{{timeLineData.toTx.showid}}</span>
+                                <span v-if="timeLineData.toTx != null">Tx:{{timeLineData.showTotx || showTx}}</span>
                             </div>
                         </template>
                     </el-step>
@@ -134,7 +134,7 @@
                     <CommTimeline :timeLineData="timeLineData" :step="step" :status="status"></CommTimeline>
                 </div>
             </div>
-            <div class="btn_box" v-if="status == 3">
+            <div class="btn_box" v-if="status == 2">
                 <CommBtn ref="WithdrawBtn" style="width: 200px;" :disabled="!isWithdraw" @click="getWithdraw">
                     {{isWithdraw ? 'Withdraw' : 'Waiting...'}}
                 </CommBtn>
@@ -178,6 +178,14 @@ export default {
         CommTimeline
     },
     computed: {
+        showTx() {
+            const v = this.timeLineData;
+            if (v?.toTx?.id) {
+                let toStr1 = v.toTx.id.substr(0, 6);
+                let toStr2 = v.toTx.id.substr(v.hash.length - 4, 4);
+                return toStr1 + '...' + toStr2;
+            }
+        },
         isMobile() {
             return isMobile.value
         },
@@ -340,7 +348,7 @@ export default {
                 })
                 if (result && result.code === 200) {
                     // success
-                    detailStatus.value = 2
+                    detailStatus.value = 3
                     this.timeLineData.showWithDrawTime = formatDateOnMDS(new Date().getTime())
                     this.timeLineData.showExpectValue = this.$web3.utils.fromWei(this.timeLineData.expectValue , 'ether')
                     let timer = setInterval(async () => {
@@ -412,6 +420,7 @@ export default {
     overflow: hidden;
     padding-bottom: 20px;
     .details_content{
+        padding:10px 0px;
         position: relative;
         .close_box {
             cursor: pointer;
@@ -420,7 +429,7 @@ export default {
             right: 26px;
         }
         .step_box {
-            margin-bottom: 36px;
+            margin-bottom: 26px;
             svg {
                 width: 40px;
                 height: 40px;

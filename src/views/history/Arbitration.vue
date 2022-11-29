@@ -7,7 +7,7 @@
                     TransactionID
                 </div>
                 <el-select v-model="hax" placeholder="" @change="selectChange" no-data-text="No data">
-                    <el-option style="background-color: #ffffff"
+                    <el-option style="background-color: #ffffff;"
                         v-for="item in haxOptions"
                         :key="item.hash"
                         :label="item.label"
@@ -37,7 +37,7 @@
                         <svg-icon iconName="ar-pending" style="width: 16px; height: 16px;"></svg-icon>
                     </div>
                     <div class="fl detail_text">
-                        <span>A <span class="warning_text">0.005</span> ETH is required to be deposited in the MDC contract to initiate the arbitration.This will be used as a security deposit for the arbitration.</span>
+                        <span>A <span class="warning_text">0.001</span> ETH is required to be deposited in the MDC contract to initiate the arbitration.This will be used as a security deposit for the arbitration.</span>
                     </div>
                 </div> 
                 <div class="detail_item clearfix">
@@ -219,7 +219,7 @@ export default {
 <style lang="scss" scoped>
 .app {
     .arbitration-page{
-        width: 600px;
+        width: 700px;
         height: 570px;
         margin: auto;
         border-radius: 20px;
@@ -255,7 +255,7 @@ export default {
             box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.2);
             border-radius: 12px;
             font-size: 14px;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             font-family: 'Inter';
             .table_title {
                 background: #F5F5F5;
@@ -285,7 +285,7 @@ export default {
             }
         }
         .details_box {
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             .detail_item {
                 font-family: 'Inter';
                 text-align: left;
@@ -300,6 +300,9 @@ export default {
                     box-sizing: border-box;
                     span {
                         color: rgba(51, 51, 51, 0.4);
+                    }
+                    .warning_text {
+                        font-weight: bold;
                     }
                 }
             }
