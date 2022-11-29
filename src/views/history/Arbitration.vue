@@ -26,7 +26,7 @@
                     <div class="table_item">
                         <span>{{showItem.timestamp}}</span>
                         <span>{{showItem.value}}{{showItem.symbol}}</span>
-                        <span @click="goToExplore(showItem.fromTx)"><div class="line_text">{{showItem.fromTx}}</div></span>
+                        <span @click="goToExplore(showItem)"><div class="line_text">{{showItem.fromTx}}</div></span>
                         <span>No Matched Txn</span>
                     </div>
                 </div>
@@ -135,9 +135,9 @@ export default {
     },
     methods: {
         goToExplore(tx) {
-            console.log('tx', tx);
-            if (tx) {
-                const url = this.$env.txExploreUrl[this.selectItem.chainId] + tx;
+            console.log('tx', tx.hash);
+            if (tx?.hash) {
+                const url = this.$env.txExploreUrl[this.selectItem.chainId] + tx.hash;
                 window.open(url, '_blank');
             }
         },
