@@ -182,28 +182,28 @@ export default {
       const baseUrl = req.localChainID === 33 ? zkSync.TestNet : zkSync.Mainnet
       const url = `${baseUrl}/tokens?from=${req.from}&limit=${req.limit}&direction=${req.direction}`
 
-      axios.get(url)
-        .then(function (response) {
-          if (response.status === 200) {
-            var respData = response.data
-            if (respData.status === 'success') {
-              resolve(respData)
-            } else {
-              reject(respData)
-            }
-          } else {
-            reject({
-              errorCode: 1,
-              errMsg: 'NetWorkError',
-            })
-          }
-        })
-        .catch(function (error) {
-          reject({
-            errorCode: 2,
-            errMsg: error,
-          })
-        })
+      // axios.get(url)
+      //   .then(function (response) {
+      //     if (response.status === 200) {
+      //       var respData = response.data
+      //       if (respData.status === 'success') {
+      //         resolve(respData)
+      //       } else {
+      //         reject(respData)
+      //       }
+      //     } else {
+      //       reject({
+      //         errorCode: 1,
+      //         errMsg: 'NetWorkError',
+      //       })
+      //     }
+      //   })
+      //   .catch(function (error) {
+      //     reject({
+      //       errorCode: 2,
+      //       errMsg: error,
+      //     })
+      //   })
     })
   },
 }
