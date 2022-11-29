@@ -185,19 +185,19 @@ export default {
             const value = await contract_ORProtocalV1.methods.challengePledgedAmount().call()
             console.log("confirm ==>", txinfo, txproof, value, JSON.stringify(txinfo))
             const data = {
-                name: 'userChanllenge',
+                name: 'userChallenge',
                 contractName: "ORMakerDeposit",
                 contractAddr: this.selectItem.makerId,
                 value,
                 arguments: [txinfo, txproof]
             }
-            console.log('userChanllenge data ==>', data)
+            console.log('userChallenge data ==>', data)
             const isNetwork = await linkNetwork()
             if (isNetwork) {
                 const result = await contractMethod(linkWallet.value, data).catch(err => {
                     // err
                     isConfirm.value = true
-                    console.log('userChanllenge err ==>', err)
+                    console.log('userChallenge err ==>', err)
                     return
                 })
                 if (result && result.code === 200) {
