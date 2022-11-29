@@ -30,18 +30,18 @@ async function getAllLpTokenList(localChainID, count = 0) {
     }
 }
 async function getLpTokenList(localChainID) {
-    const url = `${localChainID === 99 ? config.loopring.Rinkeby : config.loopring.Mainnet}/api/v3/exchange/tokens`
+    // const url = `${localChainID === 99 ? config.loopring.Rinkeby : config.loopring.Mainnet}/api/v3/exchange/tokens`
     try {
-        const response = await axios.get(url)
-        if (response.status === 200) {
-            let lpTokenResult = {
-                chainID: localChainID,
-                tokenList: response.data,
-            }
-            store.commit('updateLpTokenList', lpTokenResult)
-        } else {
-            throw new Error(`getLpTokenList NetWorkError`)
-        }
+    //     const response = await axios.get(url)
+    //     if (response.status === 200) {
+    //         let lpTokenResult = {
+    //             chainID: localChainID,
+    //             tokenList: response.data,
+    //         }
+    //         store.commit('updateLpTokenList', lpTokenResult)
+    //     } else {
+    //         throw new Error(`getLpTokenList NetWorkError`)
+    //     }
     } catch (error) {
         console.error('getLpTokenList error =', error.message)
         throw new Error(`getLpTokenList error = ${error.message}`)
