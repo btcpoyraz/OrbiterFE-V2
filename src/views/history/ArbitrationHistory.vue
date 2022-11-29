@@ -229,20 +229,20 @@ export default {
                         responseSafetyCode: Number(toinfo.expectSafetyCode),
                         ebcid: Number(toinfo.ebcId),
                     }
-                    console.log("maker makerChanllenger ==>", txinfo, toTxinfo, txproof)
+                    console.log("maker makerChallenger ==>", txinfo, toTxinfo, txproof)
                     const data = {
-                        name: 'makerChanllenger',
+                        name: 'makerChallenger',
                         contractName: "ORMakerDeposit",
                         contractAddr: this.chooseItem.makerId,
                         arguments: [txinfo, toTxinfo, txproof]
                     }
-                    console.log('makerChanllenger data ==>', data)
+                    console.log('makerChallenger data ==>', data)
                     const isNetwork = await linkNetwork()
                     if (isNetwork) {
                         const result = await contractMethod(linkWallet.value, data).catch(err => {
                             // err
                             this.isConfirm = false
-                            console.log('makerChanllenger err ==>', err)
+                            console.log('makerChallenger err ==>', err)
                             return
                         })
                         if (result && result.code === 200) {
@@ -263,7 +263,7 @@ export default {
                     this.isConfirm = false
                 }
             } catch(err) {
-                console.log("makerChanllenger err ==>", err)
+                console.log("makerChallenger err ==>", err)
                 this.isConfirm = false
             }
             

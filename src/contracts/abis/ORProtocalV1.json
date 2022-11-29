@@ -1,637 +1,637 @@
 [
     {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint8",
-                "name": "version",
-                "type": "uint8"
-            }
-        ],
-        "name": "Initialized",
-        "type": "event"
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "version",
+          "type": "uint8"
+        }
+      ],
+      "name": "Initialized",
+      "type": "event"
     },
     {
-        "anonymous": false,
-        "inputs": [
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculateCompensation",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "baseValue",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "additiveValue",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "challengePledgedAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "previousOwner",
-                "type": "address"
+              "internalType": "uint256",
+              "name": "chainID",
+              "type": "uint256"
             },
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "OwnershipTransferred",
-        "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "token",
-                "type": "address"
+              "internalType": "bytes32",
+              "name": "txHash",
+              "type": "bytes32"
             },
             {
-                "internalType": "uint256",
-                "name": "value",
-                "type": "uint256"
-            }
-        ],
-        "name": "calculateCompensation",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "baseValue",
-                "type": "uint256"
+              "internalType": "bytes32",
+              "name": "lpid",
+              "type": "bytes32"
             },
             {
-                "internalType": "uint256",
-                "name": "additiveValue",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "challengePledgedAmount",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "chainID",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "bytes32",
-                        "name": "txHash",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "bytes32",
-                        "name": "lpid",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "sourceAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "destAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "tokenAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "amount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "nonce",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "responseAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "responseSafetyCode",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "ebcid",
-                        "type": "uint256"
-                    }
-                ],
-                "internalType": "struct OperationsLib.txInfo",
-                "name": "_userTx",
-                "type": "tuple"
+              "internalType": "address",
+              "name": "sourceAddress",
+              "type": "address"
             },
             {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "chainID",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "bytes32",
-                        "name": "txHash",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "bytes32",
-                        "name": "lpid",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "sourceAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "destAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "tokenAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "amount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "nonce",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "responseAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "responseSafetyCode",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "ebcid",
-                        "type": "uint256"
-                    }
-                ],
-                "internalType": "struct OperationsLib.txInfo",
-                "name": "_makerTx",
-                "type": "tuple"
+              "internalType": "address",
+              "name": "destAddress",
+              "type": "address"
             },
             {
-                "internalType": "bytes32[]",
-                "name": "_makerProof",
-                "type": "bytes32[]"
-            }
-        ],
-        "name": "checkMakerChallenge",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "chainID",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "bytes32",
-                        "name": "txHash",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "bytes32",
-                        "name": "lpid",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "sourceAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "destAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "tokenAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "amount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "nonce",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "responseAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "responseSafetyCode",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "ebcid",
-                        "type": "uint256"
-                    }
-                ],
-                "internalType": "struct OperationsLib.txInfo",
-                "name": "_txinfo",
-                "type": "tuple"
+              "internalType": "address",
+              "name": "tokenAddress",
+              "type": "address"
             },
             {
-                "internalType": "bytes32[]",
-                "name": "_txproof",
-                "type": "bytes32[]"
-            }
-        ],
-        "name": "checkUserChallenge",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "batchLimit",
-                "type": "uint256"
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
             },
             {
-                "internalType": "uint256",
-                "name": "maxPrice",
-                "type": "uint256"
-            }
-        ],
-        "name": "getPledgeAmount",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "baseValue",
-                "type": "uint256"
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
             },
             {
-                "internalType": "uint256",
-                "name": "additiveValue",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getPledgeAmountSafeRate",
-        "outputs": [
-            {
-                "internalType": "uint32",
-                "name": "",
-                "type": "uint32"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "chainID",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "bytes32",
-                        "name": "txHash",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "bytes32",
-                        "name": "lpid",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "sourceAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "destAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "address",
-                        "name": "tokenAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "amount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "nonce",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "responseAmount",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "responseSafetyCode",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "ebcid",
-                        "type": "uint256"
-                    }
-                ],
-                "internalType": "struct OperationsLib.txInfo",
-                "name": "_txinfo",
-                "type": "tuple"
-            }
-        ],
-        "name": "getRespnseHash",
-        "outputs": [
-            {
-                "internalType": "bytes32",
-                "name": "",
-                "type": "bytes32"
-            }
-        ],
-        "stateMutability": "pure",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "bool",
-                "name": "isSource",
-                "type": "bool"
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
             },
             {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "getSecuirtyCode",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
+              "internalType": "uint256",
+              "name": "responseAmount",
+              "type": "uint256"
             },
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "pure",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_controlContract",
-                "type": "address"
+              "internalType": "uint256",
+              "name": "responseSafetyCode",
+              "type": "uint256"
             },
             {
-                "internalType": "uint256",
-                "name": "_challengePledgedAmount",
-                "type": "uint256"
+              "internalType": "uint256",
+              "name": "ebcid",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct OperationsLib.txInfo",
+          "name": "_userTx",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "chainID",
+              "type": "uint256"
             },
             {
-                "internalType": "uint32",
-                "name": "_pledgeAmountSafeRate",
-                "type": "uint32"
+              "internalType": "bytes32",
+              "name": "txHash",
+              "type": "bytes32"
             },
             {
-                "internalType": "uint16",
-                "name": "_mainCoinPunishRate",
-                "type": "uint16"
+              "internalType": "bytes32",
+              "name": "lpid",
+              "type": "bytes32"
             },
             {
-                "internalType": "uint16",
-                "name": "_tokenPunishRate",
-                "type": "uint16"
-            }
-        ],
-        "name": "initialize",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "mainCoinPunishRate",
-        "outputs": [
+              "internalType": "address",
+              "name": "sourceAddress",
+              "type": "address"
+            },
             {
-                "internalType": "uint16",
-                "name": "",
-                "type": "uint16"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "maxWithdrawTime",
-        "outputs": [
+              "internalType": "address",
+              "name": "destAddress",
+              "type": "address"
+            },
             {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "pure",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
+              "internalType": "address",
+              "name": "tokenAddress",
+              "type": "address"
+            },
             {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "pledgeAmountSafeRate",
-        "outputs": [
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
             {
-                "internalType": "uint32",
-                "name": "",
-                "type": "uint32"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
             {
-                "internalType": "uint256",
-                "name": "_wei",
-                "type": "uint256"
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "responseAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "responseSafetyCode",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "ebcid",
+              "type": "uint256"
             }
-        ],
-        "name": "setChallengePledgedAmount",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+          ],
+          "internalType": "struct OperationsLib.txInfo",
+          "name": "_makerTx",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "_makerProof",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "checkMakerChallenge",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [
+      "inputs": [
+        {
+          "components": [
             {
-                "internalType": "uint16",
-                "name": "value",
-                "type": "uint16"
+              "internalType": "uint256",
+              "name": "chainID",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "txHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "lpid",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "sourceAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "destAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "responseAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "responseSafetyCode",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "ebcid",
+              "type": "uint256"
             }
-        ],
-        "name": "setMainCoinPunishRate",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+          ],
+          "internalType": "struct OperationsLib.txInfo",
+          "name": "_txinfo",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "_txproof",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "checkUserChallenge",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint32",
-                "name": "value",
-                "type": "uint32"
-            }
-        ],
-        "name": "setPledgeAmountSafeRate",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "batchLimit",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "maxPrice",
+          "type": "uint256"
+        }
+      ],
+      "name": "getPledgeAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "baseValue",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "additiveValue",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint16",
-                "name": "value",
-                "type": "uint16"
-            }
-        ],
-        "name": "setTokenPunishRate",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+      "inputs": [],
+      "name": "getPledgeAmountSafeRate",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "",
+          "type": "uint32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
-        "inputs": [],
-        "name": "tokenPunishRate",
-        "outputs": [
+      "inputs": [
+        {
+          "components": [
             {
-                "internalType": "uint16",
-                "name": "",
-                "type": "uint16"
+              "internalType": "uint256",
+              "name": "chainID",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "txHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "lpid",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "sourceAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "destAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "responseAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "responseSafetyCode",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "ebcid",
+              "type": "uint256"
             }
-        ],
-        "stateMutability": "view",
-        "type": "function"
+          ],
+          "internalType": "struct OperationsLib.txInfo",
+          "name": "_txinfo",
+          "type": "tuple"
+        }
+      ],
+      "name": "getRespnseHash",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "isSource",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "getSecuirtyCode",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_controlContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_challengePledgedAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint32",
+          "name": "_pledgeAmountSafeRate",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint16",
+          "name": "_mainCoinPunishRate",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "_tokenPunishRate",
+          "type": "uint16"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "mainCoinPunishRate",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "maxWithdrawTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pledgeAmountSafeRate",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "",
+          "type": "uint32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_wei",
+          "type": "uint256"
+        }
+      ],
+      "name": "setChallengePledgedAmount",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "value",
+          "type": "uint16"
+        }
+      ],
+      "name": "setMainCoinPunishRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint32",
+          "name": "value",
+          "type": "uint32"
+        }
+      ],
+      "name": "setPledgeAmountSafeRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "value",
+          "type": "uint16"
+        }
+      ],
+      "name": "setTokenPunishRate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "tokenPunishRate",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
-]
+  ]
