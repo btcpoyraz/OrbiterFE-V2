@@ -96,7 +96,8 @@ import {
   getArbitrationData
 } from '../../composition/hooks'
 import { GraphQLClient, gql } from 'graphql-request'
-import { isMakerAddress } from "../../core/actions/thegraph";
+import { getMakerAddress } from "../../core/actions/thegraph";
+import { getMakerArbitrationTxCountApi } from "../../core/routes/transactions";
 
 export default {
   name: 'HeaderOps',
@@ -188,7 +189,15 @@ export default {
       } else {
         isArbitration.value = false
       }
-      isMakerArbitration.value = !!((haxOptionsCount || arbitrationDataCount) && await isMakerAddress(linkWallet.value));
+      const makerList = await getMakerAddress();
+      const maker = makerList.find(item=>item.owner === linkWallet.value.toLowerCase());
+      let makerArbitrationDataCount = 0;
+        if (maker) {
+            const result = await getMakerArbitrationTxCountApi({ makerId: maker.id });
+            makerArbitrationDataCount = result?.data?.data?.count;
+            console.log('makerArbitrationDataCount', makerArbitrationDataCount);
+        }
+      isMakerArbitration.value = !!makerArbitrationDataCount;
     },
     async getIsClaim() {
       const endpoint = this.$env.graphUrl

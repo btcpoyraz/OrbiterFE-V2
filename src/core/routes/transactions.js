@@ -16,3 +16,7 @@ export async function getUserTransferProofApi(params = {}) {
 export async function getMakerTransferProofApi(params = {}) {
   return await axios.get(`${env.spvApiBase}/wallet/getDelayTransferProof`, { params })
 }
+
+export async function getMakerArbitrationTxCountApi(params = {}) {
+  return await axios.get(`${env.spvApiBase}/wallet/makerTransactions/count`, { params })
+}

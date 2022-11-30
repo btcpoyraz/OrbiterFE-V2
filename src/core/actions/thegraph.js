@@ -3005,11 +3005,11 @@ async function getMaker() {
     defaultMaker.value = makeraddr
   }
 }
-async function isMakerAddress(address) {
+async function getMakerAddress() {
   if (!makerList.values || !makerList.values.length) {
     await getMaker();
   }
-  return !!makerList.values.find(item => item.owner === address.toLowerCase());
+  return makerList.values;
 }
 async function getChainLp() {
   const web3 = new Web3(maker_rpc())
@@ -3132,4 +3132,4 @@ export default {
   getMakerTokenNames,
   getAllMakerList,
 }
-export { getMakerInfo, getMakerTokenNames, getAllMakerList, isMakerAddress };
+export { getMakerInfo, getMakerTokenNames, getAllMakerList, getMakerAddress };
