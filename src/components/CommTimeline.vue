@@ -29,7 +29,7 @@
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
-                <span>Apply for withdrawal deposit {{timeLineData.showExpectValue}}ETH </span>
+                <span>Apply for withdrawal deposit {{showExpectValue}}ETH </span>
             </el-timeline-item>
             <el-timeline-item class="time_line" :timestamp="showWithDrawStartTime" placement="top" v-if="status > 2">
                 <template #dot>
@@ -41,7 +41,7 @@
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
-                <span>Sending back to mainnet address <span @click="goToExplore(timeLineData)">{{timeLineData.showTotx}}</span></span>
+                <span>Sending back to mainnet address <span style="text-decoration: underline" @click="goToExplore(timeLineData)">{{showToTx}}</span></span>
             </el-timeline-item>
     </el-timeline>
     </div>
@@ -72,6 +72,20 @@ export default {
         }
     },
     computed: {
+        showExpectValue() {
+            if (this.timeLineData?.expectValue)
+                return this.$web3.utils.fromWei(this.timeLineData.expectValue, 'ether');
+            return '';
+        },
+        showToTx() {
+            const tx = this.timeLineData?.toTx?.id;
+            if (tx) {
+                const toTx1 = tx.substr(0, 6);
+                const totTx2 = tx.substr(tx.length - 4, 4);
+                return toTx1 + '...' + totTx2;
+            }
+            return '';
+        },
         showWaitingTime() {
             const data = this.timeLineData;
             const events = data.events;
@@ -79,7 +93,7 @@ export default {
                 const event = events.find(item => item.action === 'launch');
                 if (event?.createdAt) return formatDateOnMDS(+event.createdAt * 1000);
             }
-            return null;
+            return '';
         },
         showWithDrawStartTime() {
             const data = this.timeLineData;
@@ -88,7 +102,7 @@ export default {
                 const event = events.find(item => item.action === 'user:withdrawal');
                 if (event?.createdAt) return formatDateOnMDS(+event.createdAt * 1000);
             }
-            return null;
+            return '';
         },
     },
     components: {
