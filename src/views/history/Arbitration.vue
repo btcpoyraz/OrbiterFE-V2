@@ -37,7 +37,7 @@
                         <svg-icon iconName="ar-pending" style="width: 16px; height: 16px;"></svg-icon>
                     </div>
                     <div class="fl detail_text">
-                        <span>A <span class="warning_text">0.001</span> ETH is required to be deposited in the MDC contract to initiate the arbitration.This will be used as a security deposit for the arbitration.</span>
+                        <span>A <span class="warning_text">0.01</span> ETH is required to be deposited in the MDC contract to initiate the arbitration.This will be used as a security deposit for the arbitration.</span>
                     </div>
                 </div> 
                 <div class="detail_item clearfix">
