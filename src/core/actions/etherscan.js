@@ -20,7 +20,7 @@ export default {
         page: 1,
         offset: 500,
         sort: 'asc',
-        apikey: config.etherscan.key,
+        // apikey: config.etherscan.key,
       }
       if (+chainId === 5) {
         configNet = config.etherscan.TestNet
