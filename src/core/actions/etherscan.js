@@ -9,6 +9,52 @@ Axios.axios()
 var configNet = config.etherscan.Mainnet
 
 export default {
+  getTxListInternal: function (req, chainId) {
+    return new Promise((resolve, reject) => {
+      const params = {
+        module: 'account',
+        action: 'txlistinternal',
+        address: req.address,
+        startblock: req.startBlock,
+        endblock: req.endBlock,
+        page: 1,
+        offset: 500,
+        sort: 'asc',
+        apikey: config.etherscan.key,
+      }
+      if (+chainId === 5) {
+        configNet = config.etherscan.TestNet
+      }
+      axios
+          .get(configNet, { params })
+          .then(function (response) {
+            if (response.status === 200) {
+              var respData = response.data
+              if (respData.status === '1' && respData.message === 'OK') {
+                resolve(respData)
+              } else if (
+                  respData.status === '0' &&
+                  respData.message === 'No transactions found'
+              ) {
+                resolve(respData)
+              } else {
+                reject(respData)
+              }
+            } else {
+              reject({
+                errorCode: 1,
+                errorMsg: 'NetWork Error',
+              })
+            }
+          })
+          .catch((error) => {
+            reject({
+              errorCode: 2,
+              errorMsg: error,
+            })
+          })
+    })
+  },
   getTxList: function (req, chainId, isTokentx = true) {
     return new Promise((resolve, reject) => {
       const params = {
@@ -56,7 +102,6 @@ export default {
         })
     })
   },
-
   getTransationList: async function (req, chainId) {
     const tokentxList = await this.getTxList(req, chainId)
     // contact eth txlist

@@ -25,11 +25,11 @@
                 </template>
                 <span>Maker timeout not processed</span>
             </el-timeline-item>
-            <el-timeline-item class="time_line" :timestamp="showWithDrawStartTime" placement="top" v-if="status > 2">
+            <el-timeline-item class="time_line" :timestamp="showWithDrawStartTime" placement="top" v-if="status > 2 && depositValue">
                 <template #dot>
                     <SvgIconThemed icon="union" style="width: 24px;height: 24px"></SvgIconThemed>
                 </template>
-                <span>Apply for withdrawal deposit {{showExpectValue}}ETH </span>
+                <span>Apply for withdrawal deposit {{depositValue}}ETH </span>
             </el-timeline-item>
             <el-timeline-item class="time_line" :timestamp="showWithDrawStartTime" placement="top" v-if="status > 2">
                 <template #dot>
@@ -51,6 +51,7 @@ import {
     SvgIconThemed,
 } from './'
 import { formatDateOnMDS } from "../util";
+import etherscan from '../core/actions/etherscan';
 export default {
     name: 'CommTimeline',
     props: {
@@ -66,17 +67,17 @@ export default {
             default: 0
         }
     },
+    data() {
+        return {
+            depositValue: 0
+        };
+    },
     watch: {
         step(value) {
             return value
         }
     },
     computed: {
-        showExpectValue() {
-            if (this.timeLineData?.expectValue)
-                return this.$web3.utils.fromWei(this.timeLineData.expectValue, 'ether');
-            return '';
-        },
         showToTx() {
             const tx = this.timeLineData?.toTx?.to;
             if (tx) {
@@ -108,8 +109,22 @@ export default {
     components: {
         SvgIconThemed
     },
-    created() {
-        console.log('timeLineData ==>', this.timeLineData)
+    async created() {
+        console.log('timeLineData ==>', this.timeLineData);
+        const tx = await this.$web3.eth.getTransaction(this.timeLineData.toTx.id);
+        if (tx?.blockNumber) {
+            const { result } = await etherscan.getTxListInternal({
+                address: this.timeLineData.toTx.to,
+                startBlock: tx.blockNumber, endBlock: tx.blockNumber
+            }, process.env.VUE_APP_MAKER_CHAIN_ID);
+            if (result && result.length) {
+                for (const data of result) {
+                    if (+data.value) {
+                        this.depositValue = this.$web3.utils.fromWei(data.value, 'ether');
+                    }
+                }
+            }
+        }
     },
     methods: {
         goToExplore(txData) {
