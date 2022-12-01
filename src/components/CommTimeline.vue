@@ -111,16 +111,18 @@ export default {
     },
     async created() {
         console.log('timeLineData ==>', this.timeLineData);
-        const tx = await this.$web3.eth.getTransaction(this.timeLineData.toTx.id);
-        if (tx?.blockNumber) {
-            const { result } = await etherscan.getTxListInternal({
-                address: this.timeLineData.toTx.to,
-                startBlock: tx.blockNumber, endBlock: tx.blockNumber
-            }, process.env.VUE_APP_MAKER_CHAIN_ID);
-            if (result && result.length) {
-                for (const data of result) {
-                    if (+data.value) {
-                        this.depositValue = this.$web3.utils.fromWei(data.value, 'ether');
+        if(this.timeLineData?.toTx?.id){
+            const tx = await this.$web3.eth.getTransaction(this.timeLineData.toTx.id);
+            if (tx?.blockNumber) {
+                const { result } = await etherscan.getTxListInternal({
+                    address: this.timeLineData.toTx.to,
+                    startBlock: tx.blockNumber, endBlock: tx.blockNumber
+                }, process.env.VUE_APP_MAKER_CHAIN_ID);
+                if (result && result.length) {
+                    for (const data of result) {
+                        if (+data.value) {
+                            this.depositValue = this.$web3.utils.fromWei(data.value, 'ether');
+                        }
                     }
                 }
             }
