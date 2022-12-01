@@ -406,7 +406,6 @@ async function confirmUserTransaction(
     // EVM chains
     // main & arbitrum
     let trxConfirmations = await getConfirmations(localChainID, txHash)
-    console.log(trxConfirmations, '==');
     if (localChainID == 13 || localChainID===513) {
       trxConfirmations.confirmations = 3;
     }

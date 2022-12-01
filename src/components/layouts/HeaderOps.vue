@@ -195,7 +195,6 @@ export default {
         if (maker) {
             const result = await getMakerArbitrationTxCountApi({ makerId: maker.id });
             makerArbitrationDataCount = result?.data?.data?.count;
-            console.log('makerArbitrationDataCount', makerArbitrationDataCount);
         }
       isMakerArbitration.value = !!makerArbitrationDataCount;
     },

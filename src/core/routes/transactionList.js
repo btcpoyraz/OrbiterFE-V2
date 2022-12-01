@@ -352,7 +352,7 @@ async function getTransactionListZK2(
         zk2ScanStartBlock = 0
       }
     } catch (error) {
-      console.log('zk2ScanStartBlockError =', error)
+      console.error('zk2ScanStartBlockError =', error)
       throw error.message
     }
     let zk2scanReq = {
@@ -447,7 +447,6 @@ async function getTransactionListBoba(
   //     mtScanStartBlock = 0
   //   }
   // } catch (error) {
-  //   console.log('boba ScanStartBlockError =', error)
   // }
   let MtscanReq = {
     maker: userAddress,
@@ -751,7 +750,7 @@ async function getTransactionListZksync(
   try {
     zkTokenList = await getZKTokenAllList(chainID)
   } catch (err) {
-    console.log('zk tokenlistError =', err.message)
+    console.error('zk tokenlistError =', err.message)
   }
   let isContiue = true
   let lastHash = 0

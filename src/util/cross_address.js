@@ -210,7 +210,6 @@ export class CrossAddress {
       0,
       data
     )
-    console.log(transferHash, 'walletConnApproveERC20 transferHash---')
     const n = Notification({
       duration: 0,
       title: 'Approving...',

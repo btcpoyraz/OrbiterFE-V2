@@ -10,19 +10,15 @@ export const contractMethod = async (accounts, params) => {
     const contract = await contract_obj(params.contractName, params.contractAddr)
     const nonce =  await web3.eth.getTransactionCount(accounts)
     const gasPrice = await web3.eth.getGasPrice()
-    console.log("gasPrice ==>", gasPrice)
     const value = params.value ? params.value : 0
     const parameters = params.arguments.length === 0 ? null : params.arguments
-    console.log("parameters ==>", parameters)
     const data = parameters == null ? await contract.methods[params.name]().encodeABI() : await contract.methods[params.name](...parameters).encodeABI()
-    console.log('data ==>', data)
     let gasLimit = parameters == null ? await contract.methods[params.name]().estimateGas({from: accounts, to: params.contractAddr,gasPrice: web3.utils.toHex(gasPrice), value: web3.utils.toHex(value)}) : await contract.methods[params.name](...parameters).estimateGas({from: accounts, to: params.contractAddr, gasPrice: web3.utils.toHex(gasPrice), value: web3.utils.toHex(value)})
     if (Number(gasLimit) <= 210000) {
         gasLimit = 210000
     } else {
         gasLimit = parseInt(gasLimit * 1.3 + '')
     }
-    console.log("gasLimit ==>", gasLimit)
 
     return new Promise((resolve, reject) => {
 
@@ -64,7 +60,6 @@ export const contractMethod = async (accounts, params) => {
             data,
             chainid: '0x539'
         }]
-        console.log('param ==>', param)
         const ethereum = (window).ethereum
         if (!ethereum) {
             reject({

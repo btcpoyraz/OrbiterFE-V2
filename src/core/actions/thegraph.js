@@ -2995,7 +2995,6 @@ async function getMaker() {
   const graphQLClient = new GraphQLClient(endpoint, {})
   const resp = await graphQLClient.request(queryQl)
   const data = resp.makerEntities
-  console.log('maker list data ==>', data)
   if (resp && resp.makerEntities) {
     makerList.values = data
   }
@@ -3016,7 +3015,6 @@ async function getChainLp() {
   const endpoint = env.graphUrl
   await getMaker()
   const makerAddress = makerList.values.find(item => item.owner == defaultMaker.value)
-  console.log('defaultMaker ==>', makerAddress.id.toLowerCase())
   const queryQl = gql`
     query MyQuery {
       lpEntities(where: {maker_contains: "${makerAddress.id.toLowerCase()}", status: 1, stopTime: null}) {
@@ -3045,7 +3043,6 @@ async function getChainLp() {
   const graphQLClient = new GraphQLClient(endpoint, {})
   const resp = await graphQLClient.request(queryQl)
   const data = resp.lpEntities
-  console.log('resp data ==>', data)
   data.map((v) => {
     const tokenType = makerToken.find(
       (item) => item.address == v.pair.sourceToken

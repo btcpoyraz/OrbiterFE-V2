@@ -233,7 +233,6 @@ export default {
     },
     methods: {
         goToExplore(txData) {
-            console.log('tx', txData);
             if (txData?.fromTx?.chainId) {
                 const url = this.$env.txExploreUrl[txData.fromTx.chainId] + txData.toTx.id;
                 window.open(url, '_blank');
@@ -260,7 +259,6 @@ export default {
             this.$emit('stateChanged', 1)
         },
         async getLpinfos(lpid) {
-            console.log('lpid ==>', lpid)
             const endpoint = env.graphUrl
             const queryQl = gql`
             query MyQuery {
@@ -298,9 +296,7 @@ export default {
             isWithdraw.value = false
             this.step = 
             this.timeLineData.showWithDrawStartTime = formatDateOnMDS(new Date().getTime())
-            console.log('timeLineData ==>', this.timeLineData)
             const resq = await this.getLpinfos(this.timeLineData.lp.id)
-            // console.log('resq lpinfo ==>', resq)
             const userTx = {
                 chainID: Number(this.timeLineData.fromTx.chainId),
                 txHash: this.timeLineData.fromTx.id,
@@ -330,14 +326,12 @@ export default {
                 startTime: Number(resq[0].startTime),
                 // stopTime: Number(resq[0].stopTime),
             }
-            console.log("maker userWithDraw ==>", userTx, lpinfo, JSON.stringify(userTx), JSON.stringify(lpinfo))
             const data = {
                 name: 'userWithDraw',
                 contractName: "ORMakerDeposit",
                 contractAddr: this.timeLineData.makerId,
                 arguments: [userTx, lpinfo]
             }
-            console.log('userWithDraw data ==>', data)
             const isNetwork = await linkNetwork()
             if (isNetwork) {
                 const result = await contractMethod(linkWallet.value, data).catch(err => {
@@ -353,7 +347,6 @@ export default {
                     this.timeLineData.showExpectValue = this.$web3.utils.fromWei(this.timeLineData.expectValue , 'ether')
                     let timer = setInterval(async () => {
                         let res = await this.getFinish()
-                        console.log("res finish data ==>", res[0])
                         let userWithDraw = res[0].events.filter(item => item.action == 'user:withdrawal')
                         if (userWithDraw.length != 0) {
                             detailStatus.value = 4

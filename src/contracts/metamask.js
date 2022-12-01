@@ -4,7 +4,6 @@ import { utils } from 'web3'
 
 export const linkNetwork = async () => {
     const ethereum = window.ethereum
-    // console.log('ethereum.networkVersion ==>', ethereum.networkVersion)
     if (!ethereum) {
         return false
     }

@@ -37,7 +37,6 @@ const getDate = async (addr) => {
     let res = await getArbitrationTxApi({replyAccount: addr, pageSize: 100})
     if (res.data.data && res.data.data.rows) {
         const data = res.data.data.rows
-        console.log('data ==>', data)
         return data
     }
     return []
@@ -46,7 +45,6 @@ export const getArbitrationData = async (addr) => {
     let data = await getDate(addr)
     let resp = await getChainEntities()
     let history = await getUserArbitrationHistory(addr)
-    console.log('resp ==>', resp, history, data)
     isConfirm.value = true
     let arr = []
     if (data.length != 0) {
@@ -55,7 +53,6 @@ export const getArbitrationData = async (addr) => {
             let timer = parseInt(new Date().getTime() / 1000)
             let endTime = Number(v.timestamp) + Number(chainItem[0].maxReceiptTime)
             let isHistory = history.filter(item => item.fromTx.id == v.hash)
-            console.log(timer, endTime)
             if (timer >= endTime && isHistory.length == 0) {
                 let subStr1 = v.hash.substr(0, 14)
                 let subStr2 = v.hash.substr(v.hash.length - 12, 12)

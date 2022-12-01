@@ -137,7 +137,6 @@ export default {
                     v.showToTx = toStr1 + '...' + toStr2
                 }
             })
-            console.log("tabledata ==>", tableList)
             return historyPanelState.tableData
         },
         linkWallet() {
@@ -151,7 +150,6 @@ export default {
         }
     },
     created() {
-        // console.log("isMaker ==>", isMaker.value)
         // getArbitrationHistory(linkWallet.value)
     },
     methods: {
@@ -160,14 +158,12 @@ export default {
             this.$refs.singleTable.setCurrentRow();
         },
         goToExplore(txData) {
-            console.log('tx', txData);
             if (txData?.fromTx?.chainId) {
                 const url = this.$env.txExploreUrl[txData.fromTx.chainId] + txData.toTx.id;
                 window.open(url, '_blank');
             }
         },
         curChange(cur) {
-            console.log('cur ==>', cur)
         },
         toDetails(row) {
             pageStatus.value = 2
@@ -187,7 +183,6 @@ export default {
             this.showInputTxPopupClick()
         },
         async makerChange(toTx) {
-            console.log('toTx ==>', toTx)
             this.isConfirm = true
             try {
                 let txinfo = {
@@ -209,12 +204,10 @@ export default {
                     fromTxId: this.chooseItem.fromTx.id,
                     toTxId: toTx
                 }
-                console.log('params ==>', params, JSON.stringify(params), this.$web3.utils.fromWei(this.chooseItem.expectValue, 'ether'))
                 const res = await getMakerTransferProofApi(params)
                 if (res.data && res.data.data) {
                     const txproof = res.data.data.proof
                     const toinfo = res.data.data.tx
-                    console.log('toinfo ==>', toinfo)
                     const toTxinfo = {
                         chainID: Number(toinfo.chain),
                         txHash: toTx,
@@ -229,14 +222,12 @@ export default {
                         responseSafetyCode: Number(toinfo.expectSafetyCode),
                         ebcid: Number(toinfo.ebcId),
                     }
-                    console.log("maker makerChallenger ==>", txinfo, toTxinfo, txproof)
                     const data = {
                         name: 'makerChallenger',
                         contractName: "ORMakerDeposit",
                         contractAddr: this.chooseItem.makerId,
                         arguments: [txinfo, toTxinfo, txproof]
                     }
-                    console.log('makerChallenger data ==>', data)
                     const isNetwork = await linkNetwork()
                     if (isNetwork) {
                         const result = await contractMethod(linkWallet.value, data).catch(err => {
@@ -255,7 +246,6 @@ export default {
                         this.isConfirm = false
                     }
                 } else {
-                    console.log("res ==>", res)
                     util.showMessage(
                         `${res.data.errmsg}`,
                         'error'

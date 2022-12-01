@@ -182,7 +182,7 @@ export const walletConnectDispatcherOnSignature = async (
       onTransferSucceed(from, selectMakerInfo, value, fromChainID, result)
     })
     .catch((err) => {
-      console.log('err', err)
+      console.error('err', err)
       showMessage(err, 'error')
     })
 }

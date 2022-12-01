@@ -57,8 +57,6 @@ export function setHistoryInfo(info = {}, isShowHistory = true) {
 }
 
 export function setActiveName(name) {
-  // console.log("active", name)
-  console.log('linkWallet ==>', linkWallet.value , myMaker.value)
   if (name == 'MakerArbitration') {
     getMakerArbitrationHistory(myMaker.value)
   } else if (name == 'Arbitration') {
@@ -155,7 +153,6 @@ export const getUserArbitrationHistory = async (account) => {
 }
 
 export const getArbitrationHistory = async (account) => {
-  console.log('account ==>', account)
   historyPanelState.tableData = []
   historyPanelState.isArbitrationLoading = true
   const endpoint = env.graphUrl
@@ -215,7 +212,6 @@ export const getArbitrationHistory = async (account) => {
   let data = resp.grievanceEntities
   data.map(async v => { 
     let timer = parseInt(new Date().getTime() / 1000)
-    console.log("v ==>", v.latestReplyTime, timer, v.status == 0 && timer >= v.latestReplyTime)
     if (v.status == 0 && timer >= v.latestReplyTime) {
       v.status = 2;
     } else if (v.status == 2) {
@@ -236,11 +232,9 @@ export const getArbitrationHistory = async (account) => {
   })
   historyPanelState.tableData = data
   historyPanelState.isArbitrationLoading = false
-  // console.log("getArbitrationHistory ==>", data)
 }
 
 export const getMakerArbitrationHistory = async (maker) => {
-  console.log('maker ==>', maker)
   historyPanelState.tableData = []
   historyPanelState.isArbitrationLoading = true
   const endpoint = env.graphUrl
@@ -298,5 +292,4 @@ export const getMakerArbitrationHistory = async (maker) => {
   let data = resp.grievanceEntities
   historyPanelState.tableData = data
   historyPanelState.isArbitrationLoading = false
-  // console.log("getArbitrationHistory ==>", data)
 }

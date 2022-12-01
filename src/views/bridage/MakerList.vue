@@ -159,7 +159,6 @@ export default {
             const graphQLClient = new GraphQLClient(endpoint, {})
             const resp = await graphQLClient.request(query)
             const data = resp.lpEntities
-            // console.log("resp data ==>", data)
             let networkList = []
             data.map(v => {
                 if (!networkList.includes(Number(v.pair.destChain))) {

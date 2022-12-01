@@ -113,7 +113,6 @@ export default {
     },
     methods: {
         goToExplore(txData) {
-            console.log('tx', txData);
             if (txData?.fromTx?.chainId) {
                 const url = this.$env.accountExploreUrl[txData.fromTx.chainId] + txData.toTx.to;
                 window.open(url, '_blank');

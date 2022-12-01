@@ -39,7 +39,6 @@ const coinbaseDispatcherOnBrowserInit = () => {
     //     updateGlobalSelectWalletConf(legalWalletConfig.walletType, legalWalletConfig.walletPayload, true);
     //     modifyLocalLoginInfo(legalWalletConfig);
     // }).catch(err => {
-    //     console.log("err", err);
     // })
 }
 /**

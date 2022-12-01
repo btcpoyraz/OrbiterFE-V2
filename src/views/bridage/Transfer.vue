@@ -1436,7 +1436,6 @@ export default {
     },
     // async getChainLp() {
     //   const endpoint = this.$env.graphUrl
-    //   console.log(defaultMaker.value)
     //   const query = gql`
     //     query MyQuery {
     //       lpEntities(where: {maker_contains: "${defaultMaker.value.toLowerCase()}", status: 1, stopTime: null}) {
@@ -1462,7 +1461,6 @@ export default {
     //   const graphQLClient = new GraphQLClient(endpoint, {})
     //   const resp = await graphQLClient.request(query)
     //   const data = resp.lpEntities
-    //   // console.log("resp data ==>", data)
     //   let fromChainArray = []
     //   data.map(v => {
     //     if (!fromChainArray.includes(Number(v.pair.sourceChain))) {
@@ -1470,7 +1468,6 @@ export default {
     //     }
     //   })
     //   this.fromChainArray = fromChainArray
-    //   console.log("fromChainArray ==>", fromChainArray)
       
     // },
     fromMax() {
@@ -1579,7 +1576,6 @@ export default {
       // for (const key in queryParamsChainMap) {
       //   if (queryParamsChainMap[key] == e.localID) {
       //     if (!util.equalsIgnoreCase(query.source, key)) {
-      //       console.log('xxxxxxxxxx', query, key)
       //       this.$router.replace({ path, query: { ...query, source: key } })
       //       break
       //     }

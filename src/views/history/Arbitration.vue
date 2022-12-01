@@ -135,7 +135,6 @@ export default {
     },
     methods: {
         goToExplore(tx) {
-            console.log('tx', tx.hash);
             if (tx?.hash) {
                 const url = this.$env.txExploreUrl[this.selectItem.chainId] + tx.hash;
                 window.open(url, '_blank');
@@ -158,7 +157,6 @@ export default {
         },
         selectChange(val) {
             this.selectItem = this.haxOptions.find(item => item.hash == val)
-            console.log("selectItem ==>", this.selectItem)
         },
 
         async confirm() {
@@ -183,7 +181,6 @@ export default {
             const ebcAddr = await contract_manager.methods.getEBC(txinfo.ebcid).call()
             const contract_ORProtocalV1 = await contract_obj('ORProtocalV1', ebcAddr)
             const value = await contract_ORProtocalV1.methods.challengePledgedAmount().call()
-            console.log("confirm ==>", txinfo, txproof, value, JSON.stringify(txinfo))
             const data = {
                 name: 'userChallenge',
                 contractName: "ORMakerDeposit",
@@ -191,7 +188,6 @@ export default {
                 value,
                 arguments: [txinfo, txproof]
             }
-            console.log('userChallenge data ==>', data)
             const isNetwork = await linkNetwork()
             if (isNetwork) {
                 const result = await contractMethod(linkWallet.value, data).catch(err => {
