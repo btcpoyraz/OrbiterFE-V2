@@ -78,7 +78,7 @@ export default {
             return '';
         },
         showToTx() {
-            const tx = this.timeLineData?.toTx?.id;
+            const tx = this.timeLineData?.toTx?.to;
             if (tx) {
                 const toTx1 = tx.substr(0, 6);
                 const totTx2 = tx.substr(tx.length - 4, 4);
@@ -115,7 +115,7 @@ export default {
         goToExplore(txData) {
             console.log('tx', txData);
             if (txData?.fromTx?.chainId) {
-                const url = this.$env.txExploreUrl[txData.fromTx.chainId] + txData.toTx.id;
+                const url = this.$env.accountExploreUrl[txData.fromTx.chainId] + txData.toTx.to;
                 window.open(url, '_blank');
             }
         },

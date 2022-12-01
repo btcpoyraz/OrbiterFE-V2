@@ -29,12 +29,12 @@
 <script>
 import TopNav from './components/layouts/TopNav.vue'
 import BottomNav from './components/layouts/BottomNav.vue'
-import getZkToken from './util/tokenInfo/supportZkTokenInfo'
+// import getZkToken from './util/tokenInfo/supportZkTokenInfo'
 import walletDispatchers, {
   getCurrentLoginInfoFromLocalStorage,
 } from './util/walletsDispatchers'
 import { isMobile } from './composition/hooks'
-import getZksToken from './util/tokenInfo/supportZksTokenInfo'
+// import getZksToken from './util/tokenInfo/supportZksTokenInfo'
 import getLpToken from './util/tokenInfo/supportLpTokenInfo'
 import * as lightbg from './assets/v2/light-bg.png'
 import * as darkbg from './assets/v2/dark-bg.png'
@@ -119,7 +119,7 @@ export default {
     HeaderDialog,
   },
   async mounted() {
-    getZkToken.getSupportZKTokenList()
+    // getZkToken.getSupportZKTokenList()
 
     // init wallet info by the localStorage
     this.performInitCurrentLoginWallet()
@@ -139,7 +139,7 @@ export default {
     performInitCurrentLoginWallet() {
       performInitMobileAppWallet()
 
-      getZksToken.getSupportZksTokenList()
+      // getZksToken.getSupportZksTokenList()
       getLpToken.getSupportLpTokenList()
       // When user connects a wallet, the information of this wallet will be added
       // to the localStorage, when user refreshes the page, the localStorage can help
