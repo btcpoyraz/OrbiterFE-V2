@@ -136,7 +136,7 @@ export default {
     methods: {
         goToExplore(tx) {
             if (tx?.hash) {
-                const url = this.$env.txExploreUrl[this.selectItem.chainId] + tx.hash;
+                const url = this.$env.txExploreUrl[process.env.VUE_APP_MAKER_CHAIN_ID] + tx.hash;
                 window.open(url, '_blank');
             }
         },

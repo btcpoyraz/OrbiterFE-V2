@@ -234,7 +234,7 @@ export default {
     methods: {
         goToExplore(txData) {
             if (txData?.fromTx?.chainId) {
-                const url = this.$env.txExploreUrl[txData.fromTx.chainId] + txData.toTx.id;
+                const url = this.$env.txExploreUrl[process.env.VUE_APP_MAKER_CHAIN_ID] + txData.toTx.id;
                 window.open(url, '_blank');
             }
         },

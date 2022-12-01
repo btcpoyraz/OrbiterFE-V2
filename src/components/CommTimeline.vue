@@ -114,7 +114,7 @@ export default {
     methods: {
         goToExplore(txData) {
             if (txData?.fromTx?.chainId) {
-                const url = this.$env.accountExploreUrl[txData.fromTx.chainId] + txData.toTx.to;
+                const url = this.$env.accountExploreUrl[process.env.VUE_APP_MAKER_CHAIN_ID] + txData.toTx.to;
                 window.open(url, '_blank');
             }
         },
