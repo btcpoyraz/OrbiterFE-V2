@@ -242,6 +242,26 @@
       @input="selectedTokenChange"
       :keyMaps="{ value: 'token', label: 'token' }"
     />
+    <CommTipDialog ref="TipPopupRef">
+      <div slot="PoperContent" class="dialog">
+        <div class="dialog-box">
+          <div @click="closeTipPopup" class="icon">
+            <i class="el-icon-close"></i>
+          </div>
+          <div class="title">
+            Unlock more Orbiter identities?
+          </div>
+          <div class="content">
+            Explore more transactions on Orbiter Finance Mainnet Have fun!
+          </div>
+          <div class="bottom">
+            <span class="btn" @click="openUrl">
+              Let's Go
+            </span>
+          </div>
+        </div>
+      </div>
+    </CommTipDialog>
   </div>
 </template>
 
@@ -251,6 +271,7 @@ import {
   CommBtn,
   ObSelectChain,
   CommDialog,
+  CommTipDialog,
   SvgIconThemed,
   HelpIcon,
 } from '../../components'
@@ -297,6 +318,7 @@ import {
   updateTransferGasFee,
   updateETHPrice,
   web3State,
+  isMobile,
 } from '../../composition/hooks'
 import { watchEffect } from '../../composition'
 
@@ -312,6 +334,7 @@ export default {
     ObSelectChain,
     SvgIconThemed,
     CommDialog,
+    CommTipDialog,
     RaiseUpSelect,
     HelpIcon,
   },
@@ -1263,6 +1286,10 @@ export default {
     },
   },
   mounted() {
+    if(!isMobile.value){
+      this.showTipPopup();
+    }
+
     const updateETHPriceI = async () => {
       transferCalculate
         .getTokenConvertUsd('ETH')
@@ -1324,6 +1351,15 @@ export default {
     this.replaceStarknetWrongHref()
   },
   methods: {
+    showTipPopup() {
+      this.$refs.TipPopupRef.showCustom();
+    },
+    closeTipPopup() {
+      this.$refs.TipPopupRef.maskClick();
+    },
+    openUrl() {
+      window.open('https://www.orbiter.finance/', '_blank');
+    },
     replaceStarknetWrongHref() {
       /*
         ?refer=starknet&dests=starknet
@@ -2135,6 +2171,121 @@ export default {
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
+  }
+}
+
+.dialog {
+  width: 100%;
+
+  .dialog-box {
+    position: relative;
+    background-color: #ffffff;
+    color: #161616;
+    border-radius: 40px;
+    width: 100%;
+    padding: 10px;
+    font-family: 'Inter Regular';
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+
+    .icon {
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      cursor: pointer;
+    }
+
+    .title {
+      margin-bottom: 10px;
+      font-weight: 700;
+      font-size: 17px;
+    }
+
+    .content {
+      margin-bottom: 10px;
+      font-weight: lighter;
+      font-size: 15px;
+    }
+
+    .bottom {
+      height: 30px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .btn {
+        width: 350px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 16px;
+        border-radius: 30px;
+        cursor: pointer;
+        color: #FFFFFF;
+
+        height: 40px;
+        display: inline-block;
+        line-height: 40px;
+        background: linear-gradient(90.46deg, #eb382d 4.07%, #bc3035 98.55%);
+      }
+    }
+  }
+}
+
+.dark-theme {
+  .dialog {
+    width: 100%;
+
+    .dialog-box {
+      position: relative;
+      background-color: #3f415b;
+      color: #FFFFFF;
+      border-radius: 40px;
+      width: 100%;
+      padding: 10px;
+      font-family: 'Inter Regular';
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+
+      .icon {
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        cursor: pointer;
+      }
+
+      .title {
+        margin-bottom: 10px;
+        font-weight: 700;
+        font-size: 17px;
+      }
+
+      .content {
+        margin-bottom: 10px;
+        font-weight: lighter;
+        font-size: 15px;
+      }
+
+      .bottom {
+        height: 30px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .btn {
+          display: inline-block;
+          width: 350px;
+          text-align: center;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 30px;
+          height: 30px;
+          border-radius: 30px;
+          cursor: pointer;
+          background: linear-gradient(to right, #D93E28, #A6453E);
+          color: #FFFFFF;
+        }
+      }
+    }
   }
 }
 </style>
