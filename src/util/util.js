@@ -9,6 +9,8 @@ import { Coin_ABI } from './constants/contract/contract.js'
 import { isProd } from './env'
 import env from '../../env'
 
+let prev = Date.now();
+
 export default {
   showMessage(message, type) {
     const _type = type || 'success'
@@ -102,6 +104,20 @@ export default {
         resolve(null)
       }, ms)
     })
+  },
+
+  throttle(func, delay) {
+    return function () {
+      const self = this;
+      const args = arguments;
+      const now = Date.now();
+      setTimeout(() => {
+        if (now - prev >= delay) {
+          func.apply(self, args);
+          prev = Date.now();
+        }
+      }, delay);
+    };
   },
 
   stableWeb3(chainId) {
@@ -199,7 +215,7 @@ export default {
   },
 
   log(...msg) {
-    if (isProd()) {
+    if (!isProd()) {
       return
     }
     console.log(...msg)

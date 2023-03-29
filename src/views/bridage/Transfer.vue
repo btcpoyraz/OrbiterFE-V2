@@ -182,6 +182,7 @@
         </div>
         <input
                 @blur="updateSendBtnInfo"
+                @input="inputCrossAddress"
                 type="text"
                 v-model="crossAddressReceipt"
                 :placeholder="`Recipient's ${chainName} Address`"
@@ -1082,6 +1083,10 @@ export default {
       this.updateRoutes(oldFromChainID, oldToChainID);
       await this.updateSendBtnInfo();
     },
+    async inputCrossAddress() {
+      this.sendBtnInfo.disabled = 'disabled';
+      util.throttle(this.updateSendBtnInfo, 500)();
+    },
     async updateSendBtnInfo() {
       const { selectMakerConfig, fromCurrency, toCurrency } = transferDataState;
       if (!selectMakerConfig) return;
@@ -1437,6 +1442,9 @@ export default {
       this.updateSendBtnInfo();
     },
     async sendTransfer() {
+      // if (this.isCrossAddress) {
+      //   await util.sleep(500);
+      // }
       if (check.checkIsBitKeep()) {
         this.$notify.error({
           title: `Bitkeep is not supported and please try another wallet.`,
