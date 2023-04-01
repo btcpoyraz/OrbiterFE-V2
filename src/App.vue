@@ -103,10 +103,10 @@ export default {
     HeaderDialog,
   },
   async mounted() {
-    getZkToken.getSupportZKTokenList()
-
-    // init wallet info by the localStorage
-    this.performInitCurrentLoginWallet()
+    // getZkToken.getSupportZKTokenList()
+    //
+    // // init wallet info by the localStorage
+    // this.performInitCurrentLoginWallet()
   },
   methods: {
     performInitCurrentLoginWallet() {
