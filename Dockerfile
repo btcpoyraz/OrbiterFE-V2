@@ -1,10 +1,10 @@
 FROM node:lts-alpine
 WORKDIR /app
-COPY package.json yarn-lock.json ./
-RUN yarn
+#COPY package.json yarn-lock.json ./
+#RUN yarn
 COPY ./ /app
 
-RUN npm run build
+#RUN npm run build
 FROM nginx:alpine
 RUN mkdir /app
 COPY --from=0 /app/dist /app
