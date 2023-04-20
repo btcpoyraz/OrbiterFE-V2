@@ -64,7 +64,7 @@ export default {
         }
     },
     created() {
-        this.dashBoardUrl = this.$env.dashBoardUrl + '/makerNode';
+        this.dashBoardUrl = this.$env.dashBoardUrl + 'makerNode';
     },
     computed:{
         isLogin() {
