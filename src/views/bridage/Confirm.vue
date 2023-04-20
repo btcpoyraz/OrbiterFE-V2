@@ -105,7 +105,7 @@ import Middle from '../../util/middle/middle'
 import { utils } from 'zksync'
 import { submitSignedTransactionsBatch } from 'zksync/build/wallet'
 import Web3 from 'web3'
-import { WALLETCONNECT } from '../../util/walletsDispatchers/constants'
+import { METAMASK, WALLETCONNECT } from '../../util/walletsDispatchers/constants';
 import { localWeb3 } from '../../util/constants/contract/localWeb3'
 import {
   sendTransfer,
@@ -1118,18 +1118,31 @@ export default {
 
       if (fromChainID != 4 && fromChainID != 44) {
         if (
-          compatibleGlobalWalletConf.value.walletPayload.networkId.toString() !==
-          this.$env.localChainID_netChainID[transferDataState.fromChainID]
+                compatibleGlobalWalletConf.value.walletPayload.networkId.toString() !==
+                util.getMetaMaskNetworkId(fromChainID).toString()
         ) {
-          const matchAddChainDispatcher =
-            walletDispatchersOnSwitchChain[
-              compatibleGlobalWalletConf.value.walletType
-            ]
-          if (matchAddChainDispatcher) {
-            matchAddChainDispatcher(
-              compatibleGlobalWalletConf.value.walletPayload.provider
-            )
-            return
+          if (
+                  compatibleGlobalWalletConf.value.walletType === METAMASK
+          ) {
+            try {
+              if (
+                      !(await util.ensureWalletNetwork(fromChainID))
+              ) {
+                return
+              }
+            } catch (err) {
+              util.showMessage(err.message, 'error')
+              return
+            }
+          } else {
+            const matchAddChainDispatcher =
+                    walletDispatchersOnSwitchChain[
+                            compatibleGlobalWalletConf.value.walletType
+                            ];
+            if (matchAddChainDispatcher) {
+              matchAddChainDispatcher(compatibleGlobalWalletConf.value.walletPayload.provider);
+              return;
+            }
           }
         }
       }

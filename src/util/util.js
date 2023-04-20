@@ -196,6 +196,10 @@ export default {
     return [1, 2, 6, 7, 5, 22, 66, 77].indexOf(Number(chainId)) > -1
   },
 
+  getMetaMaskNetworkId(chainId) {
+    return env.metaMaskNetworkId[chainId]
+  },
+
   /**
    * @param {number} chainId
    */
